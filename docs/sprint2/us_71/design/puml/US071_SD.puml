@@ -1,0 +1,111 @@
+@startuml US071_SD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Air Transport Company\nCollaborator" as ATCC
+participant ":DecommissionAircraftUI" as UI
+participant ":DecommissionAircraftController" as CTRL
+participant "Repositories" as REPOS
+participant "repositories\n:Repositories" as REPOS_SINGLETON
+participant "aircraftRepository\n:AircraftRepository" as AC_REPO
+participant "flightRepository\n:FlightRepository" as FL_REPO
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "aircraft\n:Aircraft" as AIRCRAFT
+
+activate ATCC
+
+    ATCC -> UI : asks to decommission an aircraft
+    activate UI
+        UI --> CTRL** : create()
+
+        UI -> CTRL : getCompanyAircraft()
+        activate CTRL
+            CTRL -> REPOS : getInstance()
+            activate REPOS
+                REPOS --> CTRL : repositories
+            deactivate REPOS
+
+            CTRL -> REPOS_SINGLETON : getAircraftRepository()
+            activate REPOS_SINGLETON
+                REPOS_SINGLETON --> CTRL : aircraftRepository
+            deactivate REPOS_SINGLETON
+
+            CTRL -> AC_REPO : findByCompany(companyIataCode)
+            activate AC_REPO
+                AC_REPO --> CTRL : aircraftList
+            deactivate AC_REPO
+
+            CTRL --> UI : aircraftList
+        deactivate CTRL
+
+        UI --> ATCC : shows company aircraft list and asks to select one
+    deactivate UI
+
+    ATCC -> UI : selects an aircraft
+    activate UI
+        UI --> ATCC : shows aircraft data and requests confirmation
+    deactivate UI
+
+    ATCC -> UI : confirms decommission
+    activate UI
+
+        UI -> CTRL : decommissionAircraft(registration)
+        activate CTRL
+
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(AIR_TRANSPORT_COMPANY_COLLABORATOR)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            |||
+            CTRL -> REPOS : getInstance()
+            activate REPOS
+                REPOS --> CTRL : repositories
+            deactivate REPOS
+
+            CTRL -> REPOS_SINGLETON : getFlightRepository()
+            activate REPOS_SINGLETON
+                REPOS_SINGLETON --> CTRL : flightRepository
+            deactivate REPOS_SINGLETON
+
+            CTRL -> FL_REPO : existsPendingFlightsFor(registration)
+            activate FL_REPO
+                FL_REPO --> CTRL : false
+            deactivate FL_REPO
+
+            |||
+            CTRL -> REPOS_SINGLETON : getAircraftRepository()
+            activate REPOS_SINGLETON
+                REPOS_SINGLETON --> CTRL : aircraftRepository
+            deactivate REPOS_SINGLETON
+
+            CTRL -> AC_REPO : findByRegistration(registration)
+            activate AC_REPO
+                AC_REPO --> CTRL : aircraft
+            deactivate AC_REPO
+
+            CTRL -> AIRCRAFT : decommission()
+            activate AIRCRAFT
+                AIRCRAFT -> AIRCRAFT : setOperationalStatus(DECOMMISSIONED)
+                activate AIRCRAFT
+                    AIRCRAFT --> AIRCRAFT
+                deactivate AIRCRAFT
+                AIRCRAFT --> CTRL
+            deactivate AIRCRAFT
+
+            CTRL -> AC_REPO : save(aircraft)
+            activate AC_REPO
+                AC_REPO --> CTRL : aircraft
+            deactivate AC_REPO
+
+            CTRL --> UI : aircraft
+        deactivate CTRL
+
+        UI --> ATCC : displays operation success
+    deactivate UI
+
+deactivate ATCC
+@enduml

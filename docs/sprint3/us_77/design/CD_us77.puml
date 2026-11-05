@@ -1,0 +1,126 @@
+@startuml CD_us077
+
+title US077 - Remove a Pilot (Class Diagram)
+
+skinparam classAttributeIconSize 0
+
+interface AggregateRoot
+interface Repository
+
+class RemovePilotUI {
+    - controller : RemovePilotController
+    + doShow() : boolean
+}
+
+class RemovePilotController {
+    - authz : AuthorizationService
+    - pilotService : PilotService
+    - flightPlanRepository : FlightPlanRepository
+    - customerCollaboratorRepository : CustomerCollaboratorRepository
+    + getActivePilots() : List<PilotDTO>
+    + removePilot(pilotID : String) : PilotDTO
+    - resolveCompanyCode(systemUser : SystemUser) : AirTransportCompanyCode
+    - authenticatedUser() : SystemUser
+}
+
+class PilotService {
+    - pilotRepository : PilotRepository
+    - aircraftModelRepository : AircraftModelRepository
+    + listActivePilotsByCompany(companyCode : AirTransportCompanyCode) : List<PilotDTO>
+    + removePilot(pilotID : PilotID, companyCode : AirTransportCompanyCode, flightPlanRepository : FlightPlanRepository) : PilotDTO
+    - ensureNoAssignedFlightPlans(pilot : Pilot, flightPlanRepository : FlightPlanRepository)
+    - toDTOs(pilots : Iterable<Pilot>) : List<PilotDTO>
+    - toDTO(pilot : Pilot) : PilotDTO
+}
+
+class PilotDTO <<DTO>> {
+    - pilotID : String
+    - name : String
+    - companyIata : String
+    - status : String
+    - certificationCount : int
+}
+
+class Pilot <<AggregateRoot>> {
+    - pilotID : PilotID
+    - currentCompanyIataCode : AirTransportCompanyCode
+    - status : PilotStatus
+    + isActive() : boolean
+    + belongsTo(companyCode : AirTransportCompanyCode) : boolean
+    + deactivate()
+}
+
+class FlightPlan <<AggregateRoot>> {
+    - flightPlanID : FlightPlanID
+    - pilotID : PilotID
+    - status : FlightPlanStatus
+    + status() : FlightPlanStatus
+    + pilotID() : PilotID
+}
+
+class FlightPlanStatus <<enumeration>> {
+    DRAFT
+    TESTED
+    VALIDATED
+    REJECTED
+    CANCELLED
+}
+
+class PilotStatus <<enumeration>> {
+    ACTIVE
+    INACTIVE
+}
+
+class CustomerCollaborator <<AggregateRoot>> {
+    + customerCode() : String
+}
+
+interface PilotRepository {
+    + findActiveByCompany(companyCode : AirTransportCompanyCode) : Iterable<Pilot>
+    + findByPilotID(pilotID : PilotID) : Optional<Pilot>
+    + save(pilot : Pilot) : Pilot
+}
+
+interface FlightPlanRepository {
+    + findByPilotID(pilotID : PilotID) : Iterable<FlightPlan>
+}
+
+interface CustomerCollaboratorRepository {
+    + findBySystemUser(systemUser : SystemUser) : Optional<CustomerCollaborator>
+}
+
+RemovePilotUI --> RemovePilotController
+RemovePilotController --> PilotService
+RemovePilotController --> FlightPlanRepository
+RemovePilotController --> CustomerCollaboratorRepository
+RemovePilotController ..> PilotDTO
+
+PilotService --> PilotRepository
+PilotService --> FlightPlanRepository
+PilotService ..> PilotDTO
+PilotService ..> Pilot
+
+PilotRepository --> Pilot : pilots
+FlightPlanRepository --> FlightPlan : flightPlans
+CustomerCollaboratorRepository --> CustomerCollaborator : collaborators
+
+Pilot --> PilotStatus : status
+FlightPlan --> FlightPlanStatus : status
+FlightPlan --> Pilot : pilotID
+
+Pilot ..|> AggregateRoot
+FlightPlan ..|> AggregateRoot
+CustomerCollaborator ..|> AggregateRoot
+
+PilotRepository ..|> Repository
+FlightPlanRepository ..|> Repository
+CustomerCollaboratorRepository ..|> Repository
+
+note bottom of PilotService
+  A pilot cannot be removed while having a flight plan
+  in DRAFT, TESTED or VALIDATED state.
+  REJECTED and CANCELLED plans do not block removal.
+  Removal sets status to INACTIVE; the SystemUser is not affected.
+end note
+
+@enduml

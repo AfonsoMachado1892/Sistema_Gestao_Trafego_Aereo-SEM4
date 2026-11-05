@@ -1,0 +1,53 @@
+@startuml SSD_usXXX
+
+title US061 - Add a costumer’s collaborator (System Sequence Diagram)
+
+actor "Backoffice Operator" as ACTOR
+participant ":System" as SYSTEM
+
+activate ACTOR
+
+ACTOR -> SYSTEM : starts Backoffice App
+activate SYSTEM
+SYSTEM --> ACTOR : requests credentials\n(username, password)
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : provides credentials\n(username, password)
+activate SYSTEM
+SYSTEM --> ACTOR : displays main menu
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : selects "Backoffice Config"
+activate SYSTEM
+SYSTEM --> ACTOR : displays backoffice configuration menu
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : selects "Add Costumer's Collaborator"
+activate SYSTEM
+SYSTEM -> ACTOR : requests the type of the company
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : selects the type of company
+activate SYSTEM
+SYSTEM -> ACTOR : requests user information (name, email, phone number and position)
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : selects information
+activate SYSTEM
+SYSTEM -> ACTOR : requests user to confirm information or change anything
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : confirms registration
+
+activate SYSTEM
+alt success
+    SYSTEM -> ACTOR : display a message of successful registration
+else failure
+    SYSTEM -> ACTOR : display registration failure and the reason
+end
+
+deactivate SYSTEM
+
+deactivate ACTOR
+
+@enduml

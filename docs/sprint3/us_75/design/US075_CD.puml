@@ -1,0 +1,212 @@
+@startuml US075_CD
+
+title US075 - Add a Pilot (Class Diagram)
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+class AddPilotUI {
+    - controller : AddPilotController
+    + doShow() : boolean
+    + headline() : String
+}
+
+class AddPilotController {
+    - authz : AuthorizationService
+    - userSvc : UserManagementService
+    - pilotService : PilotService
+    - aircraftModelRepository : AircraftModelRepository
+    - aiSafeUserRepository : AiSafeUserRepository
+
+    + listAircraftModels() : Iterable<AircraftModel>
+    + addPilot(username : String,
+               password : String,
+               firstName : String,
+               lastName : String,
+               email : String,
+               countryCode : int,
+               phoneNumber : String,
+               certifications : List<Certification>) : Pilot
+
+    - resolveCurrentCompanyIataCode() : IataCode
+    - ensureAirTransportCompanyCollaborator() : void
+}
+
+class PilotService {
+    - pilotRepository : PilotRepository
+    - aircraftModelRepository : AircraftModelRepository
+
+    + addPilot(username : Username,
+               companyIataCode : IataCode,
+               certifications : List<Certification>) : Pilot
+
+    - ensureDistinctSystemUser(username : Username) : void
+    - ensureCertificationsValid(certifications : List<Certification>) : void
+}
+
+note right of PilotService
+    Validates:
+    1. Username is not already associated with a Pilot
+    2. At least one Certification is provided
+    3. All referenced AircraftModelIDs exist
+    4. Certification dates are coherent
+       (issuedAt before validUntil)
+end note
+
+class Pilot <<Aggregate Root>> {
+    - pilotID : PilotID
+    - userID : Username
+    - currentCompanyIataCode : IataCode
+    - certifications : Set<Certification>
+    - status : PilotStatus
+
+    + isCertifiedFor(aircraftModelID : AircraftModelID,
+                     onDate : LocalDate) : boolean
+    + pilotID() : PilotID
+    + status() : PilotStatus
+    + isActive() : boolean
+    + disable() : void
+    + identity() : PilotID
+    + sameAs(other : Object) : boolean
+    + toString() : String
+}
+
+class PilotID <<Value Object>> {
+    - number : String
+    + of(number : String) : PilotID
+    + newID() : PilotID
+    + toString() : String
+}
+
+class Certification <<Value Object>> {
+    - aircraftModelID : AircraftModelID
+    - pilotAircraftHours : int
+    - issuedAt : LocalDate
+    - validUntil : LocalDate
+
+    + aircraftModelID() : AircraftModelID
+    + isValidOn(date : LocalDate) : boolean
+}
+
+enum PilotStatus <<Value Object>> {
+    ACTIVE
+    INACTIVE
+}
+
+class IataCode <<Value Object>> {
+    - code : String
+    + of(code : String) : IataCode
+    + toString() : String
+}
+
+class AircraftModel <<Aggregate Root>> {
+    - name : String
+    - type : AircraftType
+
+    + modelID() : AircraftModelID
+    + identity() : AircraftModelID
+    + toString() : String
+}
+
+class AircraftModelID <<Value Object>> {
+    - number : String
+    + of(number : String) : AircraftModelID
+    + toString() : String
+}
+
+class AiSafeUser {
+    - username : Username
+    - phoneNumber : PhoneNumber
+
+    + of(username : Username,
+         phoneNumber : PhoneNumber) : AiSafeUser
+    + identity() : Username
+}
+
+class PhoneNumber <<Value Object>> {
+    - countryCode : int
+    - phoneNumber : String
+    + of(countryCode : int, phoneNumber : String) : PhoneNumber
+    + toString() : String
+}
+
+interface PilotRepository {
+    + save(pilot : Pilot) : Pilot
+    + findByUserID(username : Username) : Optional<Pilot>
+    + findByCompany(companyIataCode : IataCode) : Iterable<Pilot>
+    + findAll() : Iterable<Pilot>
+}
+
+interface AircraftModelRepository {
+    + findById(modelID : AircraftModelID) : Optional<AircraftModel>
+    + findAll() : Iterable<AircraftModel>
+}
+
+interface AiSafeUserRepository {
+    + save(entity : AiSafeUser) : AiSafeUser
+    + findByUsername(username : Username) : Optional<AiSafeUser>
+}
+
+class PersistenceContext {
+    + {static} repositories() : RepositoryFactory
+}
+
+class AuthorizationService {
+    + ensureAuthenticatedUserHasAnyOf(roles : Role...) : void
+}
+
+class UserManagementService {
+    + registerNewUser(username : String,
+                      password : String,
+                      firstName : String,
+                      lastName : String,
+                      email : String,
+                      roles : Set<Role>,
+                      createdOn : Calendar) : SystemUser
+}
+
+class SystemUser {
+    + username() : Username
+}
+
+class AiSafeRoles {
+    + AIR_TRANSPORT_COMPANY_COLLABORATOR : Role
+    + PILOT : Role
+    + ADMIN : Role
+}
+
+AddPilotUI ..> AddPilotController
+
+AddPilotController ..> AuthorizationService
+AddPilotController ..> UserManagementService
+AddPilotController ..> PilotService
+AddPilotController ..> AircraftModelRepository
+AddPilotController ..> AiSafeUserRepository
+AddPilotController ..> PersistenceContext
+AddPilotController ..> AiSafeRoles
+AddPilotController ..> SystemUser
+AddPilotController ..> PhoneNumber
+AddPilotController ..> AiSafeUser
+
+PilotService ..> PilotRepository
+PilotService ..> AircraftModelRepository
+PilotService ..> Pilot
+
+PersistenceContext --> "1" PilotRepository
+PersistenceContext --> "1" AircraftModelRepository
+PersistenceContext --> "1" AiSafeUserRepository
+
+PilotRepository --> "*" Pilot
+AircraftModelRepository --> "*" AircraftModel
+
+Pilot *-- "1" PilotID
+Pilot --> "1" PilotStatus
+Pilot --> "1" IataCode
+Pilot *-- "1..*" Certification
+
+Certification --> "1" AircraftModelID
+AircraftModel *-- "1" AircraftModelID
+
+AiSafeUser *-- "1" PhoneNumber
+
+@enduml

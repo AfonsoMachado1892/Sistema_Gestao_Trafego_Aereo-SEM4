@@ -1,0 +1,54 @@
+@startuml US032_CD
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+class DisableEnableUserUI {
+    - controller : DisableEnableUserController
+    + show()
+}
+
+class DisableEnableUserController {
+    - authz : AuthorizationService
+    - userSvc : UserManagementService
+    + allUsers()
+    + disableUser(user)
+    + enableUser(user)
+}
+
+class AuthorizationService {
+    + ensureAuthenticatedUserHasAnyOf(roles)
+}
+
+class UserManagementService {
+    - userRepository : UserRepository
+    + allUsers()
+    + deactivateUser(user)
+    + activateUser(user)
+}
+
+class SystemUser {
+    + username()
+    + isActive()
+}
+
+interface UserRepository {
+    + findAll()
+    + save(user)
+    + findByActive(active)
+}
+
+class InMemoryUserRepository {
+    + findAll()
+    + save(user)
+}
+
+DisableEnableUserUI .> DisableEnableUserController
+DisableEnableUserController .> AuthorizationService
+DisableEnableUserController .> UserManagementService
+UserManagementService --> UserRepository
+UserManagementService .> SystemUser
+UserRepository <|.. InMemoryUserRepository
+
+@enduml

@@ -1,0 +1,74 @@
+@startuml US111_CD
+
+title US111 - Generate a Simulation Report (Class Diagram)
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+skinparam class {
+    BackgroundColor<<Application>> #E3F2FD
+    BorderColor<<Application>> #1565C0
+    BackgroundColor<<Presentation>> #FFF8E1
+    BorderColor<<Presentation>> #F57F17
+    BackgroundColor<<Service>> #F1F8E9
+    BorderColor<<Service>> #558B2F
+}
+
+package "Presentation" {
+    class GenerateSimulationReportUI <<Presentation>> {
+        - controller : GenerateSimulationReportController
+        - WEATHER_FILES : List<String>
+        + doShow() : boolean
+        + headline() : String
+    }
+}
+
+package "Application" {
+    class GenerateSimulationReportController <<Application>> {
+        - authz : AuthorizationService
+        - simulationService : SimulationService
+        + listFlightPlanFiles() : List<String>
+        + runSimulation(flightPlanFilename : String,\n  weatherFilename : String) : SimulationReportDTO
+    }
+
+    class SimulationService <<Service>> {
+        - SCOMP_DIR : String
+        - TESTS_DIR : String
+        - REPORT_FILENAME : String
+        - IS_WINDOWS : boolean
+        + listFlightPlanFiles() : List<String>
+        + runSimulation(flightPlanFilename : String,\n  weatherFilename : String) : SimulationReportDTO
+        - ensureExecutableExists(sccompDir : File) : void
+        - buildCommand(sccompDir : File,\n  flightPlanFilename : String,\n  weatherFilename : String) : List<String>
+        - toWslPath(windowsPath : String) : String
+        - readReport(reportPath : String) : SimulationReportDTO
+    }
+
+    class SimulationReportDTO {
+        + totalFlights : int
+        + totalSteps : int
+        + totalViolations : int
+        + environment : String
+        + globalResult : String
+        + flightStatuses : List<String>
+        + violationEvents : List<String>
+        + reportFilePath : String
+    }
+
+    class SimulationException {
+        + SimulationException(message : String)
+    }
+}
+
+class AuthorizationService {
+    + ensureAuthenticatedUserHasAnyOf(roles : Role...) : void
+}
+
+GenerateSimulationReportUI ..> GenerateSimulationReportController : uses
+GenerateSimulationReportController ..> AuthorizationService : uses
+GenerateSimulationReportController ..> SimulationService : uses
+GenerateSimulationReportController ..> SimulationReportDTO : returns
+SimulationService ..> SimulationReportDTO : creates
+SimulationService ..> SimulationException : throws
+
+@enduml

@@ -1,0 +1,82 @@
+@startuml US111_SD
+
+title US111 - Generate a Simulation Report (Sequence Diagram)
+
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Flight Control Operator" as FCO
+participant ":GenerateSimulationReportUI" as UI
+participant ":GenerateSimulationReportController" as CTRL
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant ":SimulationService" as SERVICE
+participant ":ProcessBuilder" as PB
+
+activate FCO
+
+    FCO -> UI : asks to generate a simulation report
+    activate UI
+
+        UI -> CTRL : listFlightPlanFiles()
+        activate CTRL
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(\n  FLIGHT_CONTROL_OPERATOR, ADMIN)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> SERVICE : listFlightPlanFiles()
+            activate SERVICE
+                SERVICE --> CTRL : flightPlanFiles
+            deactivate SERVICE
+
+            CTRL --> UI : flightPlanFiles
+        deactivate CTRL
+
+        UI --> FCO : shows available flight plan files
+    deactivate UI
+
+    FCO -> UI : selects flight plan file\nand weather configuration
+    activate UI
+        UI --> FCO : shows configuration summary\nand requests confirmation
+    deactivate UI
+
+    FCO -> UI : confirms simulation
+    activate UI
+
+        UI -> CTRL : runSimulation(flightPlanFilename, weatherFilename)
+        activate CTRL
+
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(\n  FLIGHT_CONTROL_OPERATOR, ADMIN)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> SERVICE : runSimulation(flightPlanFilename, weatherFilename)
+            activate SERVICE
+
+                SERVICE -> SERVICE : ensureExecutableExists()
+                note right : compiles C project\nvia make if needed
+
+                SERVICE -> PB : start(./simulation tests/<file> [--weather <csv>])
+                activate PB
+                    PB --> SERVICE : exitCode
+                deactivate PB
+
+                SERVICE -> SERVICE : readReport(simulation_report.txt)
+                note right : parses report file\ninto SimulationReportDTO
+
+                SERVICE --> CTRL : simulationReportDTO
+            deactivate SERVICE
+
+            CTRL --> UI : simulationReportDTO
+        deactivate CTRL
+
+        UI --> FCO : displays report summary\nand report file location
+    deactivate UI
+
+deactivate FCO
+
+@enduml

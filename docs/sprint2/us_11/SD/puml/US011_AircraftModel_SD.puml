@@ -1,0 +1,64 @@
+@startuml US011_AircraftModel_SD
+title AircraftModel Aggregate – Invariant: An AircraftModel must always retain at least one certified EngineModel
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "Backoffice Operator" as BO
+participant ":RemoveEngineModelController" as CTRL
+participant ":AircraftModelRepository" as REPO
+participant ":AircraftRepository" as AC_REPO
+participant "aircraftModel\n:AircraftModel" as AM
+
+
+activate BO
+BO -> CTRL : removeEngineModel(aircraftModelID, engineModelID)
+activate CTRL
+
+CTRL -> REPO : findById(aircraftModelID)
+activate REPO
+REPO --> CTRL : aircraftModel
+deactivate REPO
+
+CTRL -> AC_REPO : existsAircraftUsing(aircraftModelID, engineModelID)
+activate AC_REPO
+AC_REPO --> CTRL : inUse
+deactivate AC_REPO
+
+alt inUse == true
+    CTRL --> BO : Error – "Cannot remove engine model:\nit is in use by existing aircraft"
+else inUse == false
+
+    CTRL -> AM : removeCertifiedEngine(engineModelID)
+    activate AM
+    AM -> AM : certifiedEngineModelIDs.size() == 1?
+
+    alt only one engine remains — invariant violated
+        AM --> CTRL : throws InvariantViolationException\n("AircraftModel must retain at least one certified engine")
+        CTRL --> BO : Error – "Cannot remove the last certified engine model"
+    else more than one engine certified
+        AM -> AM : certifiedEngineModelIDs.remove(engineModelID)
+        note over AM
+          **Invariant enforced:**
+          An AircraftModel must always retain
+          at least one EngineModelID in its
+          certifiedEngineModelIDs set.
+          Removal is only allowed when the set
+          contains more than one engine model.
+        end note
+        AM --> CTRL : ok
+        deactivate AM
+        CTRL -> REPO : save(aircraftModel)
+        activate REPO
+        REPO --> CTRL : saved
+        deactivate REPO
+        CTRL --> BO : Engine model removed successfully
+    end
+
+end
+
+@enduml

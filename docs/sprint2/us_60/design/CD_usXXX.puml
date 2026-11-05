@@ -1,0 +1,40 @@
+@startuml CD_usXXX
+
+title USXXX - Title (Class Diagram)
+
+interface AggregateRoot
+
+class Entity {
+    - attribute1 : Type
+    - attribute2 : Type
+    + Entity(attribute1, attribute2)
+}
+
+class ValueObject1 <<ValueObject>> {
+    - value : Type
+    + ValueObject1(value : Type)
+}
+
+interface EntityRepository {
+    + save(entity : Entity)
+    + findAll() : Iterable<Entity>
+    + findById(id : Type) : Optional<Entity>
+}
+
+class JpaEntityRepository
+class InMemoryEntityRepository
+
+class USXXXController {
+    - repo : EntityRepository
+    + doSomething(data) : Entity
+}
+
+Entity ..|> AggregateRoot
+Entity --> ValueObject1
+
+JpaEntityRepository ..|> EntityRepository
+InMemoryEntityRepository ..|> EntityRepository
+
+USXXXController --> EntityRepository
+
+@enduml

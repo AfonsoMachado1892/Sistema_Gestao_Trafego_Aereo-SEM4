@@ -1,0 +1,60 @@
+@startuml US011_Pilot_SD
+title Pilot Aggregate – Invariant: A Pilot can only be deactivated if they have no assigned FlightPlan
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "ATC Collaborator" as ATCC
+participant ":DeactivatePilotController" as CTRL
+participant ":FlightPlanRepository" as FP_REPO
+participant ":PilotRepository" as PILOT_REPO
+participant ":Pilot" as P
+
+activate ATCC
+ATCC -> CTRL : deactivatePilot(pilotID)
+activate CTRL
+
+CTRL -> FP_REPO : existsByPilotID(pilotID)
+activate FP_REPO
+FP_REPO --> CTRL : hasFlightPlans
+deactivate FP_REPO
+
+alt hasFlightPlans == true
+    CTRL --> ATCC : Error – "Cannot deactivate pilot: pilot has assigned flight plans"
+else hasFlightPlans == false
+
+    CTRL -> PILOT_REPO : findByID(pilotID)
+    activate PILOT_REPO
+    PILOT_REPO --> CTRL : pilot
+    deactivate PILOT_REPO
+
+    CTRL -> P : deactivate()
+    activate P
+
+    note over P
+      **Invariant enforced:**
+      A Pilot can only transition to INACTIVE
+      if they have no assigned FlightPlan.
+      FlightPlan is an Entity within the Flight
+      aggregate and references PilotID.
+    end note
+
+    P -> P : status = INACTIVE
+    P --> CTRL : pilot (status: INACTIVE)
+    deactivate P
+
+    CTRL -> PILOT_REPO : save(pilot)
+    activate PILOT_REPO
+    PILOT_REPO --> CTRL : saved
+    deactivate PILOT_REPO
+
+    CTRL --> ATCC : Pilot deactivated successfully
+    deactivate CTRL
+
+end
+
+@enduml

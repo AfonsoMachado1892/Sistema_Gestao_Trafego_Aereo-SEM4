@@ -1,0 +1,603 @@
+@startuml AISafe_CompleteDomainModel
+
+skinparam classAttributeIconSize 0
+skinparam classFontSize 13
+skinparam shadowing false
+
+skinparam class {
+    BackgroundColor<<Aggregate Root>> #E3F2FD
+    BorderColor<<Aggregate Root>> #1565C0
+    FontColor<<Aggregate Root>> #1565C0
+    HeaderBackgroundColor<<Aggregate Root>> #BBDEFB
+
+    BackgroundColor<<Entity>> #FFF8E1
+    BorderColor<<Entity>> #F57F17
+    FontColor<<Entity>> #F57F17
+    HeaderBackgroundColor<<Entity>> #FFE082
+
+    BackgroundColor<<Value Object>> #F1F8E9
+    BorderColor<<Value Object>> #558B2F
+    FontColor<<Value Object>> #558B2F
+    HeaderBackgroundColor<<Value Object>> #DCEDC8
+}
+
+skinparam package {
+    BackgroundColor #FAFAFA
+    BorderColor #BDBDBD
+    BorderStyle dashed
+    FontSize 14
+}
+
+skinparam ArrowColor #444441
+
+package "Shared Kernel" <<Frame>>{
+
+        class Country <<Value Object>> {
+            - isoCode : IsoCode
+            - name : String
+        }
+
+        class IsoCode <<Value Object>>{
+            - code : String
+        }
+
+        class IataCode <<Value Object>>{
+            - code : String
+        }
+
+        class IcaoCode <<Value Object>>{
+             - code : String
+        }
+
+        class Coordinates <<Value Object>> {
+            - latitude : double
+            - longitude : double
+        }
+
+        Country *-- IsoCode
+}
+
+package "Maker Aggregate" <<Frame>> {
+
+    class Maker <<Aggregate Root>> {
+        - name : String
+        - makerType: Set<MakerType>
+    }
+
+    class MakerID <<Value Object>>{
+        - number : String
+    }
+
+    enum MakerType <<Value Object>>{
+        ENGINE
+        AIRCRAFT
+    }
+
+    class MakerCountry <<Value Object>>{
+        - isoCode : IsoCode
+        - name : String
+    }
+
+    class MakerIsoCode <<Value Object>>{
+       - code : String
+    }
+
+    Maker "1" *-- "1" MakerID
+    Maker "1" *-- "1" MakerType
+    Maker "1" *-- "1" MakerCountry
+    MakerCountry "1" *-- "1" MakerIsoCode
+}
+
+package "AirControlArea Aggregate" <<Frame>> {
+
+    class AirControlArea <<Aggregate Root>> {
+        - geographicBounds : GeographicBoundary
+    }
+
+    class AirControlAreaCode <<Value Object>>{
+        - code : String
+    }
+
+    class GeographicBoundary <<Value Object>> {
+        - coordinates : List<Coordinates>
+    }
+
+    class ACACoordinates <<Value Object>> {
+        - latitude : double
+        - longitude : double
+    }
+
+    AirControlArea "1" *-- "1" AirControlAreaCode
+    AirControlArea "1" *-- "1..*" GeographicBoundary
+    GeographicBoundary "1" *-- "1..*" ACACoordinates
+}
+
+package "Airport Aggregate" <<Frame>> {
+
+    class Airport <<Aggregate Root>> {
+        - name : String
+        - town : String
+        - airControlAreaCode : AirControlAreaCode
+        - elevation: double
+    }
+
+    class AirportCountry <<Value Object>>{
+        - isoCode : IsoCode
+        - name : String
+    }
+
+    class AirportIsoCode <<Value Object>>{
+        - code : String
+    }
+
+    class AirportCoordinates <<Value Object>>{
+        - latitude : double
+        - longitude : double
+    }
+
+    class AirportIataCode <<Value Object>>{
+        - code : String
+    }
+
+    class AirportIcaoCode <<Value Object>>{
+       - code : String
+    }
+
+    Airport "1" *-- "1" AirportCoordinates
+    Airport "1" *-- "1" AirportIataCode
+    Airport "1" *-- "1" AirportIcaoCode
+    Airport "1" *-- "1" AirportCountry
+    AirportCountry "1" *-- "1" AirportIsoCode
+}
+
+package "EngineModel Aggregate" <<Frame>> {
+
+    class EngineModel <<Aggregate Root>> {
+        - name : String
+        - type : EngineType
+        - power : double
+        - fuel : FuelType
+        - tsfc : double
+        - makerID : MakerID
+    }
+
+    class EngineModelID <<Value Object>>{
+        - number : String
+    }
+
+    enum FuelType <<Value Object>> {
+        JET_A1
+        AVGAS
+        ELECTRIC
+        HYBRID
+    }
+
+    enum EngineType <<Value Object>> {
+        TURBOPROP
+        TURBOFAN
+        TURBOJET
+        RAMJET
+        ELECTRIC_PROPELLER
+    }
+
+    EngineModel "1" *-- "1" EngineModelID
+    EngineModel "1" *-- "1" EngineType
+    EngineModel "1" *-- "1" FuelType
+}
+
+package "AircraftModel Aggregate" <<Frame>> {
+
+    class AircraftModel <<Aggregate Root>> {
+        - type : AircraftType
+        - emptyWeight : double
+        - mtow : double
+        - mzfw : double
+        - maxFuelCapacity : double
+        - serviceCeiling : double
+        - cruiseSpeed : double
+        - wingArea : double
+        - dragCoefficient : double
+        - liftCoefficient : double
+        - maximumRange : double
+        - maxPassengerCapacity : int
+        - certifiedEngineModelIDs : Set<EngineModelID>
+        - engineNumber : int
+        - makerID : MakerID
+    }
+
+    class AircraftModelID <<Value Object>>{
+        - number : String
+    }
+
+    enum AircraftType <<Value Object>> {
+        PASSENGER
+        CARGO
+        MIXED
+    }
+
+    AircraftModel "1" *-- "1" AircraftModelID
+    AircraftModel "1" *-- "1" AircraftType
+}
+
+package "AirTransportCompany Aggregate" <<Frame>> {
+
+    class AirTransportCompany <<Aggregate Root>> {
+        - name : String
+    }
+
+    class ATCIataCode <<Value Object>>{
+       - code : String
+    }
+
+    class ATCIcaoCode <<Value Object>>{
+       - code : String
+    }
+
+    AirTransportCompany "1" *-- "1" ATCIataCode
+    AirTransportCompany "1" *-- "1" ATCIcaoCode
+}
+
+package "Aircraft Aggregate" <<Frame>> {
+
+    class Aircraft <<Aggregate Root>> {
+        - operationalStatus : OperationalStatus
+        - numCrewElements : int
+        - aircraftModelID : AircraftModelID
+        - airTransportCompanyIataCode : IataCode
+    }
+
+    class AircraftRegistration <<Value Object>>{
+        - registration : String
+    }
+
+    class CabinConfiguration <<Value Object>> {
+        - seatsPerClass : Map<SeatClass, Integer>
+    }
+
+    enum SeatClass <<Value Object>> {
+        ECONOMY
+        BUSINESS
+        FIRST
+    }
+
+    enum OperationalStatus <<Value Object>> {
+        ACTIVE
+        DECOMMISSIONED
+    }
+
+    class AircraftCountry <<Value Object>>{
+        - isoCode : IsoCode
+        - name : String
+    }
+
+    class AircraftIsoCode <<Value Object>>{
+       - code : String
+    }
+
+    class AircraftIataCode <<Value Object>>{
+      - code : String
+    }
+
+    Aircraft "1" *-- "1" AircraftRegistration
+    Aircraft "1" *-- "1" CabinConfiguration
+    Aircraft "1" *-- "1" OperationalStatus
+    Aircraft "1" *-- "1" AircraftCountry
+    Aircraft "1" *-- "1" AircraftIataCode
+    CabinConfiguration "1" *-- "1..*" SeatClass
+    AircraftCountry "1" *-- "1" AircraftIsoCode
+}
+
+package "FlightRoute Aggregate" <<Frame>> {
+
+    class FlightRoute <<Aggregate Root>> {
+        - routeCode : RouteCode
+        - routeStatus : RouteStatus
+        - flightType : FlightType
+        - schedule : Schedule
+        - departureAirportIataCode : IataCode
+        - arrivalAirportIataCode : IataCode
+        - airTransportCompanyIataCode : IataCode
+    }
+
+    class RouteCode <<Value Object>> {
+        - value : String
+    }
+
+    enum RouteStatus <<Value Object>> {
+        ACTIVE
+        INACTIVE
+    }
+
+    class RouteIataCode <<Value Object>> {
+        - code : String
+    }
+
+    enum FlightType <<Value Object>>{
+        REGULAR
+        CHARTER
+    }
+
+    abstract class Schedule <<Value Object>>{}
+
+    class ScheduleEntry <<Value Object>>{
+        - HourDayOfTheWeek : HourDayOfTheWeek
+    }
+
+    class CharterSchedule <<Value Object>>{
+        - departureTime : LocalDateTime
+        - arrivalTime : LocalDateTime
+    }
+
+    class RegularSchedule <<Value Object>>{
+        - entries : List<ScheduleEntry>
+    }
+
+    FlightRoute "1" *-- "1" RouteCode
+    FlightRoute "1" *-- "1" RouteStatus
+    FlightRoute "1" *-- "1" RouteIataCode
+    FlightRoute "1" *-- "1" FlightType
+    FlightRoute "1" *-- "1" Schedule
+    Schedule <|-- RegularSchedule
+    Schedule <|-- CharterSchedule
+    RegularSchedule "1" *-- "1..*" ScheduleEntry
+}
+
+package "FlightSimulation Aggregate" <<Frame>> {
+
+    class FlightSimulation <<Aggregate Root>> {
+        - airControlAreaCode : AirControlAreaCode
+        - startedAt : LocalDateTime
+        - finishedAt : LocalDateTime
+    }
+
+    class FlightSimulationID <<Value Object>> {
+        - number : String
+    }
+
+    class FlightExecution <<Entity>> {
+        - flightID : FlightID
+        - status : FlightExecutionStatus
+        - fuelConsumed : double
+    }
+
+    class FlightExecutionID <<Value Object>> {
+        - number : String
+    }
+
+    class SafetyViolationEvent <<Value Object>> {
+        - timestamp : LocalDateTime
+        - coordinates : Coordinates
+        - involvedFlightExecutionIDs : Set<FlightExecutionID>
+    }
+
+    class SimulationReport <<Value Object>> {
+        - totalFlights : int
+        - globalResult : SimulationGlobalResult
+        - safetyViolations : List<SafetyViolationEvent>
+        + flightExecutionSummaries : List<FlightExecutionID>
+    }
+
+    enum SimulationStatus <<Value Object>> {
+        PENDING
+        RUNNING
+        COMPLETED
+        FAILED
+    }
+
+    enum FlightExecutionStatus <<Value Object>> {
+        RUNNING
+        COMPLETED
+        TERMINATED
+        FAILED
+    }
+
+    enum SimulationGlobalResult <<Value Object>> {
+        PASSED
+        FAILED
+    }
+
+    class SimCoordinates <<Value Object>> {
+        - latitude : double
+        - longitude : double
+    }
+
+    FlightSimulation "1" *-- "1" FlightSimulationID
+    FlightSimulation "1" *-- "1..*" FlightExecution
+    FlightSimulation "1" *-- "1" SimulationReport
+    FlightSimulation "1" *-- "1" SimulationStatus
+    FlightExecution "1" *-- "1" FlightExecutionID
+    FlightExecution "1" *-- "1" FlightExecutionStatus
+    SimulationReport "1" *-- "0..*" SafetyViolationEvent
+    SimulationReport "1" *-- "1" SimulationGlobalResult
+    SafetyViolationEvent "1" *-- "1" SimCoordinates
+}
+
+package "Weather Aggregate" <<Frame>> {
+    class WeatherData <<Aggregate Root>> {
+        - collectedAt : LocalDateTime
+        - windDirection : double
+        - windSpeed : double
+        - temperature : double
+        - airControlAreaCode : AirControlAreaCode
+    }
+
+    class WeatherDataID <<Value Object>>{
+        - number : String
+    }
+
+    class WeatherCoordinates <<Value Object>>{
+        - latitude : double
+        - longitude : double
+    }
+
+    WeatherData "1" *-- "1" WeatherDataID
+    WeatherData "1" *-- "1" WeatherCoordinates
+}
+
+package "Pilot Aggregate" <<Frame>> {
+
+    class Pilot <<Aggregate Root>> {
+        - currentCompanyIataCode : IataCode
+        - certifications : Set<Certification>
+        - status : PilotStatus
+        + isCertifiedFor(aircraftModelID: AircraftModelID, onDate: LocalDate) : boolean
+    }
+
+    class PilotID <<Value Object>> {
+        - number : String
+    }
+
+    class Certification <<Value Object>> {
+        - aircraftModelID : AircraftModelID
+        - pilotAircraftHours : int
+        - issuedAt : LocalDate
+        - validUntil : LocalDate
+    }
+
+    enum PilotStatus <<Value Object>> {
+        ACTIVE
+        INACTIVE
+    }
+
+    class PilotIataCode <<Value Object>>{
+       - code : String
+    }
+
+    Pilot "1" *-- "1" PilotID
+    Pilot "1" *-- "1..*" Certification
+    Pilot "1" *-- "1" PilotStatus
+    Pilot "1" *-- "1" PilotIataCode
+}
+
+package "CustomerCollaborator Aggregate" <<Frame>> {
+
+    class CustomerCollaborator <<Aggregate Root>> {
+        - customerCollaboratorID : CustomerCollaboratorID
+        - externalUserId : ExternalUserId
+        - customerReference : CustomerReference
+        - name : String
+        - email : CollaboratorEmail
+        - phoneNumber : CollaboratorPhoneNumber
+        - position : String
+        - status : CollaboratorStatus
+    }
+
+    class CustomerCollaboratorID <<Value Object>> {
+        - number : String
+    }
+
+    class ExternalUserId <<Value Object>> {
+        - value : String
+    }
+
+    class CustomerReference <<Value Object>> {
+        - customerType : CustomerType
+        - customerCode : String
+    }
+
+    enum CustomerType <<Value Object>> {
+        AIR_TRANSPORT_COMPANY
+        AIR_CONTROL_AREA
+    }
+
+    class CollaboratorEmail <<Value Object>> {
+        - address : String
+    }
+
+    class CollaboratorPhoneNumber <<Value Object>> {
+        - countryCode : int
+        - number : String
+    }
+
+    enum CollaboratorStatus <<Value Object>> {
+        ACTIVE
+        DISABLED
+    }
+
+    CustomerCollaborator "1" *-- "1" CustomerCollaboratorID
+    CustomerCollaborator "1" *-- "1" ExternalUserId
+    CustomerCollaborator "1" *-- "1" CustomerReference
+    CustomerCollaborator "1" *-- "1" CollaboratorEmail
+    CustomerCollaborator "1" *-- "1" CollaboratorPhoneNumber
+    CustomerCollaborator "1" *-- "1" CollaboratorStatus
+    CustomerReference "1" *-- "1" CustomerType
+}
+
+CustomerCollaborator ..> AirTransportCompany : customerReference
+CustomerCollaborator ..> AirControlArea : customerReference
+
+package "Flight Aggregate" <<Frame>> {
+
+    class Flight <<Aggregate Root>> {
+        - flightID : FlightID
+        - aircraftRegistration : AircraftRegistration
+        - flightPlanID : FlightPlanID
+        - pilotID : PilotID
+    }
+
+    class FlightID <<Value Object>>{
+        - code : String
+    }
+
+    class FlightPlan <<Entity>> {
+        - flightPlanID : FlightPlanID
+        - status : FlightPlanStatus
+        - fuelQuantity : FuelQuantity
+        - plannedDeparture : LocalDateTime
+        - plannedArrival : LocalDateTime
+    }
+
+    class FlightPlanID <<Value Object>>{
+        - number : String
+    }
+
+    class FuelQuantity <<Value Object>> {
+        - amount : double
+        - unit : FuelUnit
+    }
+
+    enum FuelUnit <<Value Object>> {
+        KG
+        L
+    }
+
+    enum FlightPlanStatus <<Value Object>> {
+        DRAFT
+        VALIDATED
+    }
+
+    Flight *-- FlightID
+    Flight *-- "1..*" FlightPlan
+    FlightPlan *-- FlightPlanID
+    FlightPlan *-- FuelQuantity
+    FuelQuantity --> FuelUnit
+    FlightPlan --> FlightPlanStatus
+}
+
+' ── Cross-Aggregate Associations ──────────────────────────────────────────────
+
+Flight --> Aircraft : aircraftRegistration
+Flight --> Pilot : pilotID
+
+FlightSimulation --> AirControlArea : airControlAreaCode
+FlightSimulation --> Flight
+
+Aircraft --> AircraftModel : aircraftModelID
+Aircraft --> AirTransportCompany : airTransportCompanyIataCode
+
+EngineModel --> Maker : makerID
+AircraftModel --> Maker : makerID
+
+Airport --> AirControlArea : airControlAreaCode
+
+Pilot --> AirTransportCompany : currentCompanyIataCode
+
+WeatherData --> AirControlArea : airControlAreaCode
+
+FlightRoute --> Airport : departureAirportIataCode
+FlightRoute --> Airport : arrivalAirportIataCode
+FlightRoute --> AirTransportCompany : airTransportCompanyIataCode
+
+Flight --> FlightRoute : routeCode
+
+@enduml

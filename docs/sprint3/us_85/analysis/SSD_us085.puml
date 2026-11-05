@@ -1,0 +1,42 @@
+@startuml SSD_us085
+
+title US085 - Test / Validate Flight Plan (System Sequence Diagram)
+
+actor "Pilot" as PILOT
+participant ":System" as SYSTEM
+
+activate PILOT
+
+PILOT -> SYSTEM : requests to test/validate a flight plan
+activate SYSTEM
+
+SYSTEM --> PILOT : displays draft flight plans
+
+deactivate SYSTEM
+
+PILOT -> SYSTEM : selects flight plan
+activate SYSTEM
+
+SYSTEM --> PILOT : displays selected flight plan details\nand requests confirmation
+
+deactivate SYSTEM
+
+PILOT -> SYSTEM : confirms test/validation
+activate SYSTEM
+
+SYSTEM --> PILOT : displays progress indication
+
+SYSTEM -> SYSTEM : validates ownership and draft status
+SYSTEM -> SYSTEM : validates route, aircraft, pilot,\nschedule and airports
+SYSTEM -> SYSTEM : builds simulated flight plan
+SYSTEM -> SYSTEM : executes simplified flight plan test
+SYSTEM -> SYSTEM : stores test result
+SYSTEM -> SYSTEM : updates flight plan status
+
+SYSTEM --> PILOT : displays final validation report\n(final status: VALIDATED or REJECTED)
+
+deactivate SYSTEM
+
+deactivate PILOT
+
+@enduml

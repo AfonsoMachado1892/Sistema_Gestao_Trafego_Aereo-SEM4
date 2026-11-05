@@ -1,0 +1,92 @@
+@startuml US071_CD
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+class DecommissionAircraftUI {
+}
+
+class DecommissionAircraftController {
+    + DecommissionAircraftController()
+    + getCompanyAircraft()
+    + decommissionAircraft(registration)
+}
+
+class Aircraft {
+    - registration : AircraftRegistration
+    - country : Country
+    - operationalStatus : OperationalStatus
+    - numCrewElements : int
+    - cabinConfiguration : CabinConfiguration
+    - aircraftModelID : AircraftModelID
+    - airTransportCompanyIataCode : IataCode
+
+    + decommission()
+}
+
+class AircraftRegistration {
+    - registration : String
+}
+
+class CabinConfiguration {
+    - seatsPerClass : Map<SeatClass, Integer>
+}
+
+enum OperationalStatus {
+    ACTIVE
+    DECOMMISSIONED
+}
+
+class FlightPlan {
+    - flightPlanID : FlightPlanID
+    - status : FlightPlanStatus
+    - aircraftRegistration : AircraftRegistration
+    - plannedDeparture : LocalDateTime
+    - plannedArrival : LocalDateTime
+}
+
+class AircraftRepository {
+    + findByRegistration(registration)
+    + findByCompany(companyIataCode)
+    + save(aircraft)
+}
+
+class FlightRepository {
+    + existsPendingFlightsFor(registration)
+}
+
+class Repositories {
+    - Repositories()
+    + {static} getInstance()
+    + getAircraftRepository()
+    + getFlightRepository()
+}
+
+note right of FlightRepository
+    checks for DRAFT or VALIDATED
+    flight plans for the aircraft
+end note
+
+DecommissionAircraftUI .> DecommissionAircraftController
+
+DecommissionAircraftController .> Repositories
+DecommissionAircraftController ..> AircraftRepository
+DecommissionAircraftController ..> FlightRepository
+DecommissionAircraftController ..> Aircraft
+
+Repositories -> "1" Repositories : instance
+Repositories --> "1" AircraftRepository : aircraftRepository
+Repositories --> "1" FlightRepository : flightRepository
+
+AircraftRepository --> "*" Aircraft : aircraft
+
+FlightRepository --> "*" FlightPlan : flightPlans
+
+Aircraft *-- "1" AircraftRegistration : registration
+Aircraft *-- "1" CabinConfiguration : cabinConfiguration
+Aircraft --> "1" OperationalStatus : operationalStatus
+
+FlightPlan --> "1" AircraftRegistration : aircraftRegistration
+
+@enduml

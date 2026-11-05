@@ -1,0 +1,146 @@
+@startuml US080_SD
+
+title US080 - Create a Flight Plan (Sequence Diagram)
+
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Pilot" as PILOT
+participant ":CreateFlightPlanUI" as UI
+participant "persistenceContext\n:PersistenceContext" as PC
+participant ":CreateFlightPlanController" as CTRL
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "flightRouteRepository\n:FlightRouteRepository" as ROUTE_REPO
+participant "aircraftRepository\n:AircraftRepository" as AIRCRAFT_REPO
+participant "pilotRepository\n:PilotRepository" as PILOT_REPO
+participant "flightPlanRepository\n:FlightPlanRepository" as PLAN_REPO
+participant "flightPlan\n:FlightPlan" as PLAN
+
+activate PILOT
+
+    PILOT -> UI : asks to create a flight plan
+    activate UI
+
+        UI -> PC : repositories().flightRoutes()
+        activate PC
+            PC --> UI : flightRouteRepository
+        deactivate PC
+
+        UI -> PC : repositories().aircraft()
+        activate PC
+            PC --> UI : aircraftRepository
+        deactivate PC
+
+        UI -> PC : repositories().pilots()
+        activate PC
+            PC --> UI : pilotRepository
+        deactivate PC
+
+        UI -> PC : repositories().flightPlans()
+        activate PC
+            PC --> UI : flightPlanRepository
+        deactivate PC
+
+        UI --> CTRL** : create(flightRouteRepository, aircraftRepository,\npilotRepository, flightPlanRepository)
+
+        UI -> CTRL : listActiveRoutes()
+        activate CTRL
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(PILOT)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> ROUTE_REPO : findAllActive()
+            activate ROUTE_REPO
+                ROUTE_REPO --> CTRL : routeList
+            deactivate ROUTE_REPO
+
+            CTRL --> UI : routeList
+        deactivate CTRL
+
+        UI --> PILOT : requests route selection
+    deactivate UI
+
+    PILOT -> UI : selects route
+    activate UI
+
+        UI -> CTRL : getRouteDetails(routeName)
+        activate CTRL
+            CTRL -> ROUTE_REPO : findByName(routeName)
+            activate ROUTE_REPO
+                ROUTE_REPO --> CTRL : flightRoute
+            deactivate ROUTE_REPO
+
+            CTRL -> AIRCRAFT_REPO : findByCompany(flightRoute.company())
+            activate AIRCRAFT_REPO
+                AIRCRAFT_REPO --> CTRL : aircraftList
+            deactivate AIRCRAFT_REPO
+
+            CTRL -> PILOT_REPO : findByCompany(flightRoute.company())
+            activate PILOT_REPO
+                PILOT_REPO --> CTRL : pilotList
+            deactivate PILOT_REPO
+
+            CTRL --> UI : flightRoute, aircraftList, pilotList
+        deactivate CTRL
+
+        UI --> PILOT : shows route details and requests flight plan data\n(aircraft, departure date/time, fuel quantity, pilot)
+    deactivate UI
+
+    PILOT -> UI : provides flight plan data
+    activate UI
+        UI --> PILOT : shows flight plan summary and requests confirmation
+    deactivate UI
+
+    PILOT -> UI : confirms creation
+    activate UI
+
+        UI -> CTRL : createFlightPlan(routeName, aircraftRegistration,\ndepartureDateTime, fuelQuantity, pilotId)
+        activate CTRL
+
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(PILOT)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> ROUTE_REPO : findByName(routeName)
+            activate ROUTE_REPO
+                ROUTE_REPO --> CTRL : flightRoute
+            deactivate ROUTE_REPO
+
+            CTRL -> AIRCRAFT_REPO : findByRegistration(aircraftRegistration)
+            activate AIRCRAFT_REPO
+                AIRCRAFT_REPO --> CTRL : aircraft
+            deactivate AIRCRAFT_REPO
+
+            CTRL -> PILOT_REPO : findById(pilotId)
+            activate PILOT_REPO
+                PILOT_REPO --> CTRL : pilot
+            deactivate PILOT_REPO
+
+            CTRL --> PLAN** : create(flightRoute, aircraft, departureDateTime,\nfuelQuantity, pilot)
+            activate PLAN
+                PLAN -> PLAN : ensurePilotBelongsToRouteCompany(pilot, flightRoute)
+                PLAN -> PLAN : ensureAircraftBelongsToRouteCompany(aircraft, flightRoute)
+                PLAN -> PLAN : ensureFuelQuantityIsPositive(fuelQuantity)
+                PLAN -> PLAN : setStatus(DRAFT)
+                PLAN --> CTRL
+            deactivate PLAN
+
+            CTRL -> PLAN_REPO : save(flightPlan)
+            activate PLAN_REPO
+                PLAN_REPO --> CTRL : flightPlan
+            deactivate PLAN_REPO
+
+            CTRL --> UI : flightPlan
+        deactivate CTRL
+
+        UI --> PILOT : displays operation success\n(flight plan created with status DRAFT)
+    deactivate UI
+
+deactivate PILOT
+
+@enduml

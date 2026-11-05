@@ -1,0 +1,64 @@
+@startuml US011_AirTransportCompany_SD
+title AirTransportCompany Aggregate – Invariant: An AirTransportCompany can only be registered if its IATA and ICAO codes are unique
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "Backoffice Operator" as BO
+participant ":RegisterAirTransportCompanyController" as CTRL
+participant ":AirTransportCompanyRepository" as REPO
+participant "airTransportCompany\n:AirTransportCompany" as ATC
+
+activate BO
+
+BO -> CTRL : registerAirTransportCompany(name, iataCode, icaoCode)
+activate CTRL
+CTRL -> REPO : existsByIataCode(iataCode)
+activate REPO
+REPO --> CTRL : iataExists
+deactivate REPO
+
+
+alt iataExists == true
+    CTRL --> BO : Error – "An Air Transport Company with that IATA code already exists"
+else iataExists == false
+
+    CTRL -> REPO : existsByIcaoCode(icaoCode)
+
+    activate REPO
+
+    REPO --> CTRL : icaoExists
+
+    deactivate REPO
+
+    alt icaoExists == true
+        CTRL --> BO : Error – "An Air Transport Company with that ICAO code already exists"
+    else icaoExists == false
+
+
+        CTRL -> ATC : create(name, iataCode, icaoCode)
+        activate ATC
+        note over ATC
+          **Invariant enforced:**
+          An AirTransportCompany can only be created
+          with a unique IataCode (2 letters) and
+          a unique IcaoCode (2-3 letters).
+        end note
+        ATC --> CTRL : airTransportCompany
+
+        deactivate ATC
+
+        CTRL -> REPO : save(airTransportCompany)
+        activate REPO
+        REPO --> CTRL : saved
+        deactivate REPO
+        CTRL --> BO : Air Transport Company registered successfully
+
+    end
+end
+
+@enduml

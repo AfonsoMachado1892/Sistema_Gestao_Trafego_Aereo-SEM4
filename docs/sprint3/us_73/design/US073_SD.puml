@@ -1,0 +1,120 @@
+@startuml US073_SD
+
+title US073 - Create a Flight Route (Sequence Diagram)
+
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Air Transport Company Collaborator" as ATCC
+participant ":CreateFlightRouteUI" as UI
+participant ":CreateFlightRouteController" as CTRL
+participant ":FlightRouteService" as SERVICE
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "customerCollaboratorRepository\n:CustomerCollaboratorRepository" as CC_REPO
+participant "flightRouteRepository\n:FlightRouteRepository" as FR_REPO
+participant "airportRepository\n:AirportRepository" as AP_REPO
+participant ":FlightRouteFactory" as FACTORY
+
+activate ATCC
+
+    ATCC -> UI : asks to create a flight route
+    activate UI
+
+        UI -> CTRL : listAirports()
+        activate CTRL
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(\n  AIR_TRANSPORT_COMPANY_COLLABORATOR)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> SERVICE : listAirports()
+            activate SERVICE
+                SERVICE -> AP_REPO : findAll()
+                activate AP_REPO
+                    AP_REPO --> SERVICE : airports
+                deactivate AP_REPO
+                SERVICE --> CTRL : Iterable<AirportDTO>
+            deactivate SERVICE
+
+            CTRL --> UI : Iterable<AirportDTO>
+        deactivate CTRL
+
+        UI --> ATCC : shows available airports,\nrequests route code, flight type,\nschedule, departure and arrival airports
+    deactivate UI
+
+    ATCC -> UI : provides flight route data
+    activate UI
+        UI --> ATCC : shows summary and requests confirmation
+    deactivate UI
+
+    ATCC -> UI : confirms creation
+    activate UI
+
+        alt Regular route
+            UI -> CTRL : createRegularFlightRoute(\n  routeCode, departureIataCode,\n  arrivalIataCode, regularSchedule)
+        else Charter route
+            UI -> CTRL : createCharterFlightRoute(\n  routeCode, departureIataCode,\n  arrivalIataCode, charterSchedule)
+        end
+
+        activate CTRL
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(\n  AIR_TRANSPORT_COMPANY_COLLABORATOR)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> CTRL : currentCompanyIataCode()
+            activate CTRL
+                CTRL -> CC_REPO : findBySystemUser(systemUser)
+                activate CC_REPO
+                    CC_REPO --> CTRL : collaborator
+                deactivate CC_REPO
+            deactivate CTRL
+
+            CTRL -> SERVICE : createRegularFlightRoute(\n  routeCode, departureIataCode,\n  arrivalIataCode, companyIataCode,\n  regularSchedule)
+            activate SERVICE
+
+                SERVICE -> FR_REPO : findByRouteCode(RouteCode.of(routeCode))
+                activate FR_REPO
+                    FR_REPO --> SERVICE : Optional.empty()
+                deactivate FR_REPO
+
+                SERVICE -> AP_REPO : findByIataCode(departureIataCode)
+                activate AP_REPO
+                    AP_REPO --> SERVICE : departureAirport
+                deactivate AP_REPO
+
+                SERVICE -> AP_REPO : findByIataCode(arrivalIataCode)
+                activate AP_REPO
+                    AP_REPO --> SERVICE : arrivalAirport
+                deactivate AP_REPO
+
+                SERVICE -> FACTORY : withRouteCode(routeCode)\n.withDepartureAirport(...)\n.withArrivalAirport(...)\n.withCompany(...)\n.asRegular(regularSchedule)\n.build()
+                activate FACTORY
+                    FACTORY --> SERVICE : flightRoute
+                deactivate FACTORY
+
+                SERVICE -> FR_REPO : save(flightRoute)
+                activate FR_REPO
+                    FR_REPO --> SERVICE : flightRoute
+                deactivate FR_REPO
+
+                SERVICE --> CTRL : flightRoute
+            deactivate SERVICE
+
+            CTRL -> SERVICE : toDTO(flightRoute)
+            activate SERVICE
+                SERVICE --> CTRL : FlightRouteDTO
+            deactivate SERVICE
+
+            CTRL --> UI : FlightRouteDTO
+        deactivate CTRL
+
+        UI --> ATCC : displays operation success
+    deactivate UI
+
+deactivate ATCC
+
+@enduml

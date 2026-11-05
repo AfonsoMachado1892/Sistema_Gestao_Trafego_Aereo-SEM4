@@ -1,0 +1,81 @@
+@startuml US058_SD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Backoffice Operator" as BO
+participant ":RemoveEngineModelFromAircraftModelUI" as UI
+participant ":RemoveEngineModelFromAircraftModelController" as CTRL
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "aircraftModelService\n:AircraftModelService" as SERVICE
+participant "aircraftModelRepository\n:AircraftModelRepository" as MODEL_REPO
+participant "aircraftRepository\n:AircraftRepository" as AIRCRAFT_REPO
+participant "aircraftModel\n:AircraftModel" as MODEL
+
+activate BO
+
+BO -> UI : asks to remove certified engine from aircraft model
+activate UI
+UI -> CTRL : getAircraftModels()
+activate CTRL
+CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+activate AUTH
+AUTH --> CTRL
+deactivate AUTH
+CTRL -> MODEL_REPO : findAll()
+activate MODEL_REPO
+MODEL_REPO --> CTRL : aircraft models
+deactivate MODEL_REPO
+CTRL --> UI : aircraft models
+deactivate CTRL
+UI --> BO : displays aircraft models and certified engines
+deactivate UI
+
+BO -> UI : selects aircraft model and engine model
+activate UI
+UI --> BO : shows summary and requests confirmation
+deactivate UI
+
+BO -> UI : confirms removal
+activate UI
+UI -> CTRL : removeEngineModel(aircraftModelID, engineModelID)
+activate CTRL
+CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+activate AUTH
+AUTH --> CTRL
+deactivate AUTH
+
+CTRL -> SERVICE : removeEngineModel(aircraftModelID, engineModelID)
+activate SERVICE
+SERVICE -> MODEL_REPO : findById(aircraftModelID)
+activate MODEL_REPO
+MODEL_REPO --> SERVICE : aircraftModel
+deactivate MODEL_REPO
+
+SERVICE -> AIRCRAFT_REPO : existsByAircraftModel(aircraftModel)
+activate AIRCRAFT_REPO
+AIRCRAFT_REPO --> SERVICE : exists
+deactivate AIRCRAFT_REPO
+
+SERVICE -> MODEL : removeCertifiedEngine(engineModelID)
+activate MODEL
+MODEL -> MODEL : validate engine is certified\nand at least one engine remains
+deactivate MODEL
+
+SERVICE -> MODEL_REPO : save(aircraftModel)
+activate MODEL_REPO
+MODEL_REPO --> SERVICE : aircraftModel
+deactivate MODEL_REPO
+
+SERVICE --> CTRL : aircraftModel
+deactivate SERVICE
+CTRL --> UI : aircraftModel
+deactivate CTRL
+UI --> BO : displays operation success
+deactivate UI
+
+deactivate BO
+
+@enduml

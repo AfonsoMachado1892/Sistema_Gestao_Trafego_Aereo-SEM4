@@ -1,0 +1,31 @@
+@startuml SSD_US077_RemovePilot
+
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+skinparam sequenceParticipant underline
+
+actor "Air Transport Company\nCollaborator" as ATCC
+participant ":System" as SYS
+
+ATCC -> SYS : requestRemovePilot()
+activate SYS
+SYS --> ATCC : shows list of active pilots
+deactivate SYS
+
+ATCC -> SYS : selectPilot(pilotID)
+activate SYS
+SYS --> ATCC : shows pilot summary, requests confirmation
+deactivate SYS
+
+ATCC -> SYS : confirmRemoval()
+activate SYS
+
+alt pilot has no assigned flight plans\n(DRAFT, TESTED or VALIDATED)
+    SYS --> ATCC : pilot successfully removed\n(status = INACTIVE)
+else pilot has assigned flight plans
+    SYS --> ATCC : error: cannot remove pilot\nwith assigned flight plans
+end
+
+deactivate SYS
+
+@enduml

@@ -1,0 +1,94 @@
+@startuml US041_CD
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+class ApplicationSession {
+    - ApplicationSession()
+    + {static} getInstance()
+    + getCurrentSession()
+}
+
+class UserSession {
+    + getUserEmail()
+}
+
+class RegisterWeatherDataUI {
+}
+
+class RegisterWeatherDataController {
+    + RegisterWeatherDataController()
+    + registerWeatherData(areaCode, collectedAt,\n   coordinates, temperature, windSpeed, windDirection)
+    - getAirControlArea(areaCode)
+}
+
+class WeatherData {
+    - weatherDataID : WeatherDataID
+    - airControlAreaCode : AirControlAreaCode
+    - collectedAt : LocalDateTime
+    - coordinates : Coordinates
+    - temperature : double
+    - windSpeed : double
+    - windDirection : double
+
+    + WeatherData(airControlAreaCode, collectedAt,\ncoordinates, temperature, windSpeed, windDirection)
+}
+
+class WeatherDataID {
+    - number : String
+}
+
+class AirControlArea {
+    - code : AirControlAreaCode
+    - geographicBounds : GeographicBoundary
+}
+
+class AirControlAreaCode {
+    - code : String
+}
+
+class Coordinates {
+    - latitude : double
+    - longitude : double
+}
+
+class WeatherDataRepository {
+    + save(weatherData)
+    + findByAreaAndDate(airControlAreaCode, date)
+}
+
+class AirControlAreaRepository {
+    + findByCode(airControlAreaCode)
+}
+
+class Repositories {
+    - Repositories()
+    + {static} getInstance()
+    + getWeatherDataRepository()
+    + getAirControlAreaRepository()
+}
+
+RegisterWeatherDataUI .> RegisterWeatherDataController
+
+RegisterWeatherDataController .> Repositories
+RegisterWeatherDataController ..> AirControlAreaRepository
+RegisterWeatherDataController ..> WeatherDataRepository
+RegisterWeatherDataController ..> AirControlArea
+RegisterWeatherDataController ..> WeatherData
+
+Repositories -> "1" Repositories : instance
+Repositories --> "1" WeatherDataRepository : weatherDataRepository
+Repositories --> "1" AirControlAreaRepository : airControlAreaRepository
+
+AirControlAreaRepository --> "*" AirControlArea : airControlAreas
+
+WeatherDataRepository --> "*" WeatherData : weatherDataList
+
+WeatherData --> "1" AirControlAreaCode : airControlAreaCode
+WeatherData --> "1" Coordinates : coordinates
+WeatherData *-- "1" WeatherDataID : weatherDataID
+
+AirControlArea *-- "1" AirControlAreaCode : code
+
+@enduml

@@ -1,0 +1,83 @@
+@startuml US032_SD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Administrator" as ADMIN
+participant ":DisableEnableUserUI" as UI
+participant ":DisableEnableUserController" as CTRL
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "userManagementService\n:UserManagementService" as USER_SVC
+participant "userRepository\n:UserRepository" as REPO
+participant "systemUser\n:SystemUser" as USER
+
+activate ADMIN
+
+ADMIN -> UI : asks to disable or enable a backoffice user
+activate UI
+UI -> CTRL : allUsers()
+activate CTRL
+CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(ADMIN)
+activate AUTH
+AUTH --> CTRL
+deactivate AUTH
+CTRL -> USER_SVC : allUsers()
+activate USER_SVC
+USER_SVC -> REPO : findAll()
+activate REPO
+REPO --> USER_SVC : users
+deactivate REPO
+USER_SVC --> CTRL : users
+deactivate USER_SVC
+CTRL --> UI : users
+deactivate CTRL
+UI --> ADMIN : displays users with status
+deactivate UI
+
+ADMIN -> UI : selects user
+activate UI
+
+alt user is active
+    UI -> CTRL : disableUser(selectedUser)
+    activate CTRL
+    CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(ADMIN)
+    activate AUTH
+    AUTH --> CTRL
+    deactivate AUTH
+    CTRL -> USER_SVC : deactivateUser(selectedUser)
+    activate USER_SVC
+    USER_SVC -> REPO : save(deactivatedUser)
+    activate REPO
+    REPO --> USER_SVC : deactivatedUser
+    deactivate REPO
+    USER_SVC --> CTRL : deactivatedUser
+    deactivate USER_SVC
+    CTRL --> UI : deactivatedUser
+    deactivate CTRL
+    UI --> ADMIN : displays disable success message
+else user is disabled
+    UI -> CTRL : enableUser(selectedUser)
+    activate CTRL
+    CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(ADMIN)
+    activate AUTH
+    AUTH --> CTRL
+    deactivate AUTH
+    CTRL -> USER_SVC : activateUser(selectedUser)
+    activate USER_SVC
+    USER_SVC -> REPO : save(activatedUser)
+    activate REPO
+    REPO --> USER_SVC : activatedUser
+    deactivate REPO
+    USER_SVC --> CTRL : activatedUser
+    deactivate USER_SVC
+    CTRL --> UI : activatedUser
+    deactivate CTRL
+    UI --> ADMIN : displays enable success message
+end
+
+deactivate UI
+deactivate ADMIN
+
+@enduml

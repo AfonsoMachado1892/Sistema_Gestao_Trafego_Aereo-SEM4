@@ -1,0 +1,42 @@
+@startuml SSD_US064
+
+title US064 - Disable Customer's Collaborator (System Sequence Diagram)
+
+actor "Backoffice Operator" as BO
+participant ":System" as SYS
+
+activate BO
+
+BO -> SYS : starts Backoffice App
+activate SYS
+SYS --> BO : requests credentials\n(username, password)
+deactivate SYS
+
+BO -> SYS : provides credentials\n(username, password)
+activate SYS
+SYS --> BO : displays main menu
+deactivate SYS
+
+BO -> SYS : selects "Customer Management"
+activate SYS
+SYS --> BO : displays customer management menu
+deactivate SYS
+
+BO -> SYS : selects "Disable Collaborator"
+activate SYS
+SYS --> BO : displays list of active collaborators
+deactivate SYS
+
+BO -> SYS : selects collaborator
+activate SYS
+SYS --> BO : displays collaborator info\nand requests confirmation
+deactivate SYS
+
+BO -> SYS : confirms disable
+activate SYS
+SYS --> BO : displays collaborator as disabled
+deactivate SYS
+
+deactivate BO
+
+@enduml

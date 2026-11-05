@@ -1,0 +1,129 @@
+@startuml US075_SD
+
+title US075 - Add a Pilot (Sequence Diagram)
+
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Air Transport Company Collaborator" as ATCC
+participant ":AddPilotUI" as UI
+participant "persistenceContext\n:PersistenceContext" as PC
+participant ":AddPilotController" as CTRL
+participant ":PilotService" as SERVICE
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "userManagementService\n:UserManagementService" as USER_SVC
+participant "pilotRepository\n:PilotRepository" as PILOT_REPO
+participant "aircraftModelRepository\n:AircraftModelRepository" as AM_REPO
+participant "aiSafeUserRepository\n:AiSafeUserRepository" as ASU_REPO
+participant "pilot\n:Pilot" as PILOT
+
+activate ATCC
+
+    ATCC -> UI : asks to add a pilot to the company
+    activate UI
+
+        UI -> PC : repositories().pilots()
+        activate PC
+            PC --> UI : pilotRepository
+        deactivate PC
+
+        UI -> PC : repositories().aircraftModels()
+        activate PC
+            PC --> UI : aircraftModelRepository
+        deactivate PC
+
+        UI -> PC : repositories().aiSafeUsers()
+        activate PC
+            PC --> UI : aiSafeUserRepository
+        deactivate PC
+
+        UI --> CTRL** : create(pilotRepository, aircraftModelRepository, aiSafeUserRepository)
+        CTRL --> SERVICE** : create(pilotRepository, aircraftModelRepository)
+
+        UI -> CTRL : listAircraftModels()
+        activate CTRL
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(AIR_TRANSPORT_COMPANY_COLLABORATOR)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> AM_REPO : findAll()
+            activate AM_REPO
+                AM_REPO --> CTRL : aircraftModelList
+            deactivate AM_REPO
+
+            CTRL --> UI : aircraftModelList
+        deactivate CTRL
+
+        UI --> ATCC : requests pilot data\n(username, password, first name, last name,\nemail, phone number, aircraft certifications)
+    deactivate UI
+
+    ATCC -> UI : provides pilot data
+    activate UI
+        UI --> ATCC : shows summary and requests confirmation
+    deactivate UI
+
+    ATCC -> UI : confirms registration
+    activate UI
+
+        UI -> CTRL : addPilot(username, password, firstName, lastName,\nemail, countryCode, phoneNumber, certifications)
+        activate CTRL
+
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(AIR_TRANSPORT_COMPANY_COLLABORATOR)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> CTRL : resolveCurrentCompanyIataCode()
+
+            CTRL -> USER_SVC : registerNewUser(username, password,\nfirstName, lastName, email, roles, now)
+            activate USER_SVC
+                USER_SVC --> CTRL : systemUser
+            deactivate USER_SVC
+
+            CTRL -> ASU_REPO : save(AiSafeUser.of(systemUser.username(),\nPhoneNumber.of(countryCode, phoneNumber)))
+            activate ASU_REPO
+                ASU_REPO --> CTRL : aiSafeUser
+            deactivate ASU_REPO
+
+            CTRL -> SERVICE : addPilot(systemUser.username(),\ncompanyIataCode, certifications)
+            activate SERVICE
+
+                SERVICE -> SERVICE : ensureDistinctSystemUser(username)
+
+                SERVICE -> PILOT_REPO : findByUserID(username)
+                activate PILOT_REPO
+                    PILOT_REPO --> SERVICE : Optional.empty()
+                deactivate PILOT_REPO
+
+                SERVICE -> SERVICE : ensureCertificationsValid(certifications)
+
+                loop for each certification in certifications
+                    SERVICE -> AM_REPO : findById(certification.aircraftModelID)
+                    activate AM_REPO
+                        AM_REPO --> SERVICE : aircraftModel
+                    deactivate AM_REPO
+                end
+
+                SERVICE -> PILOT** : new Pilot(pilotID, username,\ncompanyIataCode, certifications)
+
+                SERVICE -> PILOT_REPO : save(pilot)
+                activate PILOT_REPO
+                    PILOT_REPO --> SERVICE : pilot
+                deactivate PILOT_REPO
+
+                SERVICE --> CTRL : pilot
+            deactivate SERVICE
+
+            CTRL --> UI : pilot
+        deactivate CTRL
+
+        UI --> ATCC : displays operation success
+    deactivate UI
+
+deactivate ATCC
+
+@enduml

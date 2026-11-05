@@ -1,0 +1,111 @@
+@startuml US082_SD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Pilot" as PILOT
+participant ":InsertWeatherDataInFlightUI" as UI
+participant ":InsertWeatherDataInFlightController" as CTRL
+participant "Repositories" as REPOS
+participant "repositories\n:Repositories" as REPOS_SINGLETON
+participant "flightPlanRepository\n:FlightPlanRepository" as FP_REPO
+participant "weatherDataRepository\n:WeatherDataRepository" as WD_REPO
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "flightPlan\n:FlightPlan" as FP
+
+activate PILOT
+
+    PILOT -> UI : asks to insert weather data in a flight plan
+    activate UI
+        UI --> CTRL** : create()
+        UI --> PILOT : requests flight plan identifier
+    deactivate UI
+
+    PILOT -> UI : provides flightPlanId
+    activate UI
+
+        UI -> CTRL : getFlightPlanWithWeatherData(flightPlanId)
+        activate CTRL
+
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(PILOT)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> REPOS : getInstance()
+            activate REPOS
+                REPOS --> CTRL : repositories
+            deactivate REPOS
+
+            CTRL -> REPOS_SINGLETON : getFlightPlanRepository()
+            activate REPOS_SINGLETON
+                REPOS_SINGLETON --> CTRL : flightPlanRepository
+            deactivate REPOS_SINGLETON
+
+            CTRL -> FP_REPO : findById(flightPlanId)
+            activate FP_REPO
+                FP_REPO --> CTRL : flightPlan
+            deactivate FP_REPO
+
+            CTRL -> REPOS_SINGLETON : getWeatherDataRepository()
+            activate REPOS_SINGLETON
+                REPOS_SINGLETON --> CTRL : weatherDataRepository
+            deactivate REPOS_SINGLETON
+
+            CTRL -> WD_REPO : findByAreaAndDate(areaCode, date)
+            activate WD_REPO
+                WD_REPO --> CTRL : weatherDataList
+            deactivate WD_REPO
+
+            CTRL --> UI : flightPlan, weatherDataList
+        deactivate CTRL
+
+        UI --> PILOT : shows available weather data\nand requests selection
+    deactivate UI
+
+    PILOT -> UI : selects weather data(weatherDataId)
+    activate UI
+        UI --> PILOT : shows data and requests confirmation
+    deactivate UI
+
+    PILOT -> UI : confirms
+    activate UI
+
+        UI -> CTRL : insertWeatherDataInFlight(flightPlanId, weatherDataId)
+        activate CTRL
+
+            CTRL -> FP_REPO : findById(flightPlanId)
+            activate FP_REPO
+                FP_REPO --> CTRL : flightPlan
+            deactivate FP_REPO
+
+            CTRL -> WD_REPO : findById(weatherDataId)
+            activate WD_REPO
+                WD_REPO --> CTRL : weatherData
+            deactivate WD_REPO
+
+            CTRL -> FP : insertWeatherData(weatherData)
+            activate FP
+                FP --> CTRL
+            deactivate FP
+
+            CTRL -> REPOS_SINGLETON : getFlightPlanRepository()
+            activate REPOS_SINGLETON
+                REPOS_SINGLETON --> CTRL : flightPlanRepository
+            deactivate REPOS_SINGLETON
+
+            CTRL -> FP_REPO : save(flightPlan)
+            activate FP_REPO
+                FP_REPO --> CTRL : flightPlan
+            deactivate FP_REPO
+
+            CTRL --> UI : flightPlan
+        deactivate CTRL
+
+        UI --> PILOT : displays operation success
+    deactivate UI
+
+deactivate PILOT
+@enduml

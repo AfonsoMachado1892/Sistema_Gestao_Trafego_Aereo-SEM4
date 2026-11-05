@@ -1,0 +1,67 @@
+skinparam backgroundColor white
+@startuml US011_FlightSimulation_SD
+
+title FlightSimulation Aggregate – Invariant: A simulation report can only be generated after ALL flight executions have reached a terminal state
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "Flight Control Operator" as FCO
+participant ":GenerateSimulationReportController" as CTRL
+participant "flightSim\n:FlightSimulation" as FS
+participant "exec1\n:FlightExecution" as FE1
+participant "exec2\n:FlightExecution" as FE2
+participant ":FlightSimulationRepository" as REPO
+
+FCO -> CTRL : generateReport(flightSimulationID)
+
+CTRL -> REPO : findByID(flightSimulationID)
+REPO --> CTRL : flightSim
+
+CTRL -> FS : generateReport()
+
+FS -> FE1 : getStatus()
+FE1 --> FS : COMPLETED
+
+FS -> FE2 : getStatus()
+FE2 --> FS : RUNNING
+
+note over FS
+  **Invariant enforced:**
+  FlightSimulation only allows
+  SimulationReport creation when
+  ALL FlightExecution statuses are
+  terminal (COMPLETED, TERMINATED
+  or FAILED). If any is still RUNNING,
+  report generation is rejected.
+end note
+
+FS --> CTRL : Error – "Cannot generate report:\nFlight execution exec2 is still RUNNING"
+
+CTRL --> FCO : Error – simulation not yet complete
+
+note over FCO, CTRL
+  (Later, after exec2 finishes...)
+end note
+
+FCO -> CTRL : generateReport(flightSimulationID)
+CTRL -> REPO : findByID(flightSimulationID)
+REPO --> CTRL : flightSim
+
+CTRL -> FS : generateReport()
+FS -> FE1 : getStatus()
+FE1 --> FS : COMPLETED
+FS -> FE2 : getStatus()
+FE2 --> FS : COMPLETED
+
+FS -> FS : buildSimulationReport()
+FS --> CTRL : simulationReport
+
+CTRL -> REPO : save(flightSim)
+CTRL --> FCO : Report generated successfully
+
+@enduml

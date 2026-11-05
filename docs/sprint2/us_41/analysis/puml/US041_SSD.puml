@@ -1,0 +1,29 @@
+@startuml US041_SSD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Weather Person" as WP
+participant ":System" as System
+
+activate WP
+
+    WP -> System : asks to register weather data
+    activate System
+        System --> WP : requests data (areaCode, collectedAt,\ncoordinates, temperature, windSpeed, windDirection)
+    deactivate System
+
+    WP -> System : types requested data
+    activate System
+        System --> WP : shows all data and requests confirmation
+    deactivate System
+
+    WP -> System : confirms data
+    activate System
+        System --> WP : displays operation success
+    deactivate System
+
+deactivate WP
+@enduml

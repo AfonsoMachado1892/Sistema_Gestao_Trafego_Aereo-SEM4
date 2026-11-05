@@ -1,0 +1,64 @@
+@startuml
+title Protocolo de sincronização por step (US108) — Sprint 3
+
+participant "Pai (main)" as Pai
+participant "Filho A" as A
+participant "Filho B" as B
+participant "Thread Safety" as Safety
+participant "Thread Report" as Report
+database "Shared Memory\n(SimState)" as SHM
+
+== Step N ==
+
+Pai -> A : sem_post(sem_step[A])
+Pai -> B : sem_post(sem_step[B])
+
+activate A
+activate B
+
+A -> A : next_position()
+A -> A : apply_environment_wind()
+A -> SHM : positions[A], history\npos_ready[A] = 1
+A -> Pai : sem_post(sem_done[A])
+
+B -> B : next_position()
+B -> B : apply_environment_wind()
+B -> SHM : positions[B], history\npos_ready[B] = 1
+B -> Pai : sem_post(sem_done[B])
+
+deactivate A
+deactivate B
+
+Pai -> Pai : sem_wait(sem_done[A])\nsem_wait(sem_done[B])
+note right of Pai
+  barreira: o pai só avança
+  depois de todos os filhos
+  ativos terem escrito a
+  sua posição em shm
+end note
+
+Pai -> Safety : sem_post(sem_safety_check)
+activate Safety
+
+Safety -> SHM : lê positions[] (pos_ready==1)
+Safety -> Safety : check_violations()\n(Haversine + thresholds)
+
+alt violação detetada
+    Safety -> A : kill(SIGUSR1)
+    Safety -> B : kill(SIGUSR1)
+    Safety -> SHM : violations[]\nviolation_count++
+    Safety -> Report : pthread_cond_signal(cond_violation)
+    activate Report
+    Report -> SHM : lê violações novas\n(desde last_reported)
+    Report -> Report : printf("[REPORT] Violation N\nat step S: flights A and B")
+    deactivate Report
+end
+
+Safety -> Pai : sem_post(sem_safety_done)
+deactivate Safety
+
+Pai -> Pai : sem_wait(sem_safety_done)
+Pai -> SHM : pos_ready[i] = 0 (todos os voos)
+Pai -> Pai : current_step++ → avança para Step N+1
+
+@enduml

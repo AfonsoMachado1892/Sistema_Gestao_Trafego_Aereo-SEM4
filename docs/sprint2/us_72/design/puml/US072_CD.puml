@@ -1,0 +1,113 @@
+@startuml US072_CD
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+class ApplicationSession {
+    - ApplicationSession()
+    + {static} getInstance()
+    + getCurrentSession()
+}
+
+class UserSession {
+    + getUserEmail()
+}
+
+class ListCompanyFleetUI {
+}
+
+class ListCompanyFleetController {
+    + ListCompanyFleetController()
+    + getFilterOptions()
+    + listCompanyFleet(filterType, filterValue)
+    - getCompanyFromSession()
+}
+
+class ATCC {
+    - atccID : ATCCID
+    - userID : UserID
+    - currentCompanyIataCode : IataCode
+    - position : String
+    - status : ATCCStatus
+
+    + currentCompanyIataCode()
+}
+
+class Aircraft {
+    - registration : AircraftRegistration
+    - country : Country
+    - operationalStatus : OperationalStatus
+    - numCrewElements : int
+    - cabinConfiguration : CabinConfiguration
+    - aircraftModelID : AircraftModelID
+    - airTransportCompanyIataCode : IataCode
+}
+
+class AircraftRegistration {
+    - registration : String
+}
+
+class CabinConfiguration {
+    - seatsPerClass : Map<SeatClass, Integer>
+}
+
+class AircraftModel {
+    - modelID : AircraftModelID
+    - name : String
+    - makerID : MakerID
+    - maxPassengerCapacity : int
+}
+
+class IataCode {
+    - code : String
+}
+
+class ATCCRepository {
+    + findByUserEmail(email)
+}
+
+class AircraftRepository {
+    + findByCompanyAndFilter(companyIataCode, filterType, filterValue)
+}
+
+class Repositories {
+    - Repositories()
+    + {static} getInstance()
+    + getATCCRepository()
+    + getAircraftRepository()
+}
+
+note right of AircraftRepository
+    filterType: none / model /
+    maker / capacity / age
+end note
+
+ListCompanyFleetUI .> ListCompanyFleetController
+
+ListCompanyFleetController .> Repositories
+ListCompanyFleetController ..> ApplicationSession
+ListCompanyFleetController ..> UserSession
+ListCompanyFleetController ..> ATCCRepository
+ListCompanyFleetController ..> AircraftRepository
+ListCompanyFleetController ..> ATCC
+
+Repositories -> "1" Repositories : instance
+Repositories --> "1" ATCCRepository : atccRepository
+Repositories --> "1" AircraftRepository : aircraftRepository
+
+ApplicationSession -> "1" ApplicationSession : instance
+ApplicationSession ..> UserSession
+
+ATCCRepository --> "*" ATCC : atccs
+
+AircraftRepository --> "*" Aircraft : aircraft
+
+ATCC --> "1" IataCode : currentCompanyIataCode
+
+Aircraft *-- "1" AircraftRegistration : registration
+Aircraft *-- "1" CabinConfiguration : cabinConfiguration
+Aircraft --> "1" AircraftModel : aircraftModelID
+Aircraft --> "1" IataCode : airTransportCompanyIataCode
+
+@enduml

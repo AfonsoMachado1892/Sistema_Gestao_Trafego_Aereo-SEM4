@@ -1,0 +1,182 @@
+@startuml SD_us085
+
+title US085 - Test / Validate Flight Plan (Sequence Diagram)
+
+actor "Pilot" as PILOT
+participant ":TestFlightPlanUI" as UI
+participant ":TestFlightPlanController" as CTRL
+participant ":TestFlightPlanService" as SERVICE
+participant ":PilotRepository" as PILOT_REPO
+participant ":FlightPlanRepository" as FP_REPO
+participant ":FlightRouteRepository" as ROUTE_REPO
+participant ":AircraftRepository" as AIRCRAFT_REPO
+participant ":AirportRepository" as AIRPORT_REPO
+participant ":SimulatedFlightPlanFactory" as FACTORY
+participant ":FlightPlanTester" as TESTER
+
+participant "pilot:Pilot" as PILOT_OBJ
+participant "flightPlan:FlightPlan" as FP
+participant "route:FlightRoute" as ROUTE
+participant "aircraft:Aircraft" as AIRCRAFT
+participant "aircraftModel:AircraftModel" as MODEL
+participant "departureAirport:Airport" as DEP_AIRPORT
+participant "arrivalAirport:Airport" as ARR_AIRPORT
+participant "simulatedFlightPlan:SimulatedFlightPlan" as SIM_FP
+participant "testResult:FlightPlanTestResult" as RESULT
+participant "board:FlightPlanTestBoard" as BOARD
+
+activate PILOT
+
+PILOT -> UI : requests to test/validate flight plan
+activate UI
+
+UI -> CTRL : listDraftFlightPlans()
+activate CTRL
+
+CTRL -> PILOT_REPO : findBySystemUser(authenticatedUser)
+activate PILOT_REPO
+PILOT_REPO --> CTRL : pilot
+deactivate PILOT_REPO
+
+CTRL -> SERVICE : listDraftFlightPlansFor(pilot)
+activate SERVICE
+
+SERVICE -> FP_REPO : findByPilotID(pilot.identity())
+activate FP_REPO
+FP_REPO --> SERVICE : flightPlans
+deactivate FP_REPO
+
+SERVICE -> SERVICE : filter DRAFT flight plans
+SERVICE --> CTRL : draftFlightPlans
+deactivate SERVICE
+
+CTRL --> UI : draftFlightPlans
+deactivate CTRL
+
+UI --> PILOT : displays draft flight plans
+
+PILOT -> UI : selects flight plan
+UI --> PILOT : displays selected flight plan details\nand requests confirmation
+
+PILOT -> UI : confirms test/validation
+
+UI -> CTRL : testAndValidate(flightPlanID)
+activate CTRL
+
+CTRL -> PILOT_REPO : findBySystemUser(authenticatedUser)
+activate PILOT_REPO
+PILOT_REPO --> CTRL : pilot
+deactivate PILOT_REPO
+
+CTRL -> SERVICE : testAndValidate(pilot, flightPlanID)
+activate SERVICE
+
+SERVICE -> FP_REPO : findById(flightPlanID)
+activate FP_REPO
+FP_REPO --> SERVICE : flightPlan
+deactivate FP_REPO
+
+SERVICE -> FP : pilotID()
+FP --> SERVICE : pilotID
+
+SERVICE -> SERVICE : validate ownership
+
+SERVICE -> FP : isDraft()
+FP --> SERVICE : true
+
+SERVICE -> FP : routeCode()
+FP --> SERVICE : routeCode
+
+SERVICE -> ROUTE_REPO : findByRouteCode(routeCode)
+activate ROUTE_REPO
+ROUTE_REPO --> SERVICE : route
+deactivate ROUTE_REPO
+
+SERVICE -> FP : aircraftRegistration()
+FP --> SERVICE : aircraftRegistration
+
+SERVICE -> AIRCRAFT_REPO : findByRegistration(aircraftRegistration)
+activate AIRCRAFT_REPO
+AIRCRAFT_REPO --> SERVICE : aircraft
+deactivate AIRCRAFT_REPO
+
+SERVICE -> AIRCRAFT : aircraftModel()
+AIRCRAFT --> SERVICE : aircraftModel
+
+SERVICE -> ROUTE : departureAirportIataCode()
+ROUTE --> SERVICE : departureAirportIataCode
+
+SERVICE -> AIRPORT_REPO : findByIataCode(departureAirportIataCode)
+activate AIRPORT_REPO
+AIRPORT_REPO --> SERVICE : departureAirport
+deactivate AIRPORT_REPO
+
+SERVICE -> ROUTE : arrivalAirportIataCode()
+ROUTE --> SERVICE : arrivalAirportIataCode
+
+SERVICE -> AIRPORT_REPO : findByIataCode(arrivalAirportIataCode)
+activate AIRPORT_REPO
+AIRPORT_REPO --> SERVICE : arrivalAirport
+deactivate AIRPORT_REPO
+
+SERVICE -> SERVICE : validate route activity
+SERVICE -> SERVICE : validate route schedule
+SERVICE -> SERVICE : validate aircraft operational status
+SERVICE -> SERVICE : validate aircraft company
+SERVICE -> SERVICE : validate pilot company
+SERVICE -> SERVICE : validate pilot certification
+
+alt domain validation fails
+    SERVICE -> RESULT** : failed(messages)
+    SERVICE -> FP : recordTestResult(testResult)
+    SERVICE -> FP : reject()
+    SERVICE -> FP_REPO : save(flightPlan)
+    activate FP_REPO
+    FP_REPO --> SERVICE : flightPlan
+    deactivate FP_REPO
+
+    SERVICE -> BOARD** : from(flightPlan, testResult)
+    SERVICE --> CTRL : board
+
+else domain validation succeeds
+    SERVICE -> FACTORY : build(flightPlan, route,\ndepartureAirport, arrivalAirport,\naircraftModel)
+    activate FACTORY
+    FACTORY -> SIM_FP** : create(...)
+    FACTORY --> SERVICE : simulatedFlightPlan
+    deactivate FACTORY
+
+    SERVICE -> TESTER : test(simulatedFlightPlan, aircraftModel)
+    activate TESTER
+    TESTER -> RESULT** : create result
+    TESTER --> SERVICE : testResult
+    deactivate TESTER
+
+    SERVICE -> FP : recordTestResult(testResult)
+
+    alt testResult passed
+        SERVICE -> FP : markTested()
+        SERVICE -> FP : markValidated()
+    else testResult failed
+        SERVICE -> FP : reject()
+    end
+
+    SERVICE -> FP_REPO : save(flightPlan)
+    activate FP_REPO
+    FP_REPO --> SERVICE : flightPlan
+    deactivate FP_REPO
+
+    SERVICE -> BOARD** : from(flightPlan, testResult)
+    SERVICE --> CTRL : board
+end
+
+deactivate SERVICE
+
+CTRL --> UI : board
+deactivate CTRL
+
+UI --> PILOT : displays final validation report
+
+deactivate UI
+deactivate PILOT
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml SSD_us080
+
+title US080 - Create Flight Plan - System Sequence Diagram
+
+actor Pilot
+
+participant "AISafe System" as System
+
+activate Pilot
+
+Pilot -> System : asks to create a flight plan
+activate System
+
+System --> Pilot : shows active routes for pilot's company
+
+Pilot -> System : selects route
+System --> Pilot : shows route details and available aircraft
+
+Pilot -> System : provides aircraft,\ndeparture date/time,\nfuel quantity,\nflight plan description
+
+System --> Pilot : shows flight plan summary\nand asks for confirmation
+
+Pilot -> System : confirms creation
+
+System -> System : validates route, aircraft,\npilot and fuel quantity
+
+alt valid data
+    System --> Pilot : informs flight plan was created as DRAFT
+else invalid data
+    System --> Pilot : informs error and reason
+end
+
+deactivate System
+
+@enduml

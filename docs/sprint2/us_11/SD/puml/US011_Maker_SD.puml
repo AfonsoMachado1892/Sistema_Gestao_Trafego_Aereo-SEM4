@@ -1,0 +1,53 @@
+@startuml US011_Maker_SD
+
+title Maker Aggregate – Invariant: A Maker must have at least one MakerType (AIRCRAFT or ENGINE), and its name+country combination must be unique in the system
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "Backoffice Operator" as BO
+participant ":RegisterMakerController" as CTRL
+participant ":MakerRepository" as REPO
+participant "maker\n:Maker" as MAKER
+
+BO -> CTRL : registerMaker(name, isoCode, makerTypes)
+
+alt makerTypes is empty
+    CTRL --> BO : Error – "A Maker must have at least one MakerType"
+else makerTypes not empty
+
+    CTRL -> REPO : findByNameAndCountry(name, isoCode)
+    REPO --> CTRL : existingMaker
+
+    alt existingMaker already exists
+        CTRL --> BO : Error – "A Maker with this name and country already exists"
+    else no duplicate found
+
+        CTRL -> MAKER ** : create(name, Country(isoCode), makerTypes)
+
+        note over MAKER
+          **Invariant enforced:**
+          Maker constructor validates that:
+          1) makerTypes set is non-empty.
+          2) name + country is unique
+             (checked at domain service /
+             repository level before creation).
+          Both rules are necessary to
+          guarantee meaningful identity
+          for aircraft/engine makers.
+        end note
+
+        MAKER --> CTRL : maker
+
+        CTRL -> REPO : save(maker)
+        REPO --> CTRL : saved
+
+        CTRL --> BO : Maker registered successfully
+    end
+end
+
+@enduml

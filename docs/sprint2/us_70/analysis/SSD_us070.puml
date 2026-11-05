@@ -1,0 +1,68 @@
+@startuml SSD_US070
+
+title US070 - Add an Aircraft to an Air Transport Company's Fleet (System Sequence Diagram)
+
+actor "Air Transport Company Collaborator" as ACTOR
+participant ":System" as SYSTEM
+
+activate ACTOR
+
+ACTOR -> SYSTEM : starts Air Transport Company App
+activate SYSTEM
+SYSTEM --> ACTOR : requests credentials\n(username, password)
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : provides credentials\n(username, password)
+activate SYSTEM
+SYSTEM --> ACTOR : displays main menu
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : selects "Air Transport Company Menu"
+activate SYSTEM
+SYSTEM --> ACTOR : displays air transport company menu
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : selects "Add Aircraft"
+activate SYSTEM
+SYSTEM --> ACTOR : displays available aircraft models
+SYSTEM --> ACTOR : requests aircraft model
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : selects aircraft model
+activate SYSTEM
+SYSTEM --> ACTOR : requests aircraft registration number
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : provides aircraft registration number
+activate SYSTEM
+SYSTEM --> ACTOR : requests registered country
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : selects country
+activate SYSTEM
+SYSTEM --> ACTOR : requests number of crew elements
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : provides number of crew elements
+activate SYSTEM
+SYSTEM --> ACTOR : requests cabin configuration\n(number of seats per class)
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : provides cabin configuration
+activate SYSTEM
+SYSTEM --> ACTOR : shows summary and requests confirmation
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : confirms registration
+activate SYSTEM
+
+alt success
+    SYSTEM --> ACTOR : displays success message\nand aircraft is added with ACTIVE status
+else failure
+    SYSTEM --> ACTOR : displays failure message\nand reason
+end
+
+deactivate SYSTEM
+deactivate ACTOR
+
+@enduml

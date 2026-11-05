@@ -1,0 +1,55 @@
+@startuml US074_SD
+
+title US074 - Deactivate a Flight Route (Sequence Diagram)
+
+actor "ATCC" as ATCC
+participant "DeactivateFlightRouteUI" as UI
+participant "DeactivateFlightRouteController" as Controller
+participant "FlightRouteService" as Service
+participant "CustomerCollaboratorRepository" as CollabRepo
+participant "FlightRouteRepository" as RouteRepo
+participant "FlightRoute" as Route
+
+activate ATCC
+ATCC -> UI : doShow()
+
+UI -> Controller : listActiveRoutes()
+Controller -> Controller : currentCompanyIataCode()
+Controller -> CollabRepo : findBySystemUser(systemUser)
+CollabRepo --> Controller : collaborator
+Controller -> Service : listActiveRoutesByCompany(companyIataCode)
+Service -> RouteRepo : findActiveByCompany(companyIataCode)
+RouteRepo --> Service : activeRoutes
+Service --> Controller : Iterable<FlightRouteDTO>
+Controller --> UI : Iterable<FlightRouteDTO>
+UI --> ATCC : shows active routes
+
+ATCC -> UI : selects routeCode + deactivationDate
+
+UI -> Controller : deactivateRoute(routeCode, deactivationDate)
+Controller -> Controller : currentCompanyIataCode()
+Controller -> CollabRepo : findBySystemUser(systemUser)
+CollabRepo --> Controller : collaborator
+Controller -> Service : deactivateRoute(routeCode,\ndeactivationDate,\ncompanyIataCode)
+
+Service -> RouteRepo : findByRouteCode(routeCode)
+RouteRepo --> Service : route
+
+Service -> Service : ensureRouteBelongsToCompany()
+Service -> Route : deactivate(deactivationDate)
+
+note right of Route
+    Validates:
+    - isActive()
+    - date not in past
+    - TODO: no FlightPlans after date
+end note
+
+Route --> Service : ok
+Service -> RouteRepo : save(route)
+RouteRepo --> Service : savedRoute
+Service --> Controller : savedRoute
+Controller --> UI : FlightRouteDTO
+UI --> ATCC : "Route deactivated successfully"
+
+@enduml

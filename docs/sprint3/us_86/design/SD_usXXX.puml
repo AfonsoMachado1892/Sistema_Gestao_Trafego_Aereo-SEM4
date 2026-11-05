@@ -1,0 +1,35 @@
+@startuml SD_usXXX
+
+title USXXX - Title
+
+actor "Actor Name" as ACTOR
+participant ":USXXXUI" as UI
+participant ":USXXXController" as CTRL
+participant ":EntityRepository" as REPO
+participant "entity:Entity" as ENTITY
+
+activate ACTOR
+
+ACTOR -> UI : requests to do something
+activate UI
+
+UI --> ACTOR : requests data
+ACTOR -> UI : provides data
+
+UI -> CTRL : doSomething(data)
+activate CTRL
+
+CTRL -> ENTITY** : create(data)
+CTRL -> REPO : save(entity)
+activate REPO
+REPO --> CTRL : entity
+deactivate REPO
+
+CTRL --> UI : entity
+deactivate CTRL
+
+UI --> ACTOR : displays success message
+deactivate UI
+deactivate ACTOR
+
+@enduml

@@ -1,0 +1,98 @@
+@startuml SD_US052
+
+title US052 - Register Airport
+
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Backoffice Operator" as BO
+participant ":RegisterAirportUI" as UI
+participant ":RegisterAirportController" as CTRL
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "airportService\n:AirportService" as SERVICE
+participant "airportRepository\n:AirportRepository" as AIRPORT_REPO
+participant "airControlAreaRepository\n:AirControlAreaRepository" as ACA_REPO
+participant "airControlArea\n:AirControlArea" as ACA
+participant "airport\n:Airport" as AIRPORT
+participant "airportFactory\n:AirportFactory" as FACTORY
+
+activate BO
+
+BO -> UI : asks to register an airport
+activate UI
+UI --> BO : requests airport data
+deactivate UI
+
+BO -> UI : provides airport data
+activate UI
+UI --> BO : shows summary and requests confirmation
+deactivate UI
+
+BO -> UI : confirms registration
+activate UI
+
+UI -> CTRL : registerAirport(iata, icao, name, town,\ncountryIso, countryName, latitude,\nlongitude, elevation, airControlAreaCode)
+activate CTRL
+
+CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+activate AUTH
+AUTH --> CTRL
+deactivate AUTH
+
+CTRL -> SERVICE : registerAirport(iataCode, icaoCode, locality,\ncoordinates, name, elevation, airControlAreaCode)
+activate SERVICE
+
+SERVICE -> AIRPORT_REPO : findByIataCode(iataCode)
+activate AIRPORT_REPO
+AIRPORT_REPO --> SERVICE : optional airport
+deactivate AIRPORT_REPO
+
+SERVICE -> AIRPORT_REPO : findByIcaoCode(icaoCode)
+activate AIRPORT_REPO
+AIRPORT_REPO --> SERVICE : optional airport
+deactivate AIRPORT_REPO
+
+SERVICE -> ACA_REPO : findByCode(airControlAreaCode)
+activate ACA_REPO
+ACA_REPO --> SERVICE : airControlArea
+deactivate ACA_REPO
+
+SERVICE -> ACA : geographicBoundary()
+activate ACA
+ACA --> SERVICE : geographicBoundary
+deactivate ACA
+
+SERVICE -> SERVICE : validate coordinates inside selected area
+
+SERVICE -> FACTORY ** : create()
+activate FACTORY
+
+FACTORY -> AIRPORT ** : new Airport(iataCode, icaoCode,\nlocality, coordinates,\nname, elevation, airControlAreaCode)
+activate AIRPORT
+AIRPORT -> AIRPORT : validate mandatory data
+AIRPORT --> FACTORY : airport
+deactivate AIRPORT
+
+FACTORY --> SERVICE : airport
+deactivate FACTORY
+
+SERVICE -> AIRPORT_REPO : save(airport)
+activate AIRPORT_REPO
+AIRPORT_REPO --> SERVICE : airport
+deactivate AIRPORT_REPO
+
+SERVICE --> CTRL : airport
+deactivate SERVICE
+
+CTRL --> UI : airport
+deactivate CTRL
+
+UI --> BO : displays success message
+deactivate UI
+
+deactivate BO
+
+@enduml

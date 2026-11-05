@@ -1,0 +1,78 @@
+@startuml CD_US031
+
+title US031 - Register Backoffice User (Class Diagram)
+
+interface AggregateRoot
+
+class SystemUser <<Aggregate Root>> {
+    - username : Username
+    - password : Password
+    - firstName : Name
+    - lastName : Name
+    - email : EmailAddress
+    - roles : Set<Role>
+}
+
+class Username <<Value Object>> {
+    - value : String
+}
+
+class Password <<Value Object>> {
+    - value : String
+}
+
+class EmailAddress <<Value Object>> {
+    - address : String
+}
+
+class Role <<Value Object>> {
+    - value : String
+}
+
+class PhoneNumber <<Value Object>> {
+    - countryCode : int
+    - number : String
+}
+
+interface UserRepository {
+    + save(user : SystemUser)
+    + findAll() : Iterable<SystemUser>
+    + findByUsername(username : Username) : Optional<SystemUser>
+}
+
+class JpaUserRepository
+class InMemoryUserRepository
+
+class AddUserController {
+    - authz : AuthorizationService
+    - userSvc : UserManagementService
+    + getRoleTypes() : Role[]
+    + addUser(username, password, firstName, lastName, email, roles) : SystemUser
+}
+
+class AddUserUI {
+    - controller : AddUserController
+    + doShow() : boolean
+    + headline() : String
+}
+
+class AddUserAction {
+    + execute() : boolean
+}
+
+SystemUser ..|> AggregateRoot
+SystemUser --> Username
+SystemUser --> Password
+SystemUser --> EmailAddress
+SystemUser --> Role
+SystemUser --> PhoneNumber
+
+JpaUserRepository ..|> UserRepository
+InMemoryUserRepository ..|> UserRepository
+
+AddUserController --> UserRepository
+AddUserController --> AuthorizationService
+AddUserUI --> AddUserController
+AddUserAction --> AddUserUI
+
+@enduml

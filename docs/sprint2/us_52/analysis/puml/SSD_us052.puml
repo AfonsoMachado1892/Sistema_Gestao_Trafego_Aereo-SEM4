@@ -1,0 +1,53 @@
+@startuml SSD_US052
+
+title US052 - Register Airport (System Sequence Diagram)
+
+actor "Backoffice Operator" as BO
+participant ":System" as SYSTEM
+
+activate BO
+
+BO -> SYSTEM : starts Backoffice App
+activate SYSTEM
+SYSTEM --> BO : requests credentials\n(username, password)
+deactivate SYSTEM
+
+BO -> SYSTEM : provides credentials\n(username, password)
+activate SYSTEM
+SYSTEM --> BO : displays main menu
+deactivate SYSTEM
+
+BO -> SYSTEM : selects "Backoffice Config"
+activate SYSTEM
+SYSTEM --> BO : displays backoffice configuration menu
+deactivate SYSTEM
+
+BO -> SYSTEM : selects "Register Airport"
+activate SYSTEM
+SYSTEM --> BO : requests airport data\n(IATA, ICAO, name, town, country,\ncoordinates, elevation, air control area)
+deactivate SYSTEM
+
+BO -> SYSTEM : provides airport data\n(iataCode, icaoCode, name, town,\ncountry, coordinates, elevation,\nairControlAreaCode)
+activate SYSTEM
+SYSTEM --> BO : shows summary and requests confirmation
+deactivate SYSTEM
+
+BO -> SYSTEM : confirms registration
+activate SYSTEM
+
+alt success
+    SYSTEM --> BO : displays success message
+else invalid or incomplete data
+    SYSTEM --> BO : displays error message
+else duplicate IATA or ICAO code
+    SYSTEM --> BO : displays error message
+else air control area does not exist
+    SYSTEM --> BO : displays error message
+else airport outside selected air control area
+    SYSTEM --> BO : displays error message
+end
+
+deactivate SYSTEM
+deactivate BO
+
+@enduml

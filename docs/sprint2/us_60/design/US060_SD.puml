@@ -1,0 +1,64 @@
+@startuml US060_SD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Backoffice Operator" as BO
+participant ":RegisterAirTransportCompanyUI" as UI
+participant ":RegisterAirTransportCompanyController" as CTRL
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "airTransportCompanyRepository\n:AirTransportCompanyRepository" as REPO
+participant "airTransportCompany\n:AirTransportCompany" as COMPANY
+
+activate BO
+
+BO -> UI : asks to register an air transport company
+activate UI
+UI --> BO : requests IATA code, ICAO code and name
+deactivate UI
+
+BO -> UI : provides company data
+activate UI
+UI --> BO : shows summary and requests confirmation
+deactivate UI
+
+BO -> UI : confirms registration
+activate UI
+UI -> CTRL : registerAirTransportCompany(iataCode, icaoCode, name)
+activate CTRL
+
+CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+activate AUTH
+AUTH --> CTRL
+deactivate AUTH
+
+CTRL -> REPO : findByIataCode(iataCode)
+activate REPO
+REPO --> CTRL : optional company
+deactivate REPO
+
+CTRL -> REPO : findByIcaoCode(icaoCode)
+activate REPO
+REPO --> CTRL : optional company
+deactivate REPO
+
+CTRL -> COMPANY ** : create(iataCode, icaoCode, name)
+activate COMPANY
+COMPANY -> COMPANY : validate mandatory data and code formats
+deactivate COMPANY
+
+CTRL -> REPO : save(airTransportCompany)
+activate REPO
+REPO --> CTRL : airTransportCompany
+deactivate REPO
+
+CTRL --> UI : airTransportCompany
+deactivate CTRL
+UI --> BO : displays operation success
+deactivate UI
+
+deactivate BO
+
+@enduml

@@ -1,0 +1,72 @@
+@startuml CD_US064
+
+title US064 - Disable Customer's Collaborator (Class Diagram)
+
+interface AggregateRoot
+
+class Collaborator <<Aggregate Root>> {
+    - id : CollaboratorId
+    - user : SystemUser
+    - position : CollaboratorPosition
+    - company : Customer
+    - active : boolean
+    + disable() : void
+    + isActive() : boolean
+}
+
+class CollaboratorId <<Value Object>> {
+    - value : UUID
+}
+
+class CollaboratorPosition <<Value Object>> {
+    - value : String
+}
+
+class SystemUser <<Aggregate Root>> {
+    - username : Username
+    - email : EmailAddress
+    - active : boolean
+    + deactivate() : void
+    + isActive() : boolean
+}
+
+interface CollaboratorRepository {
+    + findById(id : CollaboratorId) : Optional<Collaborator>
+    + findActiveByCustomer(customer : Customer) : List<Collaborator>
+    + save(collaborator : Collaborator) : Collaborator
+}
+
+class JpaCollaboratorRepository
+class InMemoryCollaboratorRepository
+
+class DisableCollaboratorController {
+    - authz : AuthorizationService
+    - collaboratorRepository : CollaboratorRepository
+    + getCollaborator(id : CollaboratorId) : CollaboratorDTO
+    + disableCollaborator(id : CollaboratorId) : CollaboratorDTO
+}
+
+class DisableCollaboratorUI {
+    - controller : DisableCollaboratorController
+    + doShow() : boolean
+    + headline() : String
+}
+
+class DisableCollaboratorAction {
+    + execute() : boolean
+}
+
+Collaborator ..|> AggregateRoot
+Collaborator --> CollaboratorId
+Collaborator --> CollaboratorPosition
+Collaborator --> SystemUser
+
+JpaCollaboratorRepository ..|> CollaboratorRepository
+InMemoryCollaboratorRepository ..|> CollaboratorRepository
+
+DisableCollaboratorController --> CollaboratorRepository
+DisableCollaboratorController --> AuthorizationService
+DisableCollaboratorUI --> DisableCollaboratorController
+DisableCollaboratorAction --> DisableCollaboratorUI
+
+@enduml

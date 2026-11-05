@@ -1,0 +1,74 @@
+@startuml SD_US063
+
+title US063 - Edit Customer's Collaborator
+
+actor "Backoffice Operator" as BO
+participant ":EditCollaboratorUI" as UI
+participant ":EditCollaboratorController" as CTRL
+participant ":AuthorizationService" as AUTHZ
+participant ":CollaboratorRepository" as REPO
+participant ":UserRepository" as UREPO
+participant "collaborator:Collaborator" as COLLAB
+
+activate BO
+
+BO -> UI : requests to edit a collaborator
+activate UI
+
+UI -> CTRL : getCollaborator(collaboratorId)
+activate CTRL
+
+CTRL -> AUTHZ : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR)
+activate AUTHZ
+AUTHZ --> CTRL : ok
+deactivate AUTHZ
+
+CTRL -> REPO : findById(collaboratorId)
+activate REPO
+REPO --> CTRL : Collaborator
+deactivate REPO
+
+CTRL --> UI : CollaboratorDTO
+deactivate CTRL
+
+UI --> BO : displays current email and phone number
+
+BO -> UI : provides new contact info\n(newEmail, newPhone)
+
+UI -> CTRL : editCollaborator(collaboratorId, newEmail, newPhone)
+activate CTRL
+
+CTRL -> AUTHZ : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR)
+activate AUTHZ
+AUTHZ --> CTRL : ok
+deactivate AUTHZ
+
+CTRL -> UREPO : findByEmail(newEmail)
+activate UREPO
+UREPO --> CTRL : Optional.empty()
+deactivate UREPO
+
+CTRL -> REPO : findById(collaboratorId)
+activate REPO
+REPO --> CTRL : Collaborator
+deactivate REPO
+
+CTRL -> COLLAB : updateContactInfo(newEmail, newPhone)
+activate COLLAB
+COLLAB --> CTRL : ok
+deactivate COLLAB
+
+CTRL -> REPO : save(collaborator)
+activate REPO
+REPO --> CTRL : Collaborator
+deactivate REPO
+
+CTRL --> UI : CollaboratorDTO
+deactivate CTRL
+
+UI --> BO : displays updated collaborator info
+
+deactivate UI
+deactivate BO
+
+@enduml

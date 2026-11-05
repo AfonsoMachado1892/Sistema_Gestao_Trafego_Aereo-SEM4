@@ -1,0 +1,37 @@
+@startuml US075_SSD
+
+title US075 - Add a Pilot (System Sequence Diagram)
+
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Air Transport Company Collaborator" as ATCC
+participant ":System" as System
+
+activate ATCC
+
+    ATCC -> System : asks to add a pilot to the company
+    activate System
+        System --> ATCC : requests pilot data\n(username, password, first name, last name,\nemail, phone number, aircraft certifications)
+    deactivate System
+
+    ATCC -> System : provides pilot data
+    activate System
+        System --> ATCC : shows data and requests confirmation
+    deactivate System
+
+    ATCC -> System : confirms registration
+    activate System
+        alt success
+            System --> ATCC : displays operation success
+        else failure
+            System --> ATCC : displays error message\n(e.g. username already exists,\nno certifications provided)
+        end
+    deactivate System
+
+deactivate ATCC
+
+@enduml

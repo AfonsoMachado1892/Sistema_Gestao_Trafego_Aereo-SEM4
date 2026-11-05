@@ -1,0 +1,37 @@
+@startuml US073_SSD
+
+title US073 - Create a Flight Route (System Sequence Diagram)
+
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Air Transport Company Collaborator" as ATCC
+participant ":System" as System
+
+activate ATCC
+
+    ATCC -> System : asks to create a flight route
+    activate System
+        System --> ATCC : shows available airports and\nrequests flight route data\n(route code, flight type,\ndeparture airport, arrival airport)
+    deactivate System
+
+    ATCC -> System : provides route code, flight type,\ndeparture and arrival airports,\nand schedule details
+    activate System
+        System --> ATCC : shows data summary and\nrequests confirmation
+    deactivate System
+
+    ATCC -> System : confirms creation
+    activate System
+        alt success
+            System --> ATCC : displays operation success\n(route code, airports, status)
+        else failure
+            System --> ATCC : displays error message\n(e.g. route code already exists,\nroute code prefix does not match company,\ndeparture and arrival airports are the same,\ninvalid airport codes)
+        end
+    deactivate System
+
+deactivate ATCC
+
+@enduml

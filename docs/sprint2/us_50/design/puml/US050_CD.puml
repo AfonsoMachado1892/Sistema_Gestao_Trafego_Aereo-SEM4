@@ -1,0 +1,132 @@
+@startuml US050_CD
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+class RegisterAirControlAreaUI {
+    - controller : RegisterAirControlAreaController
+    + show()
+}
+
+class RegisterAirControlAreaController {
+    - authz : AuthorizationService
+    - airControlAreaService : AirControlAreaService
+    + RegisterAirControlAreaController(airControlAreaRepository)
+    + registerAirControlArea(code, name, geographicBoundary)
+    + listAirControlAreas()
+}
+
+class AirControlAreaService {
+    - airControlAreaRepository : AirControlAreaRepository
+    + registerAirControlArea(code, geographicBoundary, name)
+    + listAirControlAreas()
+}
+
+class AirControlAreaFactory {
+    - code : AirControlAreaCode
+    - geographicBoundary : GeographicBoundary
+    - name : String
+    + withCode(code)
+    + withGeographicBoundary(geographicBoundary)
+    + withName(name)
+    + build()
+}
+
+class AirControlArea {
+    - code : AirControlAreaCode
+    - geographicBoundary : GeographicBoundary
+    - name : String
+    + identity()
+    + sameAs(other)
+    + code()
+    + name()
+    + geographicBoundary()
+}
+
+class AirControlAreaCode {
+    - code : String
+    + of(code)
+    + code()
+    + compareTo(other)
+}
+
+class GeographicBoundary {
+    - southwestCorner : Coordinates
+    - northeastCorner : Coordinates
+    - lowerAltitudeMeters : double
+    - upperAltitudeMeters : double
+    + of(southwestCorner, northeastCorner)
+    + contains(coordinates)
+    + overlaps(other)
+    + southwestCorner()
+    + northeastCorner()
+    + lowerAltitudeMeters()
+    + upperAltitudeMeters()
+}
+
+class AirControlAreaDefaults {
+    + DEFAULT_LOWER_ALTITUDE_METERS : double
+    + DEFAULT_UPPER_ALTITUDE_METERS : double
+}
+
+class Coordinates {
+    - latitude : double
+    - longitude : double
+    + of(latitude, longitude)
+    + latitude()
+    + longitude()
+}
+
+interface AirControlAreaRepository {
+    + findByCode(code)
+    + findByName(name)
+    + findAll()
+    + save(airControlArea)
+}
+
+class InMemoryAirControlAreaRepository {
+    + findByCode(code)
+    + findByName(name)
+}
+
+interface RepositoryFactory {
+    + airControlAreas()
+}
+
+class InMemoryRepositoryFactory {
+    + airControlAreas()
+}
+
+class AirControlAreaBootstrapper {
+    - service : AirControlAreaService
+    + execute()
+}
+
+RegisterAirControlAreaUI .> RegisterAirControlAreaController
+RegisterAirControlAreaController .> AirControlAreaService
+RegisterAirControlAreaController .> AuthorizationService
+
+AirControlAreaService --> AirControlAreaRepository
+AirControlAreaService .> AirControlAreaFactory
+AirControlAreaService .> AirControlArea
+
+AirControlAreaFactory .> AirControlArea
+AirControlAreaFactory .> AirControlAreaCode
+AirControlAreaFactory .> GeographicBoundary
+
+AirControlArea *-- AirControlAreaCode
+AirControlArea *-- GeographicBoundary
+GeographicBoundary *-- "1" Coordinates : southwestCorner
+GeographicBoundary *-- "1" Coordinates : northeastCorner
+GeographicBoundary ..> AirControlAreaDefaults
+
+AirControlAreaRepository <|.. InMemoryAirControlAreaRepository
+RepositoryFactory <|.. InMemoryRepositoryFactory
+InMemoryRepositoryFactory .> InMemoryAirControlAreaRepository
+
+AirControlAreaBootstrapper .> AirControlAreaService
+AirControlAreaBootstrapper .> GeographicBoundary
+AirControlAreaBootstrapper .> Coordinates
+
+@enduml

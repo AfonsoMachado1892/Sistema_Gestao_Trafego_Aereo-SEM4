@@ -1,0 +1,71 @@
+@startuml US011_Airport_SD
+title Airport Aggregate – Invariant: An Airport can only be registered if its IATA and ICAO codes are unique and its Air Control Area exists
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "Backoffice Operator" as BO
+participant ":RegisterAirportController" as CTRL
+participant ":AirportRepository" as REPO
+participant ":AirControlAreaRepository" as ACA_REPO
+participant ":Airport" as A
+
+activate BO
+BO -> CTRL : registerAirport(name, town, country, iataCode, icaoCode, coordinates, elevation, airControlAreaCode)
+activate CTRL
+activate REPO
+CTRL -> REPO : existsByIataCode(iataCode)
+REPO --> CTRL : iataExists
+
+alt iataExists == true
+    CTRL --> BO : Error – "An Airport with that IATA code already exists"
+else iataExists == false
+
+    CTRL -> REPO : existsByIcaoCode(icaoCode)
+    REPO --> CTRL : icaoExists
+
+    deactivate REPO
+
+    alt icaoExists == true
+        CTRL --> BO : Error – "An Airport with that ICAO code already exists"
+    else icaoExists == false
+
+
+        CTRL -> ACA_REPO : existsByCode(airControlAreaCode)
+        activate ACA_REPO
+
+        ACA_REPO --> CTRL : areaExists
+
+        deactivate ACA_REPO
+
+        alt areaExists == false
+            CTRL --> BO : Error – "Air Control Area does not exist"
+        else areaExists == true
+
+            CTRL -> A : create(name, town, country, iataCode, icaoCode, coordinates, elevation, airControlAreaCode)
+            activate A
+            note over A
+              **Invariant enforced:**
+              An Airport can only be created with
+              a unique IataCode and IcaoCode worldwide,
+              and must be associated with exactly
+              one existing AirControlArea.
+            end note
+            A --> CTRL : airport
+            deactivate A
+            CTRL -> REPO : save(airport)
+            activate REPO
+            REPO --> CTRL : saved
+            deactivate REPO
+            CTRL --> BO : Airport registered successfully
+            deactivate CTRL
+
+        end
+    end
+end
+
+@enduml

@@ -1,0 +1,128 @@
+@startuml US055_SD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Backoffice Operator" as BO
+participant ":RegisterAircraftModelUI" as UI
+participant ":RegisterAircraftModelController" as CTRL
+participant ":AircraftModelService" as SERVICE
+participant "persistenceContext\n:PersistenceContext" as PC
+participant "aircraftModelRepository\n:AircraftModelRepository" as AM_REPO
+participant "engineModelRepository\n:EngineModelRepository" as EM_REPO
+participant "makerRepository\n:MakerRepository" as MK_REPO
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "aircraftModel\n:AircraftModel" as AIRCRAFT_MODEL
+
+activate BO
+
+    BO -> UI : asks to register a new aircraft model
+    activate UI
+        UI --> CTRL** : create(makerRepository, engineModelRepository, aircraftModelRepository)
+        note right of CTRL
+            AircraftModelService is created
+            inside the controller constructor
+        end note
+
+        UI -> CTRL : getMakers()
+        activate CTRL
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> PC : repositories().makers()
+            activate PC
+                PC --> CTRL : makerRepository
+            deactivate PC
+
+            CTRL -> MK_REPO : findAll()
+            activate MK_REPO
+                MK_REPO --> CTRL : makerList
+            deactivate MK_REPO
+
+            CTRL --> UI : makerList
+        deactivate CTRL
+
+        UI -> CTRL : getEngineModels()
+        activate CTRL
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> PC : repositories().engineModels()
+            activate PC
+                PC --> CTRL : engineModelRepository
+            deactivate PC
+
+            CTRL -> EM_REPO : findAll()
+            activate EM_REPO
+                EM_REPO --> CTRL : engineModelList
+            deactivate EM_REPO
+
+            CTRL --> UI : engineModelList
+        deactivate CTRL
+
+        UI --> BO : requests aircraft model data\n(modelID, maker, type, engineModels,\nweights, speeds, coefficients)
+    deactivate UI
+
+    BO -> UI : provides aircraft model data
+    activate UI
+        UI --> BO : shows summary and requests confirmation
+    deactivate UI
+
+    BO -> UI : confirms registration
+    activate UI
+
+        UI -> CTRL : registerAircraftModel(modelID, makerID, type, engineModelIDs,\n emptyWeight, mtow, mzfw, maxFuelCapacity,\n serviceCeiling, cruiseSpeed, wingArea,\n dragCoefficient, liftCoefficient,\n maximumRange, maxPassengerCapacity, engineNumber)
+        activate CTRL
+
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> SERVICE : registerAircraftModel(...)
+            activate SERVICE
+
+                SERVICE -> MK_REPO : findById(makerID)
+                activate MK_REPO
+                    MK_REPO --> SERVICE : maker
+                deactivate MK_REPO
+
+                SERVICE -> SERVICE : validate maker exists
+
+                loop for each engineModelID
+                    SERVICE -> EM_REPO : findById(engineModelID)
+                    activate EM_REPO
+                        EM_REPO --> SERVICE : engineModel
+                    deactivate EM_REPO
+                    SERVICE -> SERVICE : validate engineModel exists
+                end
+
+                SERVICE -> AM_REPO : findByModelIDAndMaker(modelID, makerID)
+                activate AM_REPO
+                    AM_REPO --> SERVICE : Optional.empty()
+                deactivate AM_REPO
+
+                SERVICE -> AIRCRAFT_MODEL** : new AircraftModel(modelID, makerID, type,\n engineModelIDs, emptyWeight, mtow, ...)
+
+                SERVICE -> AM_REPO : save(aircraftModel)
+                activate AM_REPO
+                    AM_REPO --> SERVICE : aircraftModel
+                deactivate AM_REPO
+
+                SERVICE --> CTRL : aircraftModel
+            deactivate SERVICE
+
+            CTRL --> UI : aircraftModel
+        deactivate CTRL
+
+        UI --> BO : displays operation success
+    deactivate UI
+
+deactivate BO
+@enduml

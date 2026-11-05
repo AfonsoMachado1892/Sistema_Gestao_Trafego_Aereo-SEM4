@@ -1,0 +1,224 @@
+@startuml US061_SD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Backoffice Operator" as BO
+
+participant ":AddCustomerCollaboratorUI" as UI
+participant "persistenceContext\n:PersistenceContext" as PC
+participant ":AddCustomerCollaboratorController" as CTRL
+participant ":CustomerCollaboratorService" as SERVICE
+
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "userManagementService\n:UserManagementService" as USER_SVC
+
+participant "customerCollaboratorRepository\n:CustomerCollaboratorRepository" as CC_REPO
+participant "airTransportCompanyRepository\n:AirTransportCompanyRepository" as ATC_REPO
+participant "airControlAreaRepository\n:AirControlAreaRepository" as ACA_REPO
+participant "aiSafeUserRepository\n:AiSafeUserRepository" as ASU_REPO
+
+participant "customerCollaboratorFactory\n:CustomerCollaboratorFactory" as FACTORY
+participant "customerCollaborator\n:CustomerCollaborator" as COLLAB
+
+activate BO
+
+BO -> UI : asks to add a customer's collaborator
+activate UI
+
+    UI -> PC : repositories().customerCollaborators()
+    activate PC
+        PC --> UI : customerCollaboratorRepository
+    deactivate PC
+
+    UI -> PC : repositories().airTransportCompanies()
+    activate PC
+        PC --> UI : airTransportCompanyRepository
+    deactivate PC
+
+    UI -> PC : repositories().airControlAreas()
+    activate PC
+        PC --> UI : airControlAreaRepository
+    deactivate PC
+
+    UI -> PC : repositories().aiSafeUsers()
+    activate PC
+        PC --> UI : aiSafeUserRepository
+    deactivate PC
+
+    UI --> CTRL** : create(customerCollaboratorRepository,\nairTransportCompanyRepository,\nairControlAreaRepository,\naiSafeUserRepository)
+
+    CTRL --> SERVICE** : create(customerCollaboratorRepository,\nairTransportCompanyRepository,\nairControlAreaRepository)
+
+    UI -> CTRL : customerTypes()
+    activate CTRL
+        CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+        activate AUTH
+            AUTH --> CTRL
+        deactivate AUTH
+
+        CTRL --> UI : customerTypes
+    deactivate CTRL
+
+    UI --> BO : requests customer type
+deactivate UI
+
+BO -> UI : selects customer type
+activate UI
+
+    alt customerType = AIR_TRANSPORT_COMPANY
+        UI -> CTRL : listAirTransportCompanies()
+        activate CTRL
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> ATC_REPO : findAll()
+            activate ATC_REPO
+                ATC_REPO --> CTRL : airTransportCompanyList
+            deactivate ATC_REPO
+
+            CTRL --> UI : airTransportCompanyList
+        deactivate CTRL
+
+        UI --> BO : requests air transport company
+
+    else customerType = AIR_CONTROL_AREA
+        UI -> CTRL : listAirControlAreas()
+        activate CTRL
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> ACA_REPO : findAll()
+            activate ACA_REPO
+                ACA_REPO --> CTRL : airControlAreaList
+            deactivate ACA_REPO
+
+            CTRL --> UI : airControlAreaList
+        deactivate CTRL
+
+        UI --> BO : requests air control area
+    end
+
+deactivate UI
+
+BO -> UI : selects customer
+activate UI
+    UI --> BO : requests collaborator data\n(username, password, first name,\nlast name, email, phone number, position)
+deactivate UI
+
+BO -> UI : provides collaborator data
+activate UI
+    UI --> BO : shows summary and requests confirmation
+deactivate UI
+
+BO -> UI : confirms registration
+activate UI
+
+    UI -> CTRL : addCustomerCollaborator(username, password,\nfirstName, lastName, email,\ncountryCode, phoneNumber,\ncustomerType, customerCode, position)
+    activate CTRL
+
+        CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+        activate AUTH
+            AUTH --> CTRL
+        deactivate AUTH
+
+        CTRL -> CTRL : roleForCustomerType(customerType)
+
+        CTRL -> USER_SVC : registerNewUser(username, password,\nfirstName, lastName, email,\nroles, now)
+        activate USER_SVC
+            USER_SVC --> CTRL : systemUser
+        deactivate USER_SVC
+
+        CTRL -> ASU_REPO : save(AiSafeUser.of(systemUser.username(),\nPhoneNumber.of(countryCode, phoneNumber)))
+        activate ASU_REPO
+            ASU_REPO --> CTRL : aiSafeUser
+        deactivate ASU_REPO
+
+        CTRL -> SERVICE : addCustomerCollaborator(systemUser.username(),\ncustomerType, customerCode,\nEmail.of(email), position)
+        activate SERVICE
+
+            SERVICE -> SERVICE : ensureCustomerExists(customerType, customerCode)
+
+            alt customerType = AIR_TRANSPORT_COMPANY
+                SERVICE -> ATC_REPO : ofIdentity(AirTransportCompanyCode.of(customerCode))
+                activate ATC_REPO
+                    ATC_REPO --> SERVICE : Optional<AirTransportCompany>
+                deactivate ATC_REPO
+
+            else customerType = AIR_CONTROL_AREA
+                SERVICE -> ACA_REPO : findByCode(AirControlAreaCode.of(customerCode))
+                activate ACA_REPO
+                    ACA_REPO --> SERVICE : Optional<AirControlArea>
+                deactivate ACA_REPO
+            end
+
+            SERVICE -> SERVICE : ensureDistinctSystemUser(username)
+
+            SERVICE -> CC_REPO : findByUsername(username)
+            activate CC_REPO
+                CC_REPO --> SERVICE : Optional.empty()
+            deactivate CC_REPO
+
+            SERVICE -> SERVICE : ensureEmailNotUsed(email)
+
+            SERVICE -> CC_REPO : findByEmail(email)
+            activate CC_REPO
+                CC_REPO --> SERVICE : Optional.empty()
+            deactivate CC_REPO
+
+            SERVICE --> FACTORY** : create()
+
+            SERVICE -> FACTORY : withCustomerCode(customerCode)
+            activate FACTORY
+                FACTORY --> SERVICE : customerCollaboratorFactory
+            deactivate FACTORY
+
+            SERVICE -> FACTORY : withCustomerType(customerType)
+            activate FACTORY
+                FACTORY --> SERVICE : customerCollaboratorFactory
+            deactivate FACTORY
+
+            SERVICE -> FACTORY : withEmail(email)
+            activate FACTORY
+                FACTORY --> SERVICE : customerCollaboratorFactory
+            deactivate FACTORY
+
+            SERVICE -> FACTORY : withSystemUser(systemUser)
+            activate FACTORY
+                FACTORY --> SERVICE : customerCollaboratorFactory
+            deactivate FACTORY
+
+            SERVICE -> FACTORY : withPosition(position)
+            activate FACTORY
+                FACTORY --> SERVICE : customerCollaboratorFactory
+            deactivate FACTORY
+
+            SERVICE -> FACTORY : build()
+            activate FACTORY
+                FACTORY -> COLLAB** : new CustomerCollaborator(customerCollaboratorID,\ncustomerCode, customerType,\nemail, username, position)
+                FACTORY --> SERVICE : customerCollaborator
+            deactivate FACTORY
+
+            SERVICE -> CC_REPO : save(customerCollaborator)
+            activate CC_REPO
+                CC_REPO --> SERVICE : customerCollaborator
+            deactivate CC_REPO
+
+            SERVICE --> CTRL : customerCollaborator
+        deactivate SERVICE
+
+        CTRL --> UI : customerCollaborator
+    deactivate CTRL
+
+    UI --> BO : displays operation success
+deactivate UI
+
+deactivate BO
+
+@enduml

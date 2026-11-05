@@ -1,0 +1,29 @@
+@startuml US056_SSD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Backoffice Operator" as BO
+participant ":System" as System
+
+activate BO
+
+    BO -> System : asks to register a new engine model
+    activate System
+        System --> BO : requests engine model data\n(name, type, power, fuel, tsfc, maker)
+    deactivate System
+
+    BO -> System : provides engine model data
+    activate System
+        System --> BO : shows data and requests confirmation
+    deactivate System
+
+    BO -> System : confirms registration
+    activate System
+        System --> BO : displays operation success
+    deactivate System
+
+deactivate BO
+@enduml

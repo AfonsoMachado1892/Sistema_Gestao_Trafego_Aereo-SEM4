@@ -1,0 +1,64 @@
+@startuml US043_CD
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+class ListWeatherDataUI {
+}
+
+class ListWeatherDataController {
+    + ListWeatherDataController()
+    + getWeatherData(areaCode, date) : List<WeatherData>
+}
+
+class WeatherData {
+    - weatherDataID : WeatherDataID
+    - airControlAreaCode : AirControlAreaCode
+    - collectedAt : LocalDateTime
+    - coordinates : Coordinates
+    - temperature : double
+    - windSpeed : double
+    - windDirection : double
+}
+
+class WeatherDataID {
+    - number : String
+}
+
+class AirControlAreaCode {
+    - code : String
+}
+
+class Coordinates {
+    - latitude : double
+    - longitude : double
+}
+
+class WeatherDataRepository {
+    + save(weatherData)
+    + findByAreaAndDate(areaCode, date) : List<WeatherData>
+}
+
+class Repositories {
+    - Repositories()
+    + {static} getInstance()
+    + getWeatherDataRepository()
+}
+
+ListWeatherDataUI .> ListWeatherDataController
+
+ListWeatherDataController .> Repositories
+ListWeatherDataController ..> WeatherDataRepository
+ListWeatherDataController ..> WeatherData
+
+Repositories -> "1" Repositories : instance
+Repositories --> "1" WeatherDataRepository : weatherDataRepository
+
+WeatherDataRepository --> "*" WeatherData : weatherDataList
+
+WeatherData --> "1" AirControlAreaCode : airControlAreaCode
+WeatherData --> "1" Coordinates : coordinates
+WeatherData *-- "1" WeatherDataID : weatherDataID
+
+@enduml

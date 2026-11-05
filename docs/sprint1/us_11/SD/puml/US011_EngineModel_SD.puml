@@ -1,0 +1,56 @@
+@startuml US011_EngineModel_SD
+title EngineModel Aggregate – Invariant: An EngineModel can only be created if the referenced Maker exists and has MakerType ENGINE
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "Backoffice Operator" as BO
+participant ":RegisterEngineModelController" as CTRL
+participant ":MakerRepository" as MAKER_REPO
+participant ":EngineModelRepository" as ENGINE_REPO
+participant "engineModel\n:EngineModel" as ENGINE_MODEL
+
+activate BO
+
+BO -> CTRL : registerEngineModel(name, makerID, type, power, fuel, tsfc)
+activate CTRL
+
+CTRL -> MAKER_REPO : findByID(makerID)
+activate MAKER_REPO
+MAKER_REPO --> CTRL : maker
+deactivate MAKER_REPO
+
+alt maker == null
+    CTRL --> BO : Error – "Maker does not exist"
+else maker != null
+
+    alt maker.hasType(ENGINE) == false
+        CTRL --> BO : Error – "Maker is not of type ENGINE"
+    else maker.hasType(ENGINE) == true
+
+        CTRL -> ENGINE_MODEL : create(name, makerID, type, power, fuel, tsfc)
+        activate ENGINE_MODEL
+        note over ENGINE_MODEL
+          **Invariant enforced:**
+          An EngineModel can only be created if the
+          referenced Maker exists and has
+          MakerType ENGINE.
+        end note
+        ENGINE_MODEL --> CTRL : engineModel
+        deactivate ENGINE_MODEL
+
+        CTRL -> ENGINE_REPO : save(engineModel)
+        activate ENGINE_REPO
+        ENGINE_REPO --> CTRL : saved
+        deactivate ENGINE_REPO
+
+        CTRL --> BO : Engine Model registered successfully
+
+    end
+end
+
+@enduml

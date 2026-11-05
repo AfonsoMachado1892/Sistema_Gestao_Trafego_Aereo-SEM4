@@ -1,0 +1,17 @@
+@startuml SSD_US076_ListPilotRoster
+
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+skinparam sequenceParticipant underline
+
+actor "Air Transport Company\nCollaborator" as ATCC
+participant ":System" as SYS
+
+ATCC -> SYS : listPilotRoster()
+activate SYS
+
+SYS --> ATCC : shows all pilots of the company\n(name, status, certifications)
+
+deactivate SYS
+
+@enduml

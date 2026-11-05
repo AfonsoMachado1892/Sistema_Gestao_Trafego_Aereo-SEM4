@@ -1,0 +1,24 @@
+@startuml US072_SSD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Air Transport Company\nCollaborator" as ATCC
+participant ":System" as System
+
+activate ATCC
+
+    ATCC -> System : asks to list company fleet
+    activate System
+        System --> ATCC : asks for filter criteria\n(none / model / maker / capacity / age)
+    deactivate System
+
+    ATCC -> System : selects filter criteria
+    activate System
+        System --> ATCC : shows filtered aircraft list
+    deactivate System
+
+deactivate ATCC
+@enduml

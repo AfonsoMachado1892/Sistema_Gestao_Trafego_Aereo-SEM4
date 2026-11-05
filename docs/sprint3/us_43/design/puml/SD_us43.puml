@@ -1,0 +1,57 @@
+@startuml US043_SD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "User" as USER
+participant ":ListWeatherDataUI" as UI
+participant ":ListWeatherDataController" as CTRL
+participant "Repositories" as REPOS
+participant "repositories\n:Repositories" as REPOS_SINGLETON
+participant "weatherDataRepository\n:WeatherDataRepository" as WD_REPO
+participant "authorizationService\n:AuthorizationService" as AUTH
+
+activate USER
+
+    USER -> UI : asks to consult weather data
+    activate UI
+        UI --> CTRL** : create()
+        UI --> USER : requests data (areaCode, date)
+    deactivate UI
+
+    USER -> UI : provides data(areaCode, date)
+    activate UI
+
+        UI -> CTRL : getWeatherData(areaCode, date)
+        activate CTRL
+
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(WEATHER_PERSON,\nPILOT, FLIGHT_CONTROL_OPERATOR)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> REPOS : getInstance()
+            activate REPOS
+                REPOS --> CTRL : repositories
+            deactivate REPOS
+
+            CTRL -> REPOS_SINGLETON : getWeatherDataRepository()
+            activate REPOS_SINGLETON
+                REPOS_SINGLETON --> CTRL : weatherDataRepository
+            deactivate REPOS_SINGLETON
+
+            CTRL -> WD_REPO : findByAreaAndDate(areaCode, date)
+            activate WD_REPO
+                WD_REPO --> CTRL : weatherDataList
+            deactivate WD_REPO
+
+            CTRL --> UI : weatherDataList
+        deactivate CTRL
+
+        UI --> USER : displays weather data list
+    deactivate UI
+
+deactivate USER
+@enduml

@@ -1,0 +1,420 @@
+@startuml CD_us080
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam classFontSize 13
+
+skinparam class {
+    BackgroundColor<<Aggregate Root>> #E3F2FD
+    BorderColor<<Aggregate Root>> #1565C0
+    FontColor<<Aggregate Root>> #1565C0
+    HeaderBackgroundColor<<Aggregate Root>> #BBDEFB
+
+    BackgroundColor<<Value Object>> #F1F8E9
+    BorderColor<<Value Object>> #558B2F
+    FontColor<<Value Object>> #558B2F
+    HeaderBackgroundColor<<Value Object>> #DCEDC8
+
+    BackgroundColor<<Repository>> #FCE4EC
+    BorderColor<<Repository>> #AD1457
+    FontColor<<Repository>> #AD1457
+    HeaderBackgroundColor<<Repository>> #F8BBD0
+
+    BackgroundColor<<Controller>> #EDE7F6
+    BorderColor<<Controller>> #4527A0
+    FontColor<<Controller>> #4527A0
+    HeaderBackgroundColor<<Controller>> #D1C4E9
+
+    BackgroundColor<<Service>> #E0F7FA
+    BorderColor<<Service>> #00838F
+    FontColor<<Service>> #00838F
+    HeaderBackgroundColor<<Service>> #B2EBF2
+}
+
+title US080 - Create Flight Plan - Class Diagram
+
+package "flightplan.application" {
+    class CreateFlightPlanController <<Controller>> {
+        - authz : AuthorizationService
+        - pilotRepository : PilotRepository
+        - flightPlanService : FlightPlanService
+
+        + listAvailableRoutes() : Iterable<FlightRouteDTO>
+        + createFlightPlan(routeCodeValue : String,
+                           aircraftRegistrationValue : String,
+                           plannedDepartureDateTime : LocalDateTime,
+                           plannedArrivalDateTime : LocalDateTime,
+                           fuelAmount : double,
+                           fuelUnit : FuelUnit,
+                           descriptionText : String) : FlightPlan
+        - currentPilot() : Pilot
+    }
+
+    class FlightPlanService <<Service>> {
+        - flightPlanRepository : FlightPlanRepository
+        - flightRouteRepository : FlightRouteRepository
+        - aircraftRepository : AircraftRepository
+
+        + listAvailableRoutesFor(pilot : Pilot) : Iterable<FlightRouteDTO>
+        + createDraftFlightPlan(pilot : Pilot,
+                                routeCodeValue : String,
+                                aircraftRegistrationValue : String,
+                                plannedDepartureDateTime : LocalDateTime,
+                                plannedArrivalDateTime : LocalDateTime,
+                                fuelAmount : double,
+                                fuelUnit : FuelUnit,
+                                descriptionText : String) : FlightPlan
+        - ensureRouteCanBeUsed(route : FlightRoute,
+                               plannedDepartureDateTime : LocalDateTime) : void
+        - ensurePilotCanUseRoute(pilot : Pilot,
+                                 routeCompanyCode : AirTransportCompanyCode) : void
+        - ensureAircraftCanBeUsed(aircraft : Aircraft,
+                                  routeCompanyCode : AirTransportCompanyCode) : void
+        - toDTO(route : FlightRoute) : FlightRouteDTO
+    }
+
+    class FlightRouteDTO {
+        + routeCode : String
+        + routeStatus : String
+        + departureAirportIata : String
+        + arrivalAirportIata : String
+        + companyIata : String
+        + flightType : String
+        + schedule : String
+    }
+}
+
+package "flightplan.domain" {
+    class FlightPlan <<Aggregate Root>> {
+        - flightPlanID : FlightPlanID
+        - routeCode : RouteCode
+        - aircraftRegistration : AircraftRegistration
+        - pilotID : PilotID
+        - plannedDepartureDateTime : LocalDateTime
+        - plannedArrivalDateTime : LocalDateTime
+        - fuelQuantity : FuelQuantity
+        - description : FlightPlanDescription
+        - status : FlightPlanStatus
+        - createdAt : LocalDateTime
+
+        + draft(flightPlanID : FlightPlanID,
+                routeCode : RouteCode,
+                aircraftRegistration : AircraftRegistration,
+                pilotID : PilotID,
+                plannedDepartureDateTime : LocalDateTime,
+                plannedArrivalDateTime : LocalDateTime,
+                fuelQuantity : FuelQuantity,
+                description : FlightPlanDescription) : FlightPlan
+
+        + identity() : FlightPlanID
+        + routeCode() : RouteCode
+        + aircraftRegistration() : AircraftRegistration
+        + pilotID() : PilotID
+        + plannedDepartureDateTime() : LocalDateTime
+        + plannedArrivalDateTime() : LocalDateTime
+        + fuelQuantity() : FuelQuantity
+        + description() : FlightPlanDescription
+        + status() : FlightPlanStatus
+        + createdAt() : LocalDateTime
+        + isDraft() : boolean
+        + isValidated() : boolean
+        + markTested() : void
+        + markValidated() : void
+        + reject() : void
+        + cancel() : void
+    }
+
+    class FlightPlanID <<Value Object>> {
+        - number : String
+        + of(number : String) : FlightPlanID
+        + newID() : FlightPlanID
+        + number() : String
+    }
+
+    class FuelQuantity <<Value Object>> {
+        - amount : double
+        - unit : FuelUnit
+
+        + of(amount : double, unit : FuelUnit) : FuelQuantity
+        + amount() : double
+        + unit() : FuelUnit
+    }
+
+    enum FuelUnit <<Value Object>> {
+        KG
+        L
+    }
+
+    class FlightPlanDescription <<Value Object>> {
+        - text : String
+
+        + of(text : String) : FlightPlanDescription
+        + text() : String
+    }
+
+    enum FlightPlanStatus <<Value Object>> {
+        DRAFT
+        TESTED
+        VALIDATED
+        CANCELLED
+        REJECTED
+    }
+
+    interface FlightPlanRepository <<Repository>> {
+        + save(entity : FlightPlan) : FlightPlan
+        + ofIdentity(id : FlightPlanID) : Optional<FlightPlan>
+        + findByRouteCode(routeCode : RouteCode) : Iterable<FlightPlan>
+        + findByAircraftRegistration(registration : AircraftRegistration) : Iterable<FlightPlan>
+        + findByPilotID(pilotID : PilotID) : Iterable<FlightPlan>
+        + findByStatus(status : FlightPlanStatus) : Iterable<FlightPlan>
+    }
+}
+
+package "flightroute.domain" {
+    class FlightRoute <<Aggregate Root>> {
+        - routeCode : RouteCode
+        - routeStatus : RouteStatus
+        - departureAirportIataCode : AirportIataCode
+        - arrivalAirportIataCode : AirportIataCode
+        - airTransportCompanyIataCode : AirTransportCompanyCode
+        - flightType : FlightType
+        - regularSchedule : RegularSchedule
+        - charterSchedule : CharterSchedule
+        - deactivationDate : LocalDate
+
+        + routeCode() : RouteCode
+        + routeStatus() : RouteStatus
+        + isActive() : boolean
+        + isRegular() : boolean
+        + isCharter() : boolean
+        + airTransportCompanyIataCode() : AirTransportCompanyCode
+        + flightType() : FlightType
+        + schedule() : Schedule
+        + allowsDepartureAt(departureDateTime : LocalDateTime) : boolean
+    }
+
+    class RouteCode <<Value Object>> {
+        - value : String
+
+        + of(value : String) : RouteCode
+        + companyPrefix() : String
+        + value() : String
+    }
+
+    enum RouteStatus <<Value Object>> {
+        ACTIVE
+        INACTIVE
+    }
+
+    enum FlightType <<Value Object>> {
+        REGULAR
+        CHARTER
+    }
+
+    abstract class Schedule <<Value Object>> {
+        + allows(departureDateTime : LocalDateTime) : boolean
+    }
+
+    class RegularSchedule <<Value Object>> {
+        - entries : List<ScheduleEntry>
+        + of(entries : List<ScheduleEntry>) : RegularSchedule
+        + entries() : List<ScheduleEntry>
+        + allows(departureDateTime : LocalDateTime) : boolean
+    }
+
+    class ScheduleEntry <<Value Object>> {
+        - dayOfWeek : DayOfWeek
+        - departureTime : LocalTime
+
+        + of(dayOfWeek : DayOfWeek,
+             departureTime : LocalTime) : ScheduleEntry
+        + dayOfWeek() : DayOfWeek
+        + departureTime() : LocalTime
+    }
+
+    class CharterSchedule <<Value Object>> {
+        - departureTime : LocalDateTime
+        - arrivalTime : LocalDateTime
+
+        + of(departureTime : LocalDateTime,
+             arrivalTime : LocalDateTime) : CharterSchedule
+        + departureTime() : LocalDateTime
+        + arrivalTime() : LocalDateTime
+        + allows(departureDateTime : LocalDateTime) : boolean
+    }
+
+    interface FlightRouteRepository <<Repository>> {
+        + findByRouteCode(routeCode : RouteCode) : Optional<FlightRoute>
+        + findByCompany(companyCode : AirTransportCompanyCode) : Iterable<FlightRoute>
+        + findActiveByCompany(companyCode : AirTransportCompanyCode) : Iterable<FlightRoute>
+    }
+}
+
+package "aircraft.domain" {
+    class Aircraft <<Aggregate Root>> {
+        - aircraftCode : AircraftRegistration
+        - airCompany : AirTransportCompany
+        - status : OperationalStatus
+
+        + aircraftCode() : AircraftRegistration
+        + isOperational() : boolean
+        + belongsTo(companyCode : AirTransportCompanyCode) : boolean
+    }
+
+    class AircraftRegistration <<Value Object>> {
+        - code : String
+
+        + of(code : String) : AircraftRegistration
+        + code() : String
+    }
+
+    enum OperationalStatus <<Value Object>> {
+        ACTIVE
+        DECOMMISSIONED
+    }
+
+    interface AircraftRepository <<Repository>> {
+        + findByRegistration(registration : AircraftRegistration) : Optional<Aircraft>
+    }
+}
+
+package "pilot.domain" {
+    class Pilot <<Aggregate Root>> {
+        - pilotID : PilotID
+        - currentCompanyIataCode : AirTransportCompanyCode
+        - status : PilotStatus
+
+        + pilotID() : PilotID
+        + currentCompanyIataCode() : AirTransportCompanyCode
+        + isActive() : boolean
+        + belongsTo(companyCode : AirTransportCompanyCode) : boolean
+    }
+
+    class PilotID <<Value Object>> {
+        - number : String
+
+        + of(number : String) : PilotID
+        + newID() : PilotID
+        + number() : String
+    }
+
+    enum PilotStatus <<Value Object>> {
+        ACTIVE
+        INACTIVE
+    }
+
+    interface PilotRepository <<Repository>> {
+        + findBySystemUser(systemUser : SystemUser) : Optional<Pilot>
+        + findByCompany(companyCode : AirTransportCompanyCode) : Iterable<Pilot>
+        + findActiveByCompany(companyCode : AirTransportCompanyCode) : Iterable<Pilot>
+    }
+}
+
+package "airtransportcompany.domain" {
+    class AirTransportCompanyCode <<Value Object>> {
+        - iataCode : String
+        + of(iataCode : String) : AirTransportCompanyCode
+    }
+
+    class AirTransportCompany <<Aggregate Root>> {
+        - iataCode : AirTransportCompanyCode
+        - icaoCode : String
+        - name : String
+    }
+}
+
+package "authz" {
+    class AuthorizationService {
+        + ensureAuthenticatedUserHasAnyOf(role : Role) : void
+        + loggedinUserWithPermissions(role : Role) : Optional<SystemUser>
+    }
+
+    class SystemUser
+
+    enum Role {
+        PILOT
+    }
+}
+
+CreateFlightPlanController --> AuthorizationService
+CreateFlightPlanController --> PilotRepository
+CreateFlightPlanController --> FlightPlanService
+
+FlightPlanService --> FlightPlanRepository
+FlightPlanService --> FlightRouteRepository
+FlightPlanService --> AircraftRepository
+FlightPlanService ..> FlightPlan : creates
+FlightPlanService ..> FuelQuantity
+FlightPlanService ..> FlightPlanDescription
+FlightPlanService ..> FlightPlanID
+FlightPlanService ..> FlightRouteDTO
+
+FlightPlan *-- FlightPlanID
+FlightPlan --> RouteCode
+FlightPlan --> AircraftRegistration
+FlightPlan --> PilotID
+FlightPlan *-- FuelQuantity
+FlightPlan *-- FlightPlanDescription
+FlightPlan *-- FlightPlanStatus
+
+FuelQuantity *-- FuelUnit
+
+FlightRoute *-- RouteCode
+FlightRoute *-- RouteStatus
+FlightRoute *-- FlightType
+FlightRoute *-- RegularSchedule
+FlightRoute *-- CharterSchedule
+FlightRoute --> AirTransportCompanyCode
+Schedule <|-- RegularSchedule
+Schedule <|-- CharterSchedule
+RegularSchedule *-- "1..*" ScheduleEntry
+
+Aircraft *-- AircraftRegistration
+Aircraft *-- OperationalStatus
+Aircraft --> AirTransportCompany
+
+AirTransportCompany *-- AirTransportCompanyCode
+
+Pilot *-- PilotID
+Pilot *-- PilotStatus
+Pilot --> AirTransportCompanyCode
+
+AuthorizationService --> SystemUser
+
+note right of FlightPlan
+US080 creates a FlightPlan in DRAFT.
+
+FlightPlan does not reference FlightRoute,
+Aircraft or Pilot directly.
+
+It stores only their identities:
+- RouteCode
+- AircraftRegistration
+- PilotID
+
+The concrete occurrence is represented by:
+- plannedDepartureDateTime
+- plannedArrivalDateTime
+end note
+
+note right of FlightRoute
+FlightRoute defines:
+- route type
+- allowed schedule
+
+The application layer asks:
+route.allowsDepartureAt(...)
+instead of inspecting the schedule directly.
+end note
+
+note bottom of FlightPlanService
+Cross-aggregate business rules are checked here:
+1. route exists and is active
+2. route allows planned departure
+3. pilot belongs to route company
+4. aircraft belongs to route company
+5. aircraft is operational
+6. fuel quantity is positive
+end note
+
+@enduml

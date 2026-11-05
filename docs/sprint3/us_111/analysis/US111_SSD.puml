@@ -1,0 +1,37 @@
+@startuml US111_SSD
+
+title US111 - Generate a Simulation Report (System Sequence Diagram)
+
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Flight Control Operator" as FCO
+participant ":System" as System
+
+activate FCO
+
+    FCO -> System : asks to generate a simulation report
+    activate System
+        System --> FCO : shows list of available flight plan files
+    deactivate System
+
+    FCO -> System : selects flight plan file and weather configuration
+    activate System
+        System --> FCO : shows configuration summary and requests confirmation
+    deactivate System
+
+    FCO -> System : confirms simulation
+    activate System
+        alt success
+            System --> FCO : displays simulation report summary\nand report file location
+        else failure
+            System --> FCO : displays error message\n(e.g. executable not found,\nsimulation failed)
+        end
+    deactivate System
+
+deactivate FCO
+
+@enduml

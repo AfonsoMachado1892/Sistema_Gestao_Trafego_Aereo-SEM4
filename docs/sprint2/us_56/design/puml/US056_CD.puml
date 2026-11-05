@@ -1,0 +1,106 @@
+@startuml US056_CD
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+class RegisterEngineModelUI {
+}
+
+class RegisterEngineModelController {
+    + RegisterEngineModelController(makerRepository, engineModelRepository)
+    + getEngineMakers() : Iterable<Maker>
+    + registerEngineModel(engineModelID, name, type, power, fuel, tsfc, makerID) : EngineModel
+}
+
+class EngineModelService {
+    + EngineModelService(makerRepository, engineModelRepository)
+    + registerEngineModel(engineModelID, name, type, power, fuel, tsfc, makerID) : EngineModel
+}
+
+note right of EngineModelService
+    Validates:
+    1. Maker exists and has MakerType.ENGINE
+    2. Name + Maker combination is unique
+    3. power > 0 and tsfc > 0
+end note
+
+class EngineModel {
+    - name : String
+    - engineModelID : EngineModelID
+    - type : EngineType
+    - power : double
+    - fuel : FuelType
+    - tsfc : double
+    - makerID : MakerID
+}
+
+class EngineModelID {
+    - number : String
+}
+
+enum EngineType {
+    TURBOPROP
+    TURBOFAN
+    TURBOJET
+    RAMJET
+    ELECTRIC_PROPELLER
+}
+
+enum FuelType {
+    JET_A1
+    AVGAS
+    ELECTRIC
+    HYBRID
+}
+
+class Maker {
+    - name : String
+    - makerID : MakerID
+    - makerType : Set<MakerType>
+    + hasType(MakerType) : boolean
+}
+
+class MakerID {
+    - number : String
+}
+
+interface EngineModelRepository {
+    + findByNameAndMaker(name, makerID) : Optional<EngineModel>
+    + save(engineModel) : EngineModel
+    + findAll() : Iterable<EngineModel>
+}
+
+interface MakerRepository {
+    + findById(makerID) : Optional<Maker>
+    + findByType(makerType) : Iterable<Maker>
+}
+
+class PersistenceContext {
+    + {static} repositories() : RepositoryFactory
+}
+
+RegisterEngineModelUI .> RegisterEngineModelController
+
+RegisterEngineModelController .> PersistenceContext
+RegisterEngineModelController ..> EngineModelService
+RegisterEngineModelController ..> MakerRepository
+
+EngineModelService ..> MakerRepository
+EngineModelService ..> EngineModelRepository
+EngineModelService ..> EngineModel
+
+PersistenceContext --> "1" EngineModelRepository
+PersistenceContext --> "1" MakerRepository
+
+EngineModelRepository --> "*" EngineModel
+MakerRepository --> "*" Maker
+
+EngineModel *-- "1" EngineModelID
+EngineModel --> "1" EngineType
+EngineModel --> "1" FuelType
+EngineModel --> "1" MakerID
+
+Maker *-- "1" MakerID
+
+@enduml

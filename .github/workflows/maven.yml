@@ -1,0 +1,43 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '0 2 * * *'  # night build - todos os dias às 2h
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build, test and check coverage
+        working-directory: eapli.base/aisafe
+        run: mvn clean verify dependency:copy-dependencies surefire-report:report -Daggregate=true --batch-mode
+
+      - name: Upload JaCoCo report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: 'eapli.base/aisafe/**/target/site/jacoco/'
+
+      - name: Upload Surefire report
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-report
+          path: 'eapli.base/aisafe/target/site/surefire-report.html'

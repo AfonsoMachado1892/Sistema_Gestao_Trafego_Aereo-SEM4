@@ -1,0 +1,86 @@
+@startuml US050_SD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Backoffice Operator" as BO
+participant ":RegisterAirControlAreaUI" as UI
+participant ":RegisterAirControlAreaController" as CTRL
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "airControlAreaService\n:AirControlAreaService" as SERVICE
+participant "airControlAreaRepository\n:AirControlAreaRepository" as REPO
+participant "geographicBoundary\n:GeographicBoundary" as BOUNDARY
+participant "airControlArea\n:AirControlArea" as AREA
+
+activate BO
+
+BO -> UI : asks to register an air control area
+activate UI
+UI --> BO : requests code, name, southwest corner and northeast corner
+deactivate UI
+
+BO -> UI : provides requested data
+activate UI
+UI -> BOUNDARY ** : of(southwestCorner, northeastCorner)
+activate BOUNDARY
+BOUNDARY -> BOUNDARY : validate rectangular boundary
+BOUNDARY -> BOUNDARY : assign configured altitude range
+deactivate BOUNDARY
+
+UI --> BO : shows summary and requests confirmation
+deactivate UI
+
+BO -> UI : confirms registration
+activate UI
+
+UI -> CTRL : registerAirControlArea(code, name, geographicBoundary)
+activate CTRL
+
+CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+activate AUTH
+AUTH --> CTRL
+deactivate AUTH
+
+CTRL -> SERVICE : registerAirControlArea(code, geographicBoundary, name)
+activate SERVICE
+
+SERVICE -> REPO : findByCode(code)
+activate REPO
+REPO --> SERVICE : optional air control area
+deactivate REPO
+
+SERVICE -> REPO : findByName(name)
+activate REPO
+REPO --> SERVICE : optional air control area
+deactivate REPO
+
+SERVICE -> REPO : findAll()
+activate REPO
+REPO --> SERVICE : existing air control areas
+deactivate REPO
+
+SERVICE -> SERVICE : validate no overlap with existing areas
+
+SERVICE -> AREA ** : create(code, geographicBoundary, name)
+activate AREA
+AREA -> AREA : validate mandatory data
+deactivate AREA
+
+SERVICE -> REPO : save(airControlArea)
+activate REPO
+REPO --> SERVICE : airControlArea
+deactivate REPO
+
+SERVICE --> CTRL : airControlArea
+deactivate SERVICE
+
+CTRL --> UI : airControlArea
+deactivate CTRL
+
+UI --> BO : displays operation success
+deactivate UI
+
+deactivate BO
+@enduml

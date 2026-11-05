@@ -1,0 +1,55 @@
+@startuml US011_WeatherData_SD
+title WeatherData Aggregate – Invariant: A WeatherData can only be created if the referenced AirControlAreaCode corresponds to an existing AirControlArea
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "Weather Person" as WP
+participant ":RegisterWeatherDataController" as CTRL
+participant ":AirControlAreaRepository" as ACA_REPO
+participant ":WeatherDataRepository" as WD_REPO
+participant ":WeatherData" as WD
+
+activate WP
+WP -> CTRL : registerWeatherData(coordinates, windDirection, windSpeed, temperature, airControlAreaCode)
+activate CTRL
+
+CTRL -> ACA_REPO : existsByCode(airControlAreaCode)
+activate ACA_REPO
+ACA_REPO --> CTRL : areaExists
+deactivate ACA_REPO
+
+alt areaExists == false
+    CTRL --> WP : Error – "Air Control Area does not exist"
+else areaExists == true
+
+    CTRL -> WD : create(coordinates, windDirection, windSpeed, temperature, airControlAreaCode)
+    activate WD
+
+    note over WD
+      **Invariant enforced:**
+      A WeatherData instance can only be created
+      with an AirControlAreaCode that corresponds
+      to an existing AirControlArea. This ensures
+      every meteorological record has a valid
+      geographic context.
+    end note
+
+    WD --> CTRL : weatherData
+    deactivate WD
+
+    CTRL -> WD_REPO : save(weatherData)
+    activate WD_REPO
+    WD_REPO --> CTRL : saved
+    deactivate WD_REPO
+
+    CTRL --> WP : Weather data registered successfully
+    deactivate CTRL
+
+end
+
+@enduml

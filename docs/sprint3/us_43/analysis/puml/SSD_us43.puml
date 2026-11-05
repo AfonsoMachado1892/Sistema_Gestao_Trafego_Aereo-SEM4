@@ -1,0 +1,24 @@
+@startuml US043_SSD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "User" as USER
+participant ":System" as System
+
+activate USER
+
+    USER -> System : asks to consult weather data
+    activate System
+        System --> USER : requests data (areaCode, date)
+    deactivate System
+
+    USER -> System : provides data(areaCode, date)
+    activate System
+        System --> USER : shows weather data list
+    deactivate System
+
+deactivate USER
+@enduml

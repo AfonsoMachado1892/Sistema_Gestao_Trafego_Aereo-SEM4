@@ -1,0 +1,31 @@
+@startuml
+title Protocolo de sincronização (US103)
+
+participant "Pai" as Pai
+participant "Filho A" as A
+participant "Filho B" as B
+
+Pai -> A : byte 1 (ctrl)
+Pai -> B : byte 1 (ctrl)
+
+activate A
+activate B
+
+A -> A : calcula posição
+B -> B : calcula posição
+
+A --> Pai : posição (data)
+B --> Pai : posição (data)
+
+Pai -> Pai : check_violations()
+
+Pai -> A : byte 2 (barreira)
+Pai -> B : byte 2 (barreira)
+
+A -> A : avança step N+1
+B -> B : avança step N+1
+
+deactivate A
+deactivate B
+
+@enduml

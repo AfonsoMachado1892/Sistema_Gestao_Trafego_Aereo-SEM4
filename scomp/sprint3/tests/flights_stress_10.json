@@ -1,0 +1,4512 @@
+[
+  {
+    "ID": 4001,
+    "Type": "regular",
+    "Route": "AA401",
+    "DepartureTime": "09:00",
+    "Leg": [
+      {
+        "Departure": "OPO",
+        "Arrival": "MAD",
+        "Fuel": {
+          "Quantity": 4200,
+          "Unit": "kg"
+        },
+        "Flight Profile": {
+          "Climb": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 12.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 220,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 230,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 260,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 9.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 5.5,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Descend": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 140,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 180,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 270,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Cruise": {
+            "Speed": {
+              "Value": 460,
+              "Unit": "Knots"
+            }
+          }
+        },
+        "Segments": [
+          {
+            "Mode": "climb",
+            "Start": {
+              "Latitude": 41.262891,
+              "Longitude": -8.68522,
+              "Altitude": {
+                "Quantity": 69,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 42.0,
+              "Longitude": -8.01,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "cruise",
+            "Start": {
+              "Latitude": 42.0,
+              "Longitude": -8.01,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 41.0,
+              "Longitude": -4.3,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "descend",
+            "Start": {
+              "Latitude": 41.0,
+              "Longitude": -4.3,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 40.4895,
+              "Longitude": -3.5643,
+              "Altitude": {
+                "Quantity": 610,
+                "Unit": "m"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ID": 4002,
+    "Type": "regular",
+    "Route": "AA402",
+    "DepartureTime": "09:00",
+    "Leg": [
+      {
+        "Departure": "LIS",
+        "Arrival": "CDG",
+        "Fuel": {
+          "Quantity": 4200,
+          "Unit": "kg"
+        },
+        "Flight Profile": {
+          "Climb": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 12.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 220,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 230,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 260,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 9.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 5.5,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Descend": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 140,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 180,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 270,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Cruise": {
+            "Speed": {
+              "Value": 460,
+              "Unit": "Knots"
+            }
+          }
+        },
+        "Segments": [
+          {
+            "Mode": "climb",
+            "Start": {
+              "Latitude": 38.7813,
+              "Longitude": -9.1359,
+              "Altitude": {
+                "Quantity": 114,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 41.0,
+              "Longitude": -7.5,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "cruise",
+            "Start": {
+              "Latitude": 41.0,
+              "Longitude": -7.5,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 46.0,
+              "Longitude": -1.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "descend",
+            "Start": {
+              "Latitude": 46.0,
+              "Longitude": -1.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 49.0127,
+              "Longitude": 2.55,
+              "Altitude": {
+                "Quantity": 119,
+                "Unit": "m"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ID": 4003,
+    "Type": "regular",
+    "Route": "AA403",
+    "DepartureTime": "09:00",
+    "Leg": [
+      {
+        "Departure": "OPO",
+        "Arrival": "FRA",
+        "Fuel": {
+          "Quantity": 4200,
+          "Unit": "kg"
+        },
+        "Flight Profile": {
+          "Climb": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 12.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 220,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 230,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 260,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 9.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 5.5,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Descend": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 140,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 180,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 270,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Cruise": {
+            "Speed": {
+              "Value": 460,
+              "Unit": "Knots"
+            }
+          }
+        },
+        "Segments": [
+          {
+            "Mode": "climb",
+            "Start": {
+              "Latitude": 41.262891,
+              "Longitude": -8.68522,
+              "Altitude": {
+                "Quantity": 69,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 43.0,
+              "Longitude": -6.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "cruise",
+            "Start": {
+              "Latitude": 43.0,
+              "Longitude": -6.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 48.0,
+              "Longitude": 5.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "descend",
+            "Start": {
+              "Latitude": 48.0,
+              "Longitude": 5.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 50.0264,
+              "Longitude": 8.5431,
+              "Altitude": {
+                "Quantity": 111,
+                "Unit": "m"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ID": 4004,
+    "Type": "regular",
+    "Route": "AA404",
+    "DepartureTime": "09:00",
+    "Leg": [
+      {
+        "Departure": "LIS",
+        "Arrival": "AMS",
+        "Fuel": {
+          "Quantity": 4200,
+          "Unit": "kg"
+        },
+        "Flight Profile": {
+          "Climb": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 12.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 220,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 230,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 260,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 9.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 5.5,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Descend": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 140,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 180,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 270,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Cruise": {
+            "Speed": {
+              "Value": 460,
+              "Unit": "Knots"
+            }
+          }
+        },
+        "Segments": [
+          {
+            "Mode": "climb",
+            "Start": {
+              "Latitude": 38.7813,
+              "Longitude": -9.1359,
+              "Altitude": {
+                "Quantity": 114,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 44.0,
+              "Longitude": -5.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "cruise",
+            "Start": {
+              "Latitude": 44.0,
+              "Longitude": -5.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 49.0,
+              "Longitude": 3.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "descend",
+            "Start": {
+              "Latitude": 49.0,
+              "Longitude": 3.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 52.3086,
+              "Longitude": 4.7639,
+              "Altitude": {
+                "Quantity": -3,
+                "Unit": "m"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ID": 4005,
+    "Type": "regular",
+    "Route": "AA405",
+    "DepartureTime": "09:00",
+    "Leg": [
+      {
+        "Departure": "OPO",
+        "Arrival": "LHR",
+        "Fuel": {
+          "Quantity": 4200,
+          "Unit": "kg"
+        },
+        "Flight Profile": {
+          "Climb": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 12.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 220,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 230,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 260,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 9.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 5.5,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Descend": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 140,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 180,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 270,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Cruise": {
+            "Speed": {
+              "Value": 460,
+              "Unit": "Knots"
+            }
+          }
+        },
+        "Segments": [
+          {
+            "Mode": "climb",
+            "Start": {
+              "Latitude": 41.262891,
+              "Longitude": -8.68522,
+              "Altitude": {
+                "Quantity": 69,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 44.0,
+              "Longitude": -8.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "cruise",
+            "Start": {
+              "Latitude": 44.0,
+              "Longitude": -8.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 50.0,
+              "Longitude": -3.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "descend",
+            "Start": {
+              "Latitude": 50.0,
+              "Longitude": -3.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 51.4706,
+              "Longitude": -0.4619,
+              "Altitude": {
+                "Quantity": 25,
+                "Unit": "m"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ID": 4006,
+    "Type": "regular",
+    "Route": "AA406",
+    "DepartureTime": "09:00",
+    "Leg": [
+      {
+        "Departure": "LIS",
+        "Arrival": "ZRH",
+        "Fuel": {
+          "Quantity": 4200,
+          "Unit": "kg"
+        },
+        "Flight Profile": {
+          "Climb": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 12.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 220,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 230,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 260,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 9.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 5.5,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Descend": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 140,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 180,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 270,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Cruise": {
+            "Speed": {
+              "Value": 460,
+              "Unit": "Knots"
+            }
+          }
+        },
+        "Segments": [
+          {
+            "Mode": "climb",
+            "Start": {
+              "Latitude": 38.7813,
+              "Longitude": -9.1359,
+              "Altitude": {
+                "Quantity": 114,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 43.0,
+              "Longitude": -6.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "cruise",
+            "Start": {
+              "Latitude": 43.0,
+              "Longitude": -6.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 46.0,
+              "Longitude": 5.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "descend",
+            "Start": {
+              "Latitude": 46.0,
+              "Longitude": 5.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 47.4647,
+              "Longitude": 8.5492,
+              "Altitude": {
+                "Quantity": 432,
+                "Unit": "m"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ID": 4007,
+    "Type": "regular",
+    "Route": "AA407",
+    "DepartureTime": "09:00",
+    "Leg": [
+      {
+        "Departure": "OPO",
+        "Arrival": "FCO",
+        "Fuel": {
+          "Quantity": 4200,
+          "Unit": "kg"
+        },
+        "Flight Profile": {
+          "Climb": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 12.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 220,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 230,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 260,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 9.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 5.5,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Descend": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 140,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 180,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 270,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Cruise": {
+            "Speed": {
+              "Value": 460,
+              "Unit": "Knots"
+            }
+          }
+        },
+        "Segments": [
+          {
+            "Mode": "climb",
+            "Start": {
+              "Latitude": 41.262891,
+              "Longitude": -8.68522,
+              "Altitude": {
+                "Quantity": 69,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 41.0,
+              "Longitude": -6.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "cruise",
+            "Start": {
+              "Latitude": 41.0,
+              "Longitude": -6.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 42.0,
+              "Longitude": 8.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "descend",
+            "Start": {
+              "Latitude": 42.0,
+              "Longitude": 8.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 41.8044,
+              "Longitude": 12.2508,
+              "Altitude": {
+                "Quantity": 5,
+                "Unit": "m"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ID": 4008,
+    "Type": "regular",
+    "Route": "AA408",
+    "DepartureTime": "09:00",
+    "Leg": [
+      {
+        "Departure": "LIS",
+        "Arrival": "BER",
+        "Fuel": {
+          "Quantity": 4200,
+          "Unit": "kg"
+        },
+        "Flight Profile": {
+          "Climb": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 12.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 220,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 230,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 260,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 9.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 5.5,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Descend": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 140,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 180,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 270,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Cruise": {
+            "Speed": {
+              "Value": 460,
+              "Unit": "Knots"
+            }
+          }
+        },
+        "Segments": [
+          {
+            "Mode": "climb",
+            "Start": {
+              "Latitude": 38.7813,
+              "Longitude": -9.1359,
+              "Altitude": {
+                "Quantity": 114,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 44.0,
+              "Longitude": -5.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "cruise",
+            "Start": {
+              "Latitude": 44.0,
+              "Longitude": -5.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 50.0,
+              "Longitude": 10.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "descend",
+            "Start": {
+              "Latitude": 50.0,
+              "Longitude": 10.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 52.5167,
+              "Longitude": 13.4,
+              "Altitude": {
+                "Quantity": 47,
+                "Unit": "m"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ID": 4009,
+    "Type": "regular",
+    "Route": "AA409",
+    "DepartureTime": "09:00",
+    "Leg": [
+      {
+        "Departure": "OPO",
+        "Arrival": "SNN",
+        "Fuel": {
+          "Quantity": 4200,
+          "Unit": "kg"
+        },
+        "Flight Profile": {
+          "Climb": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 12.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 220,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 230,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 260,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 9.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 5.5,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Descend": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 140,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 180,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 270,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Cruise": {
+            "Speed": {
+              "Value": 460,
+              "Unit": "Knots"
+            }
+          }
+        },
+        "Segments": [
+          {
+            "Mode": "climb",
+            "Start": {
+              "Latitude": 41.262891,
+              "Longitude": -8.68522,
+              "Altitude": {
+                "Quantity": 69,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 43.5,
+              "Longitude": -9.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "cruise",
+            "Start": {
+              "Latitude": 43.5,
+              "Longitude": -9.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 52.0,
+              "Longitude": -9.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "descend",
+            "Start": {
+              "Latitude": 52.0,
+              "Longitude": -9.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 52.702,
+              "Longitude": -8.9248,
+              "Altitude": {
+                "Quantity": 14,
+                "Unit": "m"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ID": 4010,
+    "Type": "regular",
+    "Route": "AA410",
+    "DepartureTime": "09:00",
+    "Leg": [
+      {
+        "Departure": "LIS",
+        "Arrival": "GLA",
+        "Fuel": {
+          "Quantity": 4200,
+          "Unit": "kg"
+        },
+        "Flight Profile": {
+          "Climb": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 12.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 210,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 220,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 11.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 230,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 10.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 260,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 9.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 8.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 7.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 6.0,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateClimb": {
+                "Value": 5.5,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Descend": [
+            {
+              "Altitude": {
+                "Value": 0,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 140,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -5,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 1000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 180,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 2000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -7,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 3000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 250,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 4000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 270,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -8,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 5000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 290,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 6000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 7000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 8000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 9000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 10000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 11000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            },
+            {
+              "Altitude": {
+                "Value": 12000,
+                "Unit": "m"
+              },
+              "Speed": {
+                "Value": 300,
+                "Unit": "Knots"
+              },
+              "RateDescent": {
+                "Value": -10,
+                "Unit": "m/s"
+              }
+            }
+          ],
+          "Cruise": {
+            "Speed": {
+              "Value": 460,
+              "Unit": "Knots"
+            }
+          }
+        },
+        "Segments": [
+          {
+            "Mode": "climb",
+            "Start": {
+              "Latitude": 38.7813,
+              "Longitude": -9.1359,
+              "Altitude": {
+                "Quantity": 114,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 44.0,
+              "Longitude": -8.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "cruise",
+            "Start": {
+              "Latitude": 44.0,
+              "Longitude": -8.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 53.0,
+              "Longitude": -5.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            }
+          },
+          {
+            "Mode": "descend",
+            "Start": {
+              "Latitude": 53.0,
+              "Longitude": -5.0,
+              "Altitude": {
+                "Quantity": 9249,
+                "Unit": "m"
+              }
+            },
+            "End": {
+              "Latitude": 55.8719,
+              "Longitude": -4.4331,
+              "Altitude": {
+                "Quantity": 8,
+                "Unit": "m"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

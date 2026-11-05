@@ -1,0 +1,34 @@
+@startuml US082_SSD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Pilot" as PILOT
+participant ":System" as System
+
+activate PILOT
+
+    PILOT -> System : asks to insert weather data in a flight plan
+    activate System
+        System --> PILOT : requests flight plan identifier
+    deactivate System
+
+    PILOT -> System : provides flightPlanId
+    activate System
+        System --> PILOT : shows available weather data list\nand requests selection
+    deactivate System
+
+    PILOT -> System : selects weather data(weatherDataId)
+    activate System
+        System --> PILOT : shows data and requests confirmation
+    deactivate System
+
+    PILOT -> System : confirms
+    activate System
+        System --> PILOT : displays operation success
+    deactivate System
+
+deactivate PILOT
+@enduml

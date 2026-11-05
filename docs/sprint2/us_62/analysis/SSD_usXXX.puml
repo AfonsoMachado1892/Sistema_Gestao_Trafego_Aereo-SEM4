@@ -1,0 +1,24 @@
+@startuml SSD_usXXX
+
+title USXXX - Title (System Sequence Diagram)
+
+actor "Actor Name" as ACTOR
+participant ":System" as SYSTEM
+
+activate ACTOR
+
+ACTOR -> SYSTEM : requests to do something
+activate SYSTEM
+
+SYSTEM --> ACTOR : requests data
+deactivate SYSTEM
+
+ACTOR -> SYSTEM : provides data\n(data1, data2, data3)
+activate SYSTEM
+
+SYSTEM --> ACTOR : displays success message
+deactivate SYSTEM
+
+deactivate ACTOR
+
+@enduml

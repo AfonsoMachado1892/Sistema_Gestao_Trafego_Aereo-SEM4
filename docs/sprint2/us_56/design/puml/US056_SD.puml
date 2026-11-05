@@ -1,0 +1,96 @@
+@startuml US056_SD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Backoffice Operator" as BO
+participant ":RegisterEngineModelUI" as UI
+participant ":RegisterEngineModelController" as CTRL
+participant ":EngineModelService" as SERVICE
+participant "persistenceContext\n:PersistenceContext" as PC
+participant "engineModelRepository\n:EngineModelRepository" as EM_REPO
+participant "makerRepository\n:MakerRepository" as MK_REPO
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "engineModel\n:EngineModel" as ENGINE_MODEL
+
+activate BO
+
+    BO -> UI : asks to register a new engine model
+    activate UI
+        UI --> CTRL** : create(makerRepository, engineModelRepository)
+        UI --> SERVICE** : create(makerRepository, engineModelRepository)
+
+        UI -> CTRL : getEngineMakers()
+        activate CTRL
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> PC : repositories().makers()
+            activate PC
+                PC --> CTRL : makerRepository
+            deactivate PC
+
+            CTRL -> MK_REPO : findByType(ENGINE)
+            activate MK_REPO
+                MK_REPO --> CTRL : makerList
+            deactivate MK_REPO
+
+            CTRL --> UI : makerList
+        deactivate CTRL
+
+        UI --> BO : requests engine model data\n(name, type, power, fuel, tsfc, maker)
+    deactivate UI
+
+    BO -> UI : provides engine model data
+    activate UI
+        UI --> BO : shows summary and requests confirmation
+    deactivate UI
+
+    BO -> UI : confirms registration
+    activate UI
+
+        UI -> CTRL : registerEngineModel(engineModelID, name, type, power, fuel, tsfc, makerID)
+        activate CTRL
+
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> SERVICE : registerEngineModel(engineModelID, name, type, power, fuel, tsfc, makerID)
+            activate SERVICE
+
+                SERVICE -> MK_REPO : findById(makerID)
+                activate MK_REPO
+                    MK_REPO --> SERVICE : maker
+                deactivate MK_REPO
+
+                SERVICE -> SERVICE : validate maker.hasType(MakerType.ENGINE)
+
+                SERVICE -> EM_REPO : findByNameAndMaker(name, makerID)
+                activate EM_REPO
+                    EM_REPO --> SERVICE : Optional.empty()
+                deactivate EM_REPO
+
+                SERVICE -> ENGINE_MODEL** : new EngineModel(engineModelID, name, type, power, fuel, tsfc, makerID)
+
+                SERVICE -> EM_REPO : save(engineModel)
+                activate EM_REPO
+                    EM_REPO --> SERVICE : engineModel
+                deactivate EM_REPO
+
+                SERVICE --> CTRL : engineModel
+            deactivate SERVICE
+
+            CTRL --> UI : engineModel
+        deactivate CTRL
+
+        UI --> BO : displays operation success
+    deactivate UI
+
+deactivate BO
+@enduml

@@ -1,0 +1,23 @@
+flight TP123 regular {
+
+    route OPO -> MAD;
+
+    aircraft CS-TAB;
+    pilot P001;
+
+    leg {
+
+        departure OPO at 2026-06-10 10:30;
+        arrival MAD at 2026-06-10 12:10;
+
+        segment {
+            (41.242, -8.678) -> (40.416, -3.703)
+            altitude 11000 m;
+            width 500 m;
+            wind 90 deg 15 m/s;
+        }
+
+        fuel 7000 kg;
+
+    }
+}

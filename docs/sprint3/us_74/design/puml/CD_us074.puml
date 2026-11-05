@@ -1,0 +1,117 @@
+@startuml US074_CD
+
+title US074 - Deactivate a Flight Route (Class Diagram)
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+class DeactivateFlightRouteUI {
+    - controller : DeactivateFlightRouteController
+    + doShow() : boolean
+    + headline() : String
+}
+
+class DeactivateFlightRouteController {
+    - authz : AuthorizationService
+    - flightRouteService : FlightRouteService
+    - customerCollaboratorRepository : CustomerCollaboratorRepository
+
+    + listActiveRoutes() : Iterable<FlightRouteDTO>
+    + deactivateRoute(routeCode : String,
+                      deactivationDate : LocalDate) : FlightRouteDTO
+    - currentCompanyIataCode() : String
+}
+
+class FlightRouteService {
+    - flightRouteRepository : FlightRouteRepository
+    - airportRepository : AirportRepository
+
+    + deactivateRoute(routeCode : String,
+                      deactivationDate : LocalDate,
+                      companyIataCode : AirTransportCompanyCode) : FlightRoute
+    + listActiveRoutesByCompany(companyIataCode : AirTransportCompanyCode) : Iterable<FlightRouteDTO>
+}
+
+note right of FlightRouteService
+    Validates:
+    1. Route exists
+    2. Route belongs to company
+    3. Route is active
+    4. Deactivation date is not in the past
+    5. TODO US080: no active flight plans after date
+end note
+
+class FlightRoute <<Aggregate Root>> {
+    - routeCode : RouteCode
+    - routeStatus : RouteStatus
+    - departureAirportIataCode : IataCode
+    - arrivalAirportIataCode : IataCode
+    - airTransportCompanyIataCode : IataCode
+    - deactivationDate : LocalDate
+
+    + isActive() : boolean
+    + deactivate(deactivationDate : LocalDate) : void
+    + identity() : RouteCode
+}
+
+class FlightRouteDTO {
+    + routeCode : String
+    + routeStatus : String
+    + departureAirportIata : String
+    + arrivalAirportIata : String
+    + companyIata : String
+}
+
+class RouteCode <<Value Object>> {
+    - value : String
+    + of(value : String) : RouteCode
+}
+
+enum RouteStatus <<Value Object>> {
+    ACTIVE
+    INACTIVE
+}
+
+interface FlightRouteRepository {
+    + save(route : FlightRoute) : FlightRoute
+    + findByRouteCode(routeCode : RouteCode) : Optional<FlightRoute>
+    + findActiveByCompany(companyIataCode : AirTransportCompanyCode) : Iterable<FlightRoute>
+}
+
+interface CustomerCollaboratorRepository {
+    + findBySystemUser(systemUser : SystemUser) : Optional<CustomerCollaborator>
+}
+
+class CustomerCollaborator <<Aggregate Root>> {
+    + customerCode() : String
+}
+
+class PersistenceContext {
+    + {static} repositories() : RepositoryFactory
+}
+
+class AuthorizationService {
+    + ensureAuthenticatedUserHasAnyOf(roles : Role...) : void
+    + loggedinUserWithPermissions(roles : Role...) : Optional<SystemUser>
+}
+
+DeactivateFlightRouteUI ..> DeactivateFlightRouteController
+
+DeactivateFlightRouteController ..> AuthorizationService
+DeactivateFlightRouteController ..> FlightRouteService
+DeactivateFlightRouteController ..> CustomerCollaboratorRepository
+DeactivateFlightRouteController ..> PersistenceContext
+
+FlightRouteService ..> FlightRouteRepository
+FlightRouteService ..> FlightRoute
+
+PersistenceContext --> "1" FlightRouteRepository
+PersistenceContext --> "1" CustomerCollaboratorRepository
+
+FlightRouteRepository --> "*" FlightRoute
+CustomerCollaboratorRepository --> "*" CustomerCollaborator
+
+FlightRoute *-- "1" RouteCode
+FlightRoute *-- "1" RouteStatus
+
+@enduml

@@ -1,0 +1,45 @@
+@startuml US011_FlightRoute_SD
+
+title FlightRoute Aggregate – Invariant: A route cannot be deactivated if planned flights exist after the deactivation date
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "ATCC" as ATCC
+participant ":DeleteFlightRouteController" as CTRL
+participant ":FlightRouteRepository" as REPO
+participant ":FlightPlanRepository" as FP_REPO
+participant "flightRoute\n:FlightRoute" as FR
+
+ATCC -> CTRL : deleteFlightRoute(routeCode, deactivationDate)
+
+CTRL -> REPO : findByRouteCode(routeCode)
+REPO --> CTRL : flightRoute
+
+CTRL -> FP_REPO : findPlannedFlightsAfter(routeCode, deactivationDate)
+FP_REPO --> CTRL : plannedFlights
+
+alt plannedFlights is NOT empty
+    CTRL --> ATCC : Error – "Cannot deactivate route:\nplanned flights exist after that date"
+else plannedFlights is empty
+    CTRL -> FR : deactivate(deactivationDate)
+
+    note over FR
+      **Invariant enforced:**
+      A FlightRoute can only transition
+      to INACTIVE if no FlightPlan
+      references it after the given date.
+      Status changes from ACTIVE → INACTIVE.
+    end note
+
+    FR --> CTRL : ok
+    CTRL -> REPO : save(flightRoute)
+    REPO --> CTRL : saved
+    CTRL --> ATCC : Route successfully deactivated
+end
+
+@enduml

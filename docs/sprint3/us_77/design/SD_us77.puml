@@ -1,0 +1,96 @@
+@startuml SD_US077_RemovePilot
+
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+
+actor "ATCC" as Actor
+
+participant "RemovePilotUI" as UI
+participant "RemovePilotController" as CTRL
+participant "AuthorizationService" as AUTH
+participant "PilotService" as SVC
+participant "CustomerCollaboratorRepository" as COLLAB_REPO
+participant "PilotRepository" as PILOT_REPO
+participant "FlightPlanRepository" as FP_REPO
+participant "Pilot" as PILOT
+
+Actor -> UI : doShow()
+activate UI
+
+UI -> CTRL : getActivePilots()
+activate CTRL
+CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(\nAIR_TRANSPORT_COMPANY_COLLABORATOR)
+activate AUTH
+AUTH --> CTRL : ok
+deactivate AUTH
+CTRL -> COLLAB_REPO : findBySystemUser(systemUser)
+activate COLLAB_REPO
+COLLAB_REPO --> CTRL : CustomerCollaborator
+deactivate COLLAB_REPO
+CTRL -> SVC : listActivePilotsByCompany(companyCode)
+activate SVC
+SVC -> PILOT_REPO : findActiveByCompany(companyCode)
+activate PILOT_REPO
+PILOT_REPO --> SVC : Iterable<Pilot>
+deactivate PILOT_REPO
+SVC --> CTRL : List<PilotDTO>
+deactivate SVC
+CTRL --> UI : List<PilotDTO>
+deactivate CTRL
+
+UI --> Actor : numbered list of active pilots
+Actor -> UI : selects pilot + confirms (y/n)
+
+UI -> CTRL : removePilot(pilotID)
+activate CTRL
+
+CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(...)
+activate AUTH
+AUTH --> CTRL : ok
+deactivate AUTH
+
+CTRL -> COLLAB_REPO : findBySystemUser(systemUser)
+activate COLLAB_REPO
+COLLAB_REPO --> CTRL : CustomerCollaborator
+deactivate COLLAB_REPO
+
+CTRL -> SVC : removePilot(pilotID, companyCode, flightPlanRepository)
+activate SVC
+
+SVC -> PILOT_REPO : findByPilotID(pilotID)
+activate PILOT_REPO
+PILOT_REPO --> SVC : Optional<Pilot>
+deactivate PILOT_REPO
+
+SVC -> PILOT : belongsTo(companyCode)
+activate PILOT
+PILOT --> SVC : true
+deactivate PILOT
+
+SVC -> FP_REPO : findByPilotID(pilotID)
+activate FP_REPO
+FP_REPO --> SVC : Iterable<FlightPlan>
+deactivate FP_REPO
+
+SVC -> SVC : ensure no DRAFT / TESTED / VALIDATED plans
+
+SVC -> PILOT : deactivate()
+activate PILOT
+PILOT --> SVC : status = INACTIVE
+deactivate PILOT
+
+SVC -> PILOT_REPO : save(pilot)
+activate PILOT_REPO
+PILOT_REPO --> SVC : pilot
+deactivate PILOT_REPO
+
+SVC --> CTRL : PilotDTO
+deactivate SVC
+
+CTRL --> UI : PilotDTO
+deactivate CTRL
+
+UI --> Actor : "Pilot successfully removed."
+deactivate UI
+
+@enduml

@@ -1,0 +1,128 @@
+@startuml US055_CD
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+class RegisterAircraftModelUI {
+}
+
+class RegisterAircraftModelController {
+    + RegisterAircraftModelController(makerRepository, engineModelRepository, aircraftModelRepository)
+    + getMakers() : Iterable<Maker>
+    + getEngineModels() : Iterable<EngineModel>
+    + registerAircraftModel(modelID, makerID, type, engineModelIDs,\n emptyWeight, mtow, mzfw, maxFuelCapacity,\n serviceCeiling, cruiseSpeed, wingArea,\n dragCoefficient, liftCoefficient,\n maximumRange, maxPassengerCapacity, engineNumber) : AircraftModel
+}
+
+class AircraftModelService {
+    + AircraftModelService(makerRepository, engineModelRepository, aircraftModelRepository)
+    + registerAircraftModel(...) : AircraftModel
+}
+
+note right of AircraftModelService
+    Validates:
+    1. Maker exists
+    2. All engineModelIDs exist
+    3. certifiedEngineModelIDs not empty
+    4. mtow > emptyWeight
+    5. ModelID + Maker combination is unique
+    6. All numeric values > 0
+end note
+
+class AircraftModel {
+    - modelID : AircraftModelID
+    - makerID : MakerID
+    - type : AircraftType
+    - emptyWeight : double
+    - mtow : double
+    - mzfw : double
+    - maxFuelCapacity : double
+    - serviceCeiling : double
+    - cruiseSpeed : double
+    - wingArea : double
+    - dragCoefficient : double
+    - liftCoefficient : double
+    - maximumRange : double
+    - maxPassengerCapacity : int
+    - certifiedEngineModelIDs : Set<EngineModelID>
+    - engineNumber : int
+}
+
+class AircraftModelID {
+    - number : String
+}
+
+enum AircraftType {
+    PASSENGER
+    CARGO
+    MIXED
+}
+
+class Maker {
+    - name : String
+    - makerID : MakerID
+    - makerType : Set<MakerType>
+}
+
+class MakerID {
+    - number : String
+}
+
+class EngineModel {
+    - engineModelID : EngineModelID
+    - name : String
+}
+
+class EngineModelID {
+    - number : String
+}
+
+interface AircraftModelRepository {
+    + findByModelIDAndMaker(modelID, makerID) : Optional<AircraftModel>
+    + save(aircraftModel) : AircraftModel
+    + findAll() : Iterable<AircraftModel>
+}
+
+interface EngineModelRepository {
+    + findById(engineModelID) : Optional<EngineModel>
+    + findAll() : Iterable<EngineModel>
+}
+
+interface MakerRepository {
+    + findById(makerID) : Optional<Maker>
+    + findAll() : Iterable<Maker>
+}
+
+class PersistenceContext {
+    + {static} repositories() : RepositoryFactory
+}
+
+RegisterAircraftModelUI .> RegisterAircraftModelController
+
+RegisterAircraftModelController .> PersistenceContext
+RegisterAircraftModelController ..> AircraftModelService
+RegisterAircraftModelController ..> MakerRepository
+RegisterAircraftModelController ..> EngineModelRepository
+
+AircraftModelService ..> MakerRepository
+AircraftModelService ..> EngineModelRepository
+AircraftModelService ..> AircraftModelRepository
+AircraftModelService ..> AircraftModel
+
+PersistenceContext --> "1" AircraftModelRepository
+PersistenceContext --> "1" EngineModelRepository
+PersistenceContext --> "1" MakerRepository
+
+AircraftModelRepository --> "*" AircraftModel
+EngineModelRepository --> "*" EngineModel
+MakerRepository --> "*" Maker
+
+AircraftModel *-- "1" AircraftModelID
+AircraftModel --> "1" AircraftType
+AircraftModel --> "1" MakerID
+AircraftModel --> "1..*" EngineModelID
+
+EngineModel *-- "1" EngineModelID
+Maker *-- "1" MakerID
+
+@enduml

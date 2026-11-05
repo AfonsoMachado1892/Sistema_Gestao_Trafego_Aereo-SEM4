@@ -1,0 +1,29 @@
+@startuml US071_SSD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Air Transport Company\nCollaborator" as ATCC
+participant ":System" as System
+
+activate ATCC
+
+    ATCC -> System : asks to decommission an aircraft
+    activate System
+        System --> ATCC : shows company aircraft list and asks to select one
+    deactivate System
+
+    ATCC -> System : selects an aircraft
+    activate System
+        System --> ATCC : shows aircraft data and requests confirmation
+    deactivate System
+
+    ATCC -> System : confirms decommission
+    activate System
+        System --> ATCC : displays operation success
+    deactivate System
+
+deactivate ATCC
+@enduml

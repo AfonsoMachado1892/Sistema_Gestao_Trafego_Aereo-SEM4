@@ -1,0 +1,17 @@
+==================================================
+  AISafe - Monthly Flight Plan Statistics
+  Generated at: 2026-06-14 15:06:47
+==================================================
+
+Reference period : January 2026
+Total flight plans created: 0
+
+--- Flight Plans by Status ---
+  (no data)
+
+--- Flight Plans by Route ---
+  (no data)
+
+==================================================
+  End of report - (C) AISafe
+==================================================

@@ -1,0 +1,72 @@
+@startuml US011_ATCC_SD
+title ATCC Aggregate – Invariant: An ATCC can only be created if the User and AirTransportCompany exist and the User is not already an active collaborator of that company
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "Backoffice Operator" as BO
+participant ":RegisterATCCController" as CTRL
+participant ":UserRepository" as USER_REPO
+participant ":AirTransportCompanyRepository" as ATC_REPO
+participant ":ATCCRepository" as ATCC_REPO
+participant "atcc\n:ATCC" as ATCC
+
+activate BO
+
+BO -> CTRL : registerATCC(userID, companyIataCode, position)
+activate CTRL
+
+CTRL -> USER_REPO : findByID(userID)
+activate USER_REPO
+USER_REPO --> CTRL : user
+deactivate USER_REPO
+
+
+alt user == null
+    CTRL --> BO : Error – "User does not exist"
+else user != null
+
+    CTRL -> ATC_REPO : existsByIataCode(companyIataCode)
+    activate ATC_REPO
+    ATC_REPO --> CTRL : companyExists
+    deactivate ATC_REPO
+
+    alt companyExists == false
+        CTRL --> BO : Error – "Air Transport Company does not exist"
+    else companyExists == true
+
+        CTRL -> ATCC_REPO : existsActiveByUserIDAndCompany(userID, companyIataCode)
+        activate ATCC_REPO
+        ATCC_REPO --> CTRL : alreadyCollaborator
+        deactivate ATCC_REPO
+
+        alt alreadyCollaborator == true
+            CTRL --> BO : Error – "User is already an active collaborator of this company"
+        else alreadyCollaborator == false
+
+            CTRL -> ATCC : create(userID, companyIataCode, position)
+            activate ATCC
+            note over ATCC
+              **Invariant enforced:**
+              An ATCC can only be created if the User
+              exists, the AirTransportCompany exists,
+              and the User is not already an active
+              collaborator of that company.
+            end note
+            ATCC --> CTRL : atcc
+            deactivate ATCC
+            CTRL -> ATCC_REPO : save(atcc)
+            activate ATCC_REPO
+            ATCC_REPO --> CTRL : saved
+            deactivate ATCC_REPO
+            CTRL --> BO : ATCC registered successfully
+
+        end
+    end
+end
+
+@enduml

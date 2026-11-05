@@ -1,0 +1,90 @@
+@startuml US041_SD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Weather Person" as WP
+participant ":RegisterWeatherDataUI" as UI
+participant ":RegisterWeatherDataController" as CTRL
+participant "Repositories" as REPOS
+participant "repositories\n:Repositories" as REPOS_SINGLETON
+participant "airControlAreaRepository\n:AirControlAreaRepository" as AREA_REPO
+participant "weatherDataRepository\n:WeatherDataRepository" as WD_REPO
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "weatherData\n:WeatherData" as WD
+
+activate WP
+
+    WP -> UI : asks to register weather data
+    activate UI
+        UI --> CTRL** : create()
+
+        UI --> WP : requests data (areaCode, collectedAt,\ncoordinates, temperature, windSpeed, windDirection)
+    deactivate UI
+
+    WP -> UI : types requested data
+    activate UI
+        UI --> WP : shows all data and requests confirmation
+    deactivate UI
+
+    WP -> UI : confirms data
+    activate UI
+
+        UI -> CTRL : registerWeatherData(areaCode, collectedAt,\ncoordinates, temperature, windSpeed, windDirection)
+        activate CTRL
+
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(WEATHER_PERSON)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            |||
+            CTRL -> CTRL : getAirControlArea(areaCode)
+            activate CTRL
+                CTRL -> REPOS : getInstance()
+                activate REPOS
+                    REPOS --> CTRL : repositories
+                deactivate REPOS
+
+                CTRL -> REPOS_SINGLETON : getAirControlAreaRepository()
+                activate REPOS_SINGLETON
+                    REPOS_SINGLETON --> CTRL : airControlAreaRepository
+                deactivate REPOS_SINGLETON
+
+                CTRL -> AREA_REPO : findByCode(areaCode)
+                activate AREA_REPO
+                    AREA_REPO --> CTRL : airControlArea
+                deactivate AREA_REPO
+
+                CTRL --> CTRL : airControlArea
+            deactivate CTRL
+
+            |||
+            CTRL --> WD** : create(airControlAreaCode, collectedAt,\ncoordinates, temperature, windSpeed, windDirection)
+
+            |||
+            CTRL -> REPOS : getInstance()
+            activate REPOS
+                REPOS --> CTRL : repositories
+            deactivate REPOS
+
+            CTRL -> REPOS_SINGLETON : getWeatherDataRepository()
+            activate REPOS_SINGLETON
+                REPOS_SINGLETON --> CTRL : weatherDataRepository
+            deactivate REPOS_SINGLETON
+
+            CTRL -> WD_REPO : save(weatherData)
+            activate WD_REPO
+                WD_REPO --> CTRL : weatherData
+            deactivate WD_REPO
+
+            CTRL --> UI : weatherData
+        deactivate CTRL
+
+        UI --> WP : displays operation success
+    deactivate UI
+
+deactivate WP
+@enduml

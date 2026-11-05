@@ -1,0 +1,54 @@
+@startuml US060_SSD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title US060 - Register Air Transport Company (System Sequence Diagram)
+
+actor "Backoffice Operator" as BO
+participant ":System" as SYSTEM
+
+activate BO
+
+BO -> SYSTEM : starts Backoffice App
+activate SYSTEM
+SYSTEM --> BO : requests credentials\n(username, password)
+deactivate SYSTEM
+
+BO -> SYSTEM : provides credentials\n(username, password)
+activate SYSTEM
+SYSTEM --> BO : displays main menu
+deactivate SYSTEM
+
+BO -> SYSTEM : selects "Backoffice Config"
+activate SYSTEM
+SYSTEM --> BO : displays backoffice configuration menu
+deactivate SYSTEM
+
+BO -> SYSTEM : selects "Register Air Transport Company"
+activate SYSTEM
+SYSTEM --> BO : requests company data\n(IATA code, ICAO code, name)
+deactivate SYSTEM
+
+BO -> SYSTEM : provides company data\n(iataCode, icaoCode, name)
+activate SYSTEM
+SYSTEM --> BO : shows summary and requests confirmation
+deactivate SYSTEM
+
+BO -> SYSTEM : confirms registration
+activate SYSTEM
+
+alt success
+    SYSTEM --> BO : displays success message
+else duplicate IATA code
+    SYSTEM --> BO : displays error message
+else duplicate ICAO code
+    SYSTEM --> BO : displays error message
+else invalid data
+    SYSTEM --> BO : displays error message
+end
+
+deactivate SYSTEM
+deactivate BO
+
+@enduml

@@ -1,0 +1,170 @@
+@startuml US073_CD
+
+title US073 - Create a Flight Route (Class Diagram)
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+skinparam class {
+    BackgroundColor<<Aggregate Root>> #E3F2FD
+    BorderColor<<Aggregate Root>> #1565C0
+    BackgroundColor<<Value Object>> #F1F8E9
+    BorderColor<<Value Object>> #558B2F
+    BackgroundColor<<Application>> #FFF8E1
+    BorderColor<<Application>> #F57F17
+    BackgroundColor<<Presentation>> #FCE4EC
+    BorderColor<<Presentation>> #C62828
+}
+
+package "Presentation" {
+    class CreateFlightRouteUI <<Presentation>> {
+        - controller : CreateFlightRouteController
+        + doShow() : boolean
+        + headline() : String
+    }
+}
+
+package "Application" {
+    class CreateFlightRouteController <<Application>> {
+        - authz : AuthorizationService
+        - flightRouteService : FlightRouteService
+        - customerCollaboratorRepository : CustomerCollaboratorRepository
+        + listAirports() : Iterable<AirportDTO>
+        + createRegularFlightRoute(routeCode : String,\n  departureIataCode : String,\n  arrivalIataCode : String,\n  regularSchedule : RegularSchedule) : FlightRouteDTO
+        + createCharterFlightRoute(routeCode : String,\n  departureIataCode : String,\n  arrivalIataCode : String,\n  charterSchedule : CharterSchedule) : FlightRouteDTO
+        + currentCompanyIataCode() : String
+    }
+
+    class AirportDTO {
+        + iataCode : String
+        + icaoCode : String
+        + name : String
+        + city : String
+    }
+
+    class FlightRouteDTO {
+        + routeCode : String
+        + routeStatus : String
+        + departureAirportIata : String
+        + arrivalAirportIata : String
+        + companyIata : String
+        + flightType : String
+        + deactivationDate : String
+        + schedule : String
+    }
+}
+
+package "Domain" {
+    class FlightRouteService {
+        - flightRouteRepository : FlightRouteRepository
+        - airportRepository : AirportRepository
+        - flightPlanRepository : FlightPlanRepository
+        + createRegularFlightRoute(...) : FlightRoute
+        + createCharterFlightRoute(...) : FlightRoute
+        + listAirports() : Iterable<AirportDTO>
+        + toDTO(route : FlightRoute) : FlightRouteDTO
+        - ensureRouteCodeUnique(routeCode : RouteCode) : void
+        - findAirportByIata(iataCode : String, label : String) : Airport
+    }
+
+    class FlightRoute <<Aggregate Root>> {
+        - routeCode : RouteCode
+        - routeStatus : RouteStatus
+        - flightType : FlightType
+        - departureAirportIataCode : AirportIataCode
+        - arrivalAirportIataCode : AirportIataCode
+        - airTransportCompanyIataCode : AirTransportCompanyCode
+        - regularSchedule : RegularSchedule
+        - charterSchedule : CharterSchedule
+        - deactivationDate : LocalDate
+        + isActive() : boolean
+        + allowsDepartureAt(dt : LocalDateTime) : boolean
+        + deactivate(date : LocalDate) : void
+        + identity() : RouteCode
+    }
+
+    class FlightRouteFactory {
+        + withRouteCode(rc : RouteCode) : FlightRouteFactory
+        + withDepartureAirport(iata : AirportIataCode) : FlightRouteFactory
+        + withArrivalAirport(iata : AirportIataCode) : FlightRouteFactory
+        + withCompany(code : AirTransportCompanyCode) : FlightRouteFactory
+        + asRegular(schedule : RegularSchedule) : FlightRouteFactory
+        + asCharter(schedule : CharterSchedule) : FlightRouteFactory
+        + build() : FlightRoute
+    }
+
+    class RouteCode <<Value Object>> {
+        - value : String
+        + of(value : String) : RouteCode
+        + companyPrefix() : String
+    }
+
+    enum RouteStatus <<Value Object>> {
+        ACTIVE
+        INACTIVE
+    }
+
+    enum FlightType <<Value Object>> {
+        REGULAR
+        CHARTER
+    }
+
+    abstract class Schedule <<Value Object>> {
+        + allows(dt : LocalDateTime) : boolean
+    }
+
+    class RegularSchedule <<Value Object>> {
+        - entries : List<ScheduleEntry>
+        + of(entries : List<ScheduleEntry>) : RegularSchedule
+    }
+
+    class CharterSchedule <<Value Object>> {
+        - departureTime : LocalDateTime
+        - arrivalTime : LocalDateTime
+        + of(departure : LocalDateTime, arrival : LocalDateTime) : CharterSchedule
+    }
+
+    class ScheduleEntry <<Value Object>> {
+        - dayOfWeek : DayOfWeek
+        - departureTime : LocalTime
+        + of(day : DayOfWeek, time : LocalTime) : ScheduleEntry
+    }
+
+    interface FlightRouteRepository {
+        + findByRouteCode(rc : RouteCode) : Optional<FlightRoute>
+        + findByCompany(code : AirTransportCompanyCode) : Iterable<FlightRoute>
+        + findActiveByCompany(code : AirTransportCompanyCode) : Iterable<FlightRoute>
+        + save(route : FlightRoute) : FlightRoute
+    }
+
+    interface AirportRepository {
+        + findByIataCode(code : AirportIataCode) : Optional<Airport>
+        + findAll() : Iterable<Airport>
+    }
+
+    class AuthorizationService {
+        + ensureAuthenticatedUserHasAnyOf(roles : Role...) : void
+    }
+}
+
+CreateFlightRouteUI ..> CreateFlightRouteController : uses
+CreateFlightRouteController ..> AuthorizationService : uses
+CreateFlightRouteController ..> FlightRouteService : uses
+CreateFlightRouteController ..> FlightRouteDTO : returns
+CreateFlightRouteController ..> AirportDTO : returns
+FlightRouteService ..> FlightRouteRepository : uses
+FlightRouteService ..> AirportRepository : uses
+FlightRouteService ..> FlightRouteFactory : uses
+FlightRouteService ..> FlightRouteDTO : creates
+FlightRouteFactory ..> FlightRoute : creates
+FlightRoute *-- "1" RouteCode
+FlightRoute --> "1" RouteStatus
+FlightRoute --> "1" FlightType
+FlightRoute *-- "0..1" RegularSchedule
+FlightRoute *-- "0..1" CharterSchedule
+Schedule <|-- RegularSchedule
+Schedule <|-- CharterSchedule
+RegularSchedule *-- "1..*" ScheduleEntry
+FlightRouteRepository --> "*" FlightRoute
+
+@enduml

@@ -1,0 +1,54 @@
+@startuml US058_SSD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title US058 - Remove Engine Model from Aircraft Model (System Sequence Diagram)
+
+actor "Backoffice Operator" as BO
+participant ":System" as SYSTEM
+
+activate BO
+
+BO -> SYSTEM : starts Backoffice App
+activate SYSTEM
+SYSTEM --> BO : requests credentials\n(username, password)
+deactivate SYSTEM
+
+BO -> SYSTEM : provides credentials\n(username, password)
+activate SYSTEM
+SYSTEM --> BO : displays main menu
+deactivate SYSTEM
+
+BO -> SYSTEM : selects "Backoffice Config"
+activate SYSTEM
+SYSTEM --> BO : displays backoffice configuration menu
+deactivate SYSTEM
+
+BO -> SYSTEM : selects "Remove Engine Model from Aircraft Model"
+activate SYSTEM
+SYSTEM --> BO : displays aircraft models and certified engines
+deactivate SYSTEM
+
+BO -> SYSTEM : selects aircraft model and engine model to remove
+activate SYSTEM
+SYSTEM --> BO : shows summary and requests confirmation
+deactivate SYSTEM
+
+BO -> SYSTEM : confirms removal
+activate SYSTEM
+
+alt success
+    SYSTEM --> BO : displays success message
+else aircraft model has only one certified engine
+    SYSTEM --> BO : displays error message
+else aircraft exist using the model
+    SYSTEM --> BO : displays error message
+else engine model is not certified
+    SYSTEM --> BO : displays error message
+end
+
+deactivate SYSTEM
+deactivate BO
+
+@enduml

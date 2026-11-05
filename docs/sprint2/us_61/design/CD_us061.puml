@@ -1,0 +1,377 @@
+@startuml CD_US061_AddCustomerCollaborator
+
+title US061 - Add a Customer's Collaborator - Class Diagram
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+skinparam class {
+    BackgroundColor<<UI>> #FFF3E0
+    BorderColor<<UI>> #EF6C00
+
+    BackgroundColor<<Controller>> #E3F2FD
+    BorderColor<<Controller>> #1565C0
+
+    BackgroundColor<<Service>> #E8F5E9
+    BorderColor<<Service>> #2E7D32
+
+    BackgroundColor<<Factory>> #E0F7FA
+    BorderColor<<Factory>> #00838F
+
+    BackgroundColor<<Repository>> #F3E5F5
+    BorderColor<<Repository>> #6A1B9A
+
+    BackgroundColor<<Aggregate Root>> #E3F2FD
+    BorderColor<<Aggregate Root>> #1565C0
+
+    BackgroundColor<<Value Object>> #F1F8E9
+    BorderColor<<Value Object>> #558B2F
+
+    BackgroundColor<<External>> #ECEFF1
+    BorderColor<<External>> #455A64
+}
+
+package "aisafe.app.backoffice.console.presentation.customercollaborator" {
+
+    class AddCustomerCollaboratorUI <<UI>> {
+        - controller : AddCustomerCollaboratorController
+        + doShow() : boolean
+        + headline() : String
+    }
+}
+
+package "aisafe.costumerCollaborator.service" {
+
+    class AddCustomerCollaboratorController <<Controller>> {
+        - authz : AuthorizationService
+        - userSvc : UserManagementService
+        - customerCollaboratorService : CustomerCollaboratorService
+        - airTransportCompanyRepository : AirTransportCompanyRepository
+        - airControlAreaRepository : AirControlAreaRepository
+        - aiSafeUserRepository : AiSafeUserRepository
+
+        + customerTypes() : CustomerType[]
+        + listAirControlAreas() : Iterable<AirControlArea>
+        + listAirTransportCompanies() : Iterable<AirTransportCompany>
+
+        + addCustomerCollaborator(username : String,
+                                  password : String,
+                                  firstName : String,
+                                  lastName : String,
+                                  email : String,
+                                  countryCode : int,
+                                  phoneNumber : String,
+                                  customerType : CustomerType,
+                                  customerCode : String,
+                                  position : String) : CustomerCollaborator
+
+        - ensureBackofficeOperatorOrAdmin() : void
+        - roleForCustomerType(customerType : CustomerType) : Role
+    }
+
+    class CustomerCollaboratorService <<Service>> {
+        - customerCollaboratorRepository : CustomerCollaboratorRepository
+        - airTransportCompanyRepository : AirTransportCompanyRepository
+        - airControlAreaRepository : AirControlAreaRepository
+
+        + addCustomerCollaborator(username : Username,
+                                  customerType : CustomerType,
+                                  customerCode : String,
+                                  email : Email,
+                                  position : String) : CustomerCollaborator
+
+        + listActiveCustomerCollaborators(customerType : CustomerType,
+                                          customerCode : String) : Iterable<CustomerCollaborator>
+
+        - ensureCustomerExists(customerType : CustomerType,
+                               customerCode : String) : void
+
+        - ensureDistinctSystemUser(username : Username) : void
+        - ensureEmailNotUsed(email : Email) : void
+    }
+
+    interface CustomerCollaboratorRepository <<Repository>> {
+        + save(entity : CustomerCollaborator) : CustomerCollaborator
+        + findByUsername(username : Username) : Optional<CustomerCollaborator>
+        + findByEmail(email : Email) : Optional<CustomerCollaborator>
+        + findByCustomerReference(customerReference : CustomerReference) : Iterable<CustomerCollaborator>
+    }
+}
+
+package "aisafe.costumerCollaborator.domain" {
+
+    class CustomerCollaborator <<Aggregate Root>> {
+        - version : Long
+        - customerCollaboratorID : CustomerCollaboratorID
+        - customerReference : CustomerReference
+        - email : Email
+        - systemUser: systemUser
+        - position : String
+        - status : CustomerStatus
+
+        + CustomerCollaborator(customerCollaboratorID : CustomerCollaboratorID,
+                               customerCode : String,
+                               customerType : CustomerType,
+                               email : Email,
+                               username : Username,
+                               position : String)
+
+        + customerCollaboratorID() : CustomerCollaboratorID
+        + customerReference() : CustomerReference
+        + customerType() : CustomerType
+        + customerCode() : String
+        + email() : Email
+        + username() : Username
+        + position() : String
+        + status() : CustomerStatus
+        + isActive() : boolean
+        + disable() : void
+        + changeEmail(email : Email) : void
+        + identity() : CustomerCollaboratorID
+        + sameAs(other : Object) : boolean
+        + toString() : String
+    }
+
+    class CustomerCollaboratorFactory <<Factory>> {
+        - customerCode : String
+        - customerType : CustomerType
+        - email : Email
+        - username : Username
+        - position : String
+
+        + withCustomerCode(customerCode : String) : CustomerCollaboratorFactory
+        + withCustomerType(customerType : CustomerType) : CustomerCollaboratorFactory
+        + withEmail(email : Email) : CustomerCollaboratorFactory
+        + withUsername(username : Username) : CustomerCollaboratorFactory
+        + withPosition(position : String) : CustomerCollaboratorFactory
+        + build() : CustomerCollaborator
+    }
+
+    class CustomerCollaboratorID <<Value Object>> {
+        - code : String
+        + of(code : String) : CustomerCollaboratorID
+        + newID() : CustomerCollaboratorID
+        + code() : String
+        + toString() : String
+    }
+
+    class CustomerReference <<Value Object>> {
+        - customerType : CustomerType
+        - customerCode : String
+
+        + of(customerType : CustomerType,
+             customerCode : String) : CustomerReference
+
+        + customerType() : CustomerType
+        + customerCode() : String
+        + toString() : String
+    }
+
+    enum CustomerType <<Value Object>> {
+        AIR_TRANSPORT_COMPANY
+        AIR_CONTROL_AREA
+    }
+
+    enum CustomerStatus <<Value Object>> {
+        ACTIVE
+        DISABLED
+    }
+}
+
+package "aisafe.aircontrolarea.domain" {
+
+    class AirControlArea <<Aggregate Root>> {
+        - code : AirControlAreaCode
+        - geographicBoundary : GeographicBoundary
+        - name : String
+
+        + code() : AirControlAreaCode
+        + name() : String
+        + identity() : AirControlAreaCode
+        + toString() : String
+    }
+
+    class AirControlAreaCode <<Value Object>> {
+        - code : String
+        + of(code : String) : AirControlAreaCode
+        + toString() : String
+    }
+
+    class GeographicBoundary <<Value Object>>
+
+    interface AirControlAreaRepository <<Repository>> {
+        + findByCode(code : AirControlAreaCode) : Optional<AirControlArea>
+        + findByName(name : String) : Optional<AirControlArea>
+        + findAll() : Iterable<AirControlArea>
+    }
+}
+
+package "aisafe.airtransportcompany.domain" {
+
+    class AirTransportCompany <<Aggregate Root>> {
+        - iataCode : AirTransportCompanyCode
+        - icaoCode : String
+        - name : String
+
+        + name() : String
+        + iataCode() : AirTransportCompanyCode
+        + icaoCode() : String
+        + identity() : AirTransportCompanyCode
+        + toString() : String
+    }
+
+    class AirTransportCompanyCode <<Value Object>> {
+        - code : String
+        + of(code : String) : AirTransportCompanyCode
+        + toString() : String
+    }
+
+    interface AirTransportCompanyRepository <<Repository>> {
+        + ofIdentity(id : AirTransportCompanyCode) : Optional<AirTransportCompany>
+        + findByIcaoCode(icaoCode : String) : Optional<AirTransportCompany>
+        + findAll() : Iterable<AirTransportCompany>
+    }
+}
+
+package "aisafe.usermanagement.domain" {
+
+    class AiSafeUser <<Aggregate Root>> {
+        - username : Username
+        - phoneNumber : PhoneNumber
+
+        + of(username : Username,
+             phoneNumber : PhoneNumber) : AiSafeUser
+
+        + identity() : Username
+        + phoneNumber() : PhoneNumber
+    }
+
+    class PhoneNumber <<Value Object>> {
+        - countryCode : int
+        - phoneNumber : String
+
+        + of(countryCode : int,
+             phoneNumber : String) : PhoneNumber
+
+        + toString() : String
+    }
+
+    interface AiSafeUserRepository <<Repository>> {
+        + save(entity : AiSafeUser) : AiSafeUser
+        + findByUsername(username : Username) : Optional<AiSafeUser>
+    }
+
+    class AiSafeRoles <<External>> {
+        + BACKOFFICE_OPERATOR : Role
+        + ADMIN : Role
+        + AIR_TRANSPORT_COMPANY_COLLABORATOR : Role
+        + FLIGHT_CONTROL_OPERATOR : Role
+    }
+}
+
+package "aisafe.usermanagement.domain.legacyFiles" {
+
+    class Email <<Value Object>> {
+        - email : String
+        + of(email : String) : Email
+        + toString() : String
+    }
+}
+
+package "aisafe.infrastructure.persistence" {
+
+    interface RepositoryFactory <<Repository>> {
+        + customerCollaborators() : CustomerCollaboratorRepository
+        + airControlAreas() : AirControlAreaRepository
+        + airTransportCompanies() : AirTransportCompanyRepository
+        + aiSafeUsers() : AiSafeUserRepository
+        + users() : UserRepository
+    }
+}
+
+package "aisafe.persistence" {
+    class PersistenceContext <<External>> {
+        + repositories() : RepositoryFactory
+    }
+}
+
+package "eapli.framework.infrastructure.authz" {
+
+    class AuthorizationService <<External>> {
+        + ensureAuthenticatedUserHasAnyOf(roles : Role...) : void
+    }
+
+    class UserManagementService <<External>> {
+        + registerNewUser(username : String,
+                          password : String,
+                          firstName : String,
+                          lastName : String,
+                          email : String,
+                          roles : Set<Role>,
+                          createdOn : Calendar) : SystemUser
+    }
+
+    class SystemUser <<External>> {
+        + username() : Username
+    }
+
+    class Username <<External>>
+    class Role <<External>>
+    interface UserRepository <<Repository>>
+}
+
+AddCustomerCollaboratorUI ..> PersistenceContext
+AddCustomerCollaboratorUI --> AddCustomerCollaboratorController
+
+PersistenceContext --> RepositoryFactory
+RepositoryFactory --> CustomerCollaboratorRepository
+RepositoryFactory --> AirControlAreaRepository
+RepositoryFactory --> AirTransportCompanyRepository
+RepositoryFactory --> AiSafeUserRepository
+RepositoryFactory --> UserRepository
+
+AddCustomerCollaboratorController --> AuthorizationService
+AddCustomerCollaboratorController --> UserManagementService
+AddCustomerCollaboratorController --> CustomerCollaboratorService
+AddCustomerCollaboratorController --> AirTransportCompanyRepository
+AddCustomerCollaboratorController --> AirControlAreaRepository
+AddCustomerCollaboratorController --> AiSafeUserRepository
+AddCustomerCollaboratorController ..> AiSafeRoles
+AddCustomerCollaboratorController ..> Role
+AddCustomerCollaboratorController ..> SystemUser
+AddCustomerCollaboratorController ..> CustomerType
+AddCustomerCollaboratorController ..> AiSafeUser
+AddCustomerCollaboratorController ..> PhoneNumber
+AddCustomerCollaboratorController ..> Email
+
+CustomerCollaboratorService --> CustomerCollaboratorRepository
+CustomerCollaboratorService --> AirControlAreaRepository
+CustomerCollaboratorService --> AirTransportCompanyRepository
+CustomerCollaboratorService ..> CustomerCollaboratorFactory
+CustomerCollaboratorService ..> AirControlAreaCode
+CustomerCollaboratorService ..> AirTransportCompanyCode
+
+CustomerCollaboratorFactory ..> CustomerCollaborator
+CustomerCollaboratorFactory ..> CustomerCollaboratorID
+CustomerCollaboratorFactory ..> Email
+CustomerCollaboratorFactory ..> Username
+
+CustomerCollaborator "1" *-- "1" CustomerCollaboratorID
+CustomerCollaborator "1" *-- "1" CustomerReference
+CustomerCollaborator "1" *-- "1" Email
+CustomerCollaborator "1" --> "1" Username
+CustomerCollaborator "1" --> "1" CustomerStatus
+
+CustomerReference "1" --> "1" CustomerType
+
+CustomerCollaborator ..> AirTransportCompany : customerType = AIR_TRANSPORT_COMPANY
+CustomerCollaborator ..> AirControlArea : customerType = AIR_CONTROL_AREA
+
+AirControlArea "1" *-- "1" AirControlAreaCode
+AirControlArea "1" *-- "1" GeographicBoundary
+
+AirTransportCompany "1" *-- "1" AirTransportCompanyCode
+
+AiSafeUser "1" *-- "1" PhoneNumber
+
+@enduml

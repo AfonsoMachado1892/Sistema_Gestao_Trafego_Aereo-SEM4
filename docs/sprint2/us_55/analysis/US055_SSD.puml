@@ -1,0 +1,29 @@
+@startuml US055_SSD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Backoffice Operator" as BO
+participant ":System" as System
+
+activate BO
+
+    BO -> System : asks to register a new aircraft model
+    activate System
+        System --> BO : requests aircraft model data\n(modelID, maker, type, engineModels,\nweights, speeds, coefficients)
+    deactivate System
+
+    BO -> System : provides aircraft model data
+    activate System
+        System --> BO : shows data and requests confirmation
+    deactivate System
+
+    BO -> System : confirms registration
+    activate System
+        System --> BO : displays operation success
+    deactivate System
+
+deactivate BO
+@enduml

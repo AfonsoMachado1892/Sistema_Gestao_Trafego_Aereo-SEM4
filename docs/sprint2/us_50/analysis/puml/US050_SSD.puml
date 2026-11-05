@@ -1,0 +1,51 @@
+@startuml US050_SSD
+
+title US050 - Register Air Control Area (System Sequence Diagram)
+
+actor "Backoffice Operator" as BO
+participant ":System" as SYSTEM
+
+activate BO
+
+BO -> SYSTEM : starts Backoffice App
+activate SYSTEM
+SYSTEM --> BO : requests credentials\n(username, password)
+deactivate SYSTEM
+
+BO -> SYSTEM : provides credentials\n(username, password)
+activate SYSTEM
+SYSTEM --> BO : displays main menu
+deactivate SYSTEM
+
+BO -> SYSTEM : selects "Backoffice Config"
+activate SYSTEM
+SYSTEM --> BO : displays backoffice configuration menu
+deactivate SYSTEM
+
+BO -> SYSTEM : selects "Register Air Control Area"
+activate SYSTEM
+SYSTEM --> BO : requests air control area data\n(code, name, southwest corner, northeast corner)
+deactivate SYSTEM
+
+BO -> SYSTEM : provides air control area data\n(code, name, southwest latitude, southwest longitude,\nnortheast latitude, northeast longitude)
+activate SYSTEM
+SYSTEM --> BO : shows summary and requests confirmation
+deactivate SYSTEM
+
+BO -> SYSTEM : confirms registration
+activate SYSTEM
+
+alt success
+    SYSTEM --> BO : displays success message
+else invalid data
+    SYSTEM --> BO : displays error message
+else duplicate code/name
+    SYSTEM --> BO : displays error message
+else overlapping area
+    SYSTEM --> BO : displays error message
+end
+
+deactivate SYSTEM
+deactivate BO
+
+@enduml

@@ -1,0 +1,55 @@
+@startuml SD_US033
+
+title US033 - List Backoffice Users
+
+actor "Administrator" as ADMIN
+participant ":ListBackofficeUsersUI" as UI
+participant ":ListBackofficeUsersController" as CTRL
+participant ":AuthorizationService" as AUTHZ
+participant ":UserRepository" as REPO
+participant "user:SystemUser" as USER
+
+activate ADMIN
+
+ADMIN -> UI : requests to list backoffice users
+activate UI
+
+UI -> CTRL : allUsers()
+activate CTRL
+
+CTRL -> AUTHZ : ensureAuthenticatedUserHasAnyOf(ADMIN)
+activate AUTHZ
+AUTHZ --> CTRL : ok
+deactivate AUTHZ
+
+CTRL -> REPO : findAll()
+activate REPO
+REPO --> CTRL : Iterable<SystemUser>
+deactivate REPO
+
+CTRL --> UI : Iterable<SystemUser>
+deactivate CTRL
+
+loop for each SystemUser
+    UI -> USER : name()
+    activate USER
+    USER --> UI : Name
+    deactivate USER
+
+    UI -> USER : email()
+    activate USER
+    USER --> UI : EmailAddress
+    deactivate USER
+
+    UI -> USER : isActive()
+    activate USER
+    USER --> UI : boolean
+    deactivate USER
+end
+
+UI --> ADMIN : displays list of users\n(name, email, status)
+
+deactivate UI
+deactivate ADMIN
+
+@enduml

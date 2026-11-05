@@ -1,0 +1,47 @@
+@startuml SSD_US031
+
+title US031 - Register Backoffice User (System Sequence Diagram)
+
+actor "Administrator" as ADMIN
+participant ":System" as SYSTEM
+
+activate ADMIN
+
+ADMIN -> SYSTEM : starts Backoffice App
+activate SYSTEM
+
+SYSTEM --> ADMIN : requests credentials\n(username, password)
+deactivate SYSTEM
+
+ADMIN -> SYSTEM : provides credentials\n(username, password)
+activate SYSTEM
+
+SYSTEM --> ADMIN : displays main menu
+deactivate SYSTEM
+
+ADMIN -> SYSTEM : selects "User Management"
+activate SYSTEM
+
+SYSTEM --> ADMIN : displays user management menu
+deactivate SYSTEM
+
+ADMIN -> SYSTEM : selects "Register User"
+activate SYSTEM
+
+SYSTEM --> ADMIN : requests user data
+deactivate SYSTEM
+
+ADMIN -> SYSTEM : provides user data\n(username, password, firstName,\nlastName, email, phoneNumber, role)
+activate SYSTEM
+
+alt success
+    SYSTEM --> ADMIN : displays success message
+else failure
+    SYSTEM --> ADMIN : displays failure message
+end
+
+deactivate SYSTEM
+
+deactivate ADMIN
+
+@enduml

@@ -1,0 +1,42 @@
+@startuml SSD_US063
+
+title US063 - Edit Customer's Collaborator (System Sequence Diagram)
+
+actor "Backoffice Operator" as BO
+participant ":System" as SYS
+
+activate BO
+
+BO -> SYS : starts Backoffice App
+activate SYS
+SYS --> BO : requests credentials\n(username, password)
+deactivate SYS
+
+BO -> SYS : provides credentials\n(username, password)
+activate SYS
+SYS --> BO : displays main menu
+deactivate SYS
+
+BO -> SYS : selects "Customer Management"
+activate SYS
+SYS --> BO : displays customer management menu
+deactivate SYS
+
+BO -> SYS : selects "Edit Collaborator"
+activate SYS
+SYS --> BO : displays list of active collaborators
+deactivate SYS
+
+BO -> SYS : selects collaborator
+activate SYS
+SYS --> BO : displays current collaborator info\n(email, phone number)
+deactivate SYS
+
+BO -> SYS : provides new contact info\n(newEmail, newPhone)
+activate SYS
+SYS --> BO : displays updated collaborator info
+deactivate SYS
+
+deactivate BO
+
+@enduml

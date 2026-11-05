@@ -1,0 +1,61 @@
+@startuml US011_User_SD
+title User Aggregate – Invariant: A User can only be enabled if they hold a non-expired SecurityClearance and a SkillsAssessment with result PASSED or CONDITIONAL
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "Admin" as ADMIN
+participant ":EnableUserController" as CTRL
+participant ":UserRepository" as REPO
+participant ":User" as U
+
+activate ADMIN
+ADMIN -> CTRL : enableUser(userID)
+activate CTRL
+
+CTRL -> REPO : findByID(userID)
+activate REPO
+REPO --> CTRL : user
+deactivate REPO
+
+CTRL -> U : enable()
+activate U
+
+alt securityClearance.isExpired() == true
+    U --> CTRL : Error – "User cannot be enabled: security clearance is expired"
+    CTRL --> ADMIN : Error – "User cannot be enabled: security clearance is expired"
+else securityClearance.isExpired() == false
+
+    alt latestSkillsAssessment.result == FAILED
+        U --> CTRL : Error – "User cannot be enabled: skills assessment not passed"
+        CTRL --> ADMIN : Error – "User cannot be enabled: skills assessment not passed"
+    else latestSkillsAssessment.result == PASSED or CONDITIONAL
+
+        note over U
+          **Invariant enforced:**
+          A User can only be set to ENABLED if they
+          hold a non-expired SecurityClearance and
+          a SkillsAssessment with result PASSED
+          or CONDITIONAL.
+        end note
+
+        U -> U : status = ENABLED
+        U --> CTRL : user (status: ENABLED)
+        deactivate U
+
+        CTRL -> REPO : save(user)
+        activate REPO
+        REPO --> CTRL : saved
+        deactivate REPO
+
+        CTRL --> ADMIN : User enabled successfully
+        deactivate CTRL
+
+    end
+end
+
+@enduml

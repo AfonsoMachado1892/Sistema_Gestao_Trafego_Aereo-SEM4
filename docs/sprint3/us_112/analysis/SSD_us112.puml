@@ -1,0 +1,33 @@
+@startuml US112_SSD
+
+title US112 - Monthly Report Generation (System Sequence Diagram)
+
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Flight Control Operator" as FCO
+participant ":System" as System
+
+activate FCO
+
+    FCO -> System : asks to generate a monthly report
+    activate System
+        System --> FCO : requests reference year and month
+    deactivate System
+
+    FCO -> System : provides year and month
+    activate System
+        System --> FCO : shows data and requests confirmation
+    deactivate System
+
+    FCO -> System : confirms
+    activate System
+        System --> FCO : displays monthly flight plan statistics\n(total, by status, by route)\nand saves the report to a file
+    deactivate System
+
+deactivate FCO
+
+@enduml

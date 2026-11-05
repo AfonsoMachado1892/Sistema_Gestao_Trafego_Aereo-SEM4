@@ -1,0 +1,96 @@
+@startuml US082_CD
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+class InsertWeatherDataInFlightUI {
+}
+
+class InsertWeatherDataInFlightController {
+    + InsertWeatherDataInFlightController()
+    + getFlightPlanWithWeatherData(flightPlanId) : FlightPlan, List<WeatherData>
+    + insertWeatherDataInFlight(flightPlanId, weatherDataId) : FlightPlan
+}
+
+class FlightPlan {
+    - flightPlanId : FlightPlanID
+    - status : FlightPlanStatus
+    - weatherData : WeatherData
+
+    + insertWeatherData(weatherData)
+    + voidTest()
+}
+
+class FlightPlanID {
+    - id : String
+}
+
+class FlightPlanStatus {
+    - status : String
+}
+
+class WeatherData {
+    - weatherDataID : WeatherDataID
+    - airControlAreaCode : AirControlAreaCode
+    - collectedAt : LocalDateTime
+    - coordinates : Coordinates
+    - temperature : double
+    - windSpeed : double
+    - windDirection : double
+}
+
+class WeatherDataID {
+    - number : String
+}
+
+class AirControlAreaCode {
+    - code : String
+}
+
+class Coordinates {
+    - latitude : double
+    - longitude : double
+}
+
+class FlightPlanRepository {
+    + findById(flightPlanId) : FlightPlan
+    + save(flightPlan) : FlightPlan
+}
+
+class WeatherDataRepository {
+    + findById(weatherDataId) : WeatherData
+    + findByAreaAndDate(areaCode, date) : List<WeatherData>
+}
+
+class Repositories {
+    - Repositories()
+    + {static} getInstance()
+    + getFlightPlanRepository()
+    + getWeatherDataRepository()
+}
+
+InsertWeatherDataInFlightUI .> InsertWeatherDataInFlightController
+
+InsertWeatherDataInFlightController .> Repositories
+InsertWeatherDataInFlightController ..> FlightPlanRepository
+InsertWeatherDataInFlightController ..> WeatherDataRepository
+InsertWeatherDataInFlightController ..> FlightPlan
+InsertWeatherDataInFlightController ..> WeatherData
+
+Repositories -> "1" Repositories : instance
+Repositories --> "1" FlightPlanRepository : flightPlanRepository
+Repositories --> "1" WeatherDataRepository : weatherDataRepository
+
+FlightPlanRepository --> "*" FlightPlan : flightPlans
+WeatherDataRepository --> "*" WeatherData : weatherDataList
+
+FlightPlan *-- "1" FlightPlanID : flightPlanId
+FlightPlan --> "1" FlightPlanStatus : status
+FlightPlan --> "0..1" WeatherData : weatherData
+
+WeatherData --> "1" AirControlAreaCode : airControlAreaCode
+WeatherData --> "1" Coordinates : coordinates
+WeatherData *-- "1" WeatherDataID : weatherDataID
+
+@enduml

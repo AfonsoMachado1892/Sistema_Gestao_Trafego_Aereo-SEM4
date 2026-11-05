@@ -1,0 +1,47 @@
+@startuml US032_SSD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title US032 - Disable / Enable Backoffice User (System Sequence Diagram)
+
+actor "Administrator" as ADMIN
+participant ":System" as SYSTEM
+
+activate ADMIN
+
+ADMIN -> SYSTEM : starts Backoffice App
+activate SYSTEM
+SYSTEM --> ADMIN : requests credentials\n(username, password)
+deactivate SYSTEM
+
+ADMIN -> SYSTEM : provides credentials\n(username, password)
+activate SYSTEM
+SYSTEM --> ADMIN : displays main menu
+deactivate SYSTEM
+
+ADMIN -> SYSTEM : selects "Backoffice Config"
+activate SYSTEM
+SYSTEM --> ADMIN : displays backoffice configuration menu
+deactivate SYSTEM
+
+ADMIN -> SYSTEM : selects "Disable / Enable Backoffice User"
+activate SYSTEM
+SYSTEM --> ADMIN : displays list of users with status\n(ACTIVE / DISABLED)
+deactivate SYSTEM
+
+ADMIN -> SYSTEM : selects user to toggle status
+activate SYSTEM
+
+alt user is active
+    SYSTEM --> ADMIN : disables user and confirms operation
+else user is disabled
+    SYSTEM --> ADMIN : enables user and confirms operation
+else no users found
+    SYSTEM --> ADMIN : displays informative message
+end
+
+deactivate SYSTEM
+deactivate ADMIN
+
+@enduml

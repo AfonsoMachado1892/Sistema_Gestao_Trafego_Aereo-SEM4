@@ -1,0 +1,97 @@
+@startuml US057_CD
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+class AddEngineModelToAircraftModelUI {
+}
+
+class AddEngineModelToAircraftModelController {
+    + AddEngineModelToAircraftModelController(aircraftModelRepository, engineModelRepository)
+    + getAircraftModels() : Iterable<AircraftModel>
+    + getEngineModels() : Iterable<EngineModel>
+    + addEngineModel(aircraftModelID, engineModelID) : AircraftModel
+}
+
+class AircraftModelService {
+    + AircraftModelService(makerRepository, engineModelRepository, aircraftModelRepository)
+    + addEngineModel(aircraftModelID, engineModelID) : AircraftModel
+}
+
+note right of AircraftModelService
+    Validates:
+    1. AircraftModel exists
+    2. EngineModel exists
+    3. EngineModel not already certified
+    4. EngineType compatible with existing certified engines
+end note
+
+class AircraftModel {
+    - modelID : AircraftModelID
+    - makerID : MakerID
+    - type : AircraftType
+    - certifiedEngineModelIDs : Set<EngineModelID>
+    + addCertifiedEngine(engineModelID) : void
+    + hasCertifiedEngine(engineModelID) : boolean
+}
+
+class AircraftModelID {
+    - number : String
+}
+
+class EngineModel {
+    - engineModelID : EngineModelID
+    - name : String
+    - type : EngineType
+}
+
+class EngineModelID {
+    - number : String
+}
+
+enum EngineType {
+    TURBOPROP
+    TURBOFAN
+    TURBOJET
+    RAMJET
+    ELECTRIC_PROPELLER
+}
+
+interface AircraftModelRepository {
+    + findById(aircraftModelID) : Optional<AircraftModel>
+    + save(aircraftModel) : AircraftModel
+    + findAll() : Iterable<AircraftModel>
+}
+
+interface EngineModelRepository {
+    + findById(engineModelID) : Optional<EngineModel>
+    + findAll() : Iterable<EngineModel>
+}
+
+class PersistenceContext {
+    + {static} repositories() : RepositoryFactory
+}
+
+AddEngineModelToAircraftModelUI .> AddEngineModelToAircraftModelController
+
+AddEngineModelToAircraftModelController .> PersistenceContext
+AddEngineModelToAircraftModelController ..> AircraftModelService
+
+AircraftModelService ..> AircraftModelRepository
+AircraftModelService ..> EngineModelRepository
+AircraftModelService ..> AircraftModel
+
+PersistenceContext --> "1" AircraftModelRepository
+PersistenceContext --> "1" EngineModelRepository
+
+AircraftModelRepository --> "*" AircraftModel
+EngineModelRepository --> "*" EngineModel
+
+AircraftModel *-- "1" AircraftModelID
+AircraftModel --> "1..*" EngineModelID
+
+EngineModel *-- "1" EngineModelID
+EngineModel --> "1" EngineType
+
+@enduml

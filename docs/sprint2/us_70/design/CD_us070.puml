@@ -1,0 +1,100 @@
+@startuml CD_US070
+title US070 - Add Aircraft to Air Transport Company (Class Diagram)
+
+interface AggregateRoot<T>
+
+class Aircraft {
+    - aircraftCode : AircraftRegistration
+    - cabinConfiguration : CabinConfiguration
+    - numCrewElements : int
+    - status : OperationalStatus
+    + Aircraft(aircraftCode, cabinConfiguration, airTransportCompany, aircraftModel, country, numCrewElements)
+    + identity() : AircraftRegistration
+    + sameAs(other) : boolean
+    + status() : OperationalStatus
+    + numCrewElements() : int
+}
+
+class AircraftRegistration <<ValueObject>> {
+    - code : String
+    + AircraftRegistration(code : String)
+    + code() : String
+}
+
+class CabinConfiguration <<ValueObject>> {
+    - economySeats : int
+    - businessSeats : int
+    - firstSeats : int
+    + CabinConfiguration(economySeats, businessSeats, firstSeats)
+    + totalSeats() : int
+    + exceedsCapacity(maxCapacity : int) : boolean
+}
+
+enum OperationalStatus <<ValueObject>> {
+    ACTIVE
+    DECOMMISSIONED
+}
+
+class AircraftModel {
+    - modelID : AircraftModelID
+    + maxPassengerCapacity() : int
+    + identity() : AircraftModelID
+}
+
+class AirTransportCompany {
+    - iataCode : AirTransportCompanyCode
+    + identity() : AirTransportCompanyCode
+}
+
+class Country <<ValueObject>> {
+    - isoCode : IsoCode
+    - name : String
+}
+
+class AircraftFactory {
+    + withRegistration(registration : String) : AircraftFactory
+    + withCabinConfiguration(cabinConfiguration : CabinConfiguration) : AircraftFactory
+    + withAircraftModel(aircraftModel : AircraftModel) : AircraftFactory
+    + withAirTransportCompany(airTransportCompany : AirTransportCompany) : AircraftFactory
+    + withCountry(country : Country) : AircraftFactory
+    + withNumCrewElements(numCrewElements : int) : AircraftFactory
+    + build() : Aircraft
+}
+
+interface AircraftRepository {
+    + save(aircraft : Aircraft) : Aircraft
+    + findByRegistration(registration : AircraftRegistration) : Optional<Aircraft>
+    + findByAirTransportCompany(company : AirTransportCompany) : Iterable<Aircraft>
+}
+
+class InMemoryAircraftRepository
+
+class AircraftService {
+    - aircraftRepository : AircraftRepository
+    + addAircraft(registration, aircraftModel, airTransportCompany, cabinConfiguration, country, numCrewElements) : Aircraft
+}
+
+class AddAircraftController {
+    - aircraftService : AircraftService
+    - aircraftModelRepository : AircraftModelRepository
+    - airTransportCompanyRepository : AirTransportCompanyRepository
+    - customerCollaboratorRepository : CustomerCollaboratorRepository
+    + listAircraftModels() : List<AircraftModel>
+    + addAircraft(registration, aircraftModel, cabinConfiguration, country, numCrewElements) : Aircraft
+}
+
+Aircraft ..|> AggregateRoot
+Aircraft --> AircraftRegistration
+Aircraft --> CabinConfiguration
+Aircraft --> OperationalStatus
+Aircraft --> Country
+Aircraft "many" --> "1" AircraftModel
+Aircraft "many" --> "1" AirTransportCompany
+AircraftFactory ..> Aircraft : creates
+InMemoryAircraftRepository ..|> AircraftRepository
+AddAircraftController --> AircraftService
+AddAircraftController --> AircraftRepository
+AircraftService --> AircraftRepository
+AircraftService ..> AircraftFactory : uses
+
+@enduml

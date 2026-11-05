@@ -1,0 +1,25 @@
+# Default ignored files
+/shelf/
+# Ignored default folder with query files
+/queries/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# Maven build output (all modules)
+**/target/
+target/
+
+# SCOMP Sprint 2 and 3 - compiled binary and generated report
+scomp/sprint2/simulation
+scomp/sprint2/simulation_report.txt
+scomp/sprint3/simulation
+scomp/sprint3/simulation_report.txt
+scomp/sprint3/src/*.o

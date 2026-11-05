@@ -1,0 +1,204 @@
+@startuml CD_US052
+
+title US052 - Register Airport (Class Diagram)
+
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+interface AggregateRoot
+interface ValueObject
+
+class RegisterAirportUI {
+    - controller : RegisterAirportController
+    + show()
+}
+
+class RegisterAirportController {
+    - authz : AuthorizationService
+    - airportService : AirportService
+    + RegisterAirportController(airportRepository, airControlAreaRepository)
+    + registerAirport(iataCode, icaoCode, name, cityName,\ncountryIsoCode, countryName, latitude,\nlongitude, elevationMeters, airControlAreaCode)
+    + listAirports()
+}
+
+class AirportService {
+    - airportRepository : AirportRepository
+    - airControlAreaRepository : AirControlAreaRepository
+    + registerAirport(iataCode, icaoCode, locality,\ncoordinates, name, elevation, airControlAreaCode)
+    + listAirports()
+}
+
+class AirportFactory {
+    - iataCode : AirportIataCode
+    - icaoCode : AirportIcaoCode
+    - locality : Locality
+    - coordinates : Coordinates
+    - name : String
+    - elevation : Elevation
+    - airControlArea : airControlArea
+    + withIataCode(iataCode)
+    + withIcaoCode(icaoCode)
+    + withLocality(locality)
+    + withCoordinates(coordinates)
+    + withName(name)
+    + withElevation(elevation)
+    + inAirControlArea(airControlArea)
+    + build()
+}
+
+class Airport {
+    - iataCode : AirportIataCode
+    - icaoCode : AirportIcaoCode
+    - locality : Locality
+    - coordinates : Coordinates
+    - elevation : Elevation
+    - airControlArea : AirControlArea
+    - name : String
+    + identity()
+    + sameAs(other)
+    + iataCode()
+    + icaoCode()
+    + locality()
+    + coordinates()
+    + elevation()
+    + airControlArea()
+    + name()
+}
+
+class AirportIataCode <<ValueObject>> {
+    - code : String
+    + of(code)
+    + code()
+    + compareTo(other)
+}
+
+class AirportIcaoCode <<ValueObject>> {
+    - code : String
+    + of(code)
+    + code()
+}
+
+class Elevation <<ValueObject>> {
+    - metersAboveSeaLevel : double
+    + of(metersAboveSeaLevel)
+    + metersAboveSeaLevel()
+}
+
+class Locality <<ValueObject>> {
+    - cityName : String
+    - country : Country
+    + of(cityName, country)
+    + cityName()
+    + country()
+}
+
+class Coordinates <<ValueObject>> {
+    - latitude : double
+    - longitude : double
+    + of(latitude, longitude)
+    + latitude()
+    + longitude()
+}
+
+class Country <<ValueObject>> {
+    - isoCode : IsoCode
+    - name : String
+    + of(isoCode, name)
+}
+
+class IsoCode <<ValueObject>> {
+    - code : String
+    + of(code)
+}
+
+class AirControlArea {
+    - code : AirControlAreaCode
+    - geographicBoundary : GeographicBoundary
+    - name : String
+    + geographicBoundary()
+    + code()
+    + name()
+}
+
+class AirControlAreaCode <<ValueObject>> {
+    - code : String
+    + of(code)
+    + code()
+}
+
+class GeographicBoundary <<ValueObject>> {
+    - southwestCorner : Coordinates
+    - northeastCorner : Coordinates
+    - lowerAltitudeMeters : double
+    - upperAltitudeMeters : double
+    + contains(coordinates)
+    + overlaps(other)
+}
+
+interface AirportRepository {
+    + findByIataCode(iataCode)
+    + findByIcaoCode(icaoCode)
+    + findAll()
+    + save(airport)
+}
+
+class InMemoryAirportRepository {
+    + findByIataCode(iataCode)
+    + findByIcaoCode(icaoCode)
+}
+
+interface AirControlAreaRepository {
+    + findByCode(code)
+    + findAll()
+}
+
+class AirportBootstrapper {
+    - service : AirportService
+    + execute()
+}
+
+RegisterAirportUI .> RegisterAirportController
+RegisterAirportController .> AuthorizationService
+RegisterAirportController .> AirportService
+
+AirportService --> AirportRepository
+AirportService --> AirControlAreaRepository
+AirportService .> AirportFactory
+AirportService .> AirControlArea
+
+AirportFactory .> Airport
+AirportFactory .> AirportIataCode
+AirportFactory .> AirportIcaoCode
+AirportFactory .> Locality
+AirportFactory .> Coordinates
+AirportFactory .> Elevation
+AirportFactory .> AirControlAreaCode
+
+Airport ..|> AggregateRoot
+Airport *-- AirportIataCode
+Airport *-- AirportIcaoCode
+Airport *-- Locality
+Airport *-- Coordinates
+Airport *-- Elevation
+Airport --> AirControlAreaCode
+
+Locality *-- Country
+Country *-- IsoCode
+
+AirControlArea *-- AirControlAreaCode
+AirControlArea *-- GeographicBoundary
+GeographicBoundary *-- Coordinates
+
+AirportRepository <|.. InMemoryAirportRepository
+
+AirportBootstrapper .> AirportService
+AirportBootstrapper .> AirportIataCode
+AirportBootstrapper .> AirportIcaoCode
+AirportBootstrapper .> Locality
+AirportBootstrapper .> Coordinates
+AirportBootstrapper .> Elevation
+AirportBootstrapper .> AirControlAreaCode
+
+@enduml

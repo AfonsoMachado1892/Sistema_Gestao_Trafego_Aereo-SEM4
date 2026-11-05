@@ -1,0 +1,75 @@
+@startuml SD_US064
+
+title US064 - Disable Customer's Collaborator
+
+actor "Backoffice Operator" as BO
+participant ":DisableCollaboratorUI" as UI
+participant ":DisableCollaboratorController" as CTRL
+participant ":AuthorizationService" as AUTHZ
+participant ":CollaboratorRepository" as REPO
+participant "collaborator:Collaborator" as COLLAB
+participant "user:SystemUser" as USER
+
+activate BO
+
+BO -> UI : requests to disable a collaborator
+activate UI
+
+UI -> CTRL : getCollaborator(collaboratorId)
+activate CTRL
+
+CTRL -> AUTHZ : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR)
+activate AUTHZ
+AUTHZ --> CTRL : ok
+deactivate AUTHZ
+
+CTRL -> REPO : findById(collaboratorId)
+activate REPO
+REPO --> CTRL : Collaborator
+deactivate REPO
+
+CTRL --> UI : CollaboratorDTO
+deactivate CTRL
+
+UI --> BO : displays collaborator info and requests confirmation
+
+BO -> UI : confirms disable
+
+UI -> CTRL : disableCollaborator(collaboratorId)
+activate CTRL
+
+CTRL -> AUTHZ : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR)
+activate AUTHZ
+AUTHZ --> CTRL : ok
+deactivate AUTHZ
+
+CTRL -> REPO : findById(collaboratorId)
+activate REPO
+REPO --> CTRL : Collaborator
+deactivate REPO
+
+CTRL -> COLLAB : disable()
+activate COLLAB
+
+COLLAB -> USER : deactivate()
+activate USER
+USER --> COLLAB : ok
+deactivate USER
+
+COLLAB --> CTRL : ok
+deactivate COLLAB
+
+CTRL -> REPO : save(collaborator)
+activate REPO
+REPO --> CTRL : Collaborator
+deactivate REPO
+
+CTRL --> UI : CollaboratorDTO
+deactivate CTRL
+
+UI --> BO : displays collaborator as disabled
+
+deactivate UI
+deactivate BO
+
+@enduml

@@ -1,0 +1,56 @@
+@startuml US011_Flight_SD
+title Flight Aggregate – Invariant: A Flight can only be created if it references an active FlightRoute and must always have at least one FlightPlan
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "Pilot" as PILOT
+participant ":CreateFlightController" as CTRL
+participant ":FlightRouteRepository" as ROUTE_REPO
+participant ":FlightRepository" as FLIGHT_REPO
+participant "flight\n:Flight" as FLIGHT
+
+activate PILOT
+
+PILOT -> CTRL : createFlight(routeCode, aircraftRegistration, pilotID, flightPlanData)
+activate CTRL
+
+CTRL -> ROUTE_REPO : findByRouteCode(routeCode)
+activate ROUTE_REPO
+ROUTE_REPO --> CTRL : flightRoute
+deactivate ROUTE_REPO
+
+alt flightRoute == null
+    CTRL --> PILOT : Error – "Flight route does not exist"
+else flightRoute != null
+
+    alt flightRoute.isActive() == false
+        CTRL --> PILOT : Error – "Flight route is inactive"
+    else flightRoute.isActive() == true
+
+        CTRL -> FLIGHT : create(flightRoute, aircraftRegistration, pilotID, flightPlanData)
+        activate FLIGHT
+        note over FLIGHT
+          **Invariant enforced:**
+          A Flight can only be created referencing
+          an active FlightRoute, and must always
+          have at least one FlightPlan.
+        end note
+        FLIGHT --> CTRL : flight
+        deactivate FLIGHT
+
+        CTRL -> FLIGHT_REPO : save(flight)
+        activate FLIGHT_REPO
+        FLIGHT_REPO --> CTRL : saved
+        deactivate FLIGHT_REPO
+
+        CTRL --> PILOT : Flight created successfully
+
+    end
+end
+
+@enduml

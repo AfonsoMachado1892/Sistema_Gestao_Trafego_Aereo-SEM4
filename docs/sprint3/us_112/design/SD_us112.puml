@@ -1,0 +1,67 @@
+@startuml US112_SD
+
+title US112 - Monthly Report Generation (Sequence Diagram)
+
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Flight Control Operator" as FCO
+
+participant "GenerateMonthlyReportUI" as UI
+participant "GenerateMonthlyReportController" as CTRL
+participant "AuthorizationService" as AUTH
+participant "MonthlyReportService" as SVC
+participant "FlightPlanRepository" as FP_REPO
+participant "MonthlyFlightPlanReport" as REPORT
+
+activate FCO
+
+    FCO -> UI : doShow()
+    activate UI
+
+        UI --> FCO : requests year and month
+        FCO -> UI : provides year and month
+
+        UI -> CTRL : generateMonthlyReport(year, month)
+        activate CTRL
+
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(\nFLIGHT_CONTROL_OPERATOR, ADMIN)
+            activate AUTH
+            AUTH --> CTRL : ok
+            deactivate AUTH
+
+            CTRL -> SVC : generateMonthlyReport(year, month)
+            activate SVC
+
+                SVC -> FP_REPO : findAll()
+                activate FP_REPO
+                FP_REPO --> SVC : Iterable<FlightPlan>
+                deactivate FP_REPO
+
+                SVC -> SVC : filterByMonth(plans, year, month)
+                SVC -> SVC : countByStatus(plansOfMonth)
+                SVC -> SVC : countByRoute(plansOfMonth)
+
+                SVC -> REPORT : new MonthlyFlightPlanReport(...)
+                activate REPORT
+                SVC -> REPORT : render()
+                REPORT --> SVC : branded report text
+                deactivate REPORT
+
+                SVC -> SVC : saveReport(year, month, text)
+
+                SVC --> CTRL : MonthlyReportDTO
+            deactivate SVC
+
+            CTRL --> UI : MonthlyReportDTO
+        deactivate CTRL
+
+        UI --> FCO : displays report and saved file path
+    deactivate UI
+
+deactivate FCO
+
+@enduml

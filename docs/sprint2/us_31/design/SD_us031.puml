@@ -1,0 +1,54 @@
+@startuml SD_US031
+
+title US031 - Register Backoffice User
+
+actor "Administrator" as ADMIN
+participant ":AddUserUI" as UI
+participant ":AddUserController" as CTRL
+participant ":UserManagementService" as SVC
+participant ":AuthorizationService" as AUTHZ
+participant ":UserRepository" as REPO
+participant "user:SystemUser" as USER
+
+activate ADMIN
+
+ADMIN -> UI : requests to register a new user
+activate UI
+
+UI --> ADMIN : requests user data
+ADMIN -> UI : provides user data\n(username, password, firstName,\nlastName, email, phoneNumber, role)
+
+UI -> CTRL : addUser(username, password,\nfirstName, lastName, email, roles)
+activate CTRL
+
+CTRL -> AUTHZ : ensureAuthenticatedUserHasAnyOf(ADMIN)
+activate AUTHZ
+AUTHZ --> CTRL : ok
+deactivate AUTHZ
+
+CTRL -> SVC : registerNewUser(username, password,\nfirstName, lastName, email, roles)
+activate SVC
+
+SVC -> USER** : create(username, password,\nfirstName, lastName, email, roles)
+
+SVC -> REPO : save(user)
+activate REPO
+REPO --> SVC : user
+deactivate REPO
+
+SVC --> CTRL : user
+deactivate SVC
+
+CTRL --> UI : user
+deactivate CTRL
+
+alt success
+    UI --> ADMIN : displays success message
+else failure
+    UI --> ADMIN : displays failure message
+end
+
+deactivate UI
+deactivate ADMIN
+
+@enduml

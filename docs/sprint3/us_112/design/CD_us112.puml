@@ -1,0 +1,29 @@
+@startuml CD_us112
+
+title US112 - Monthly Report Generation (Class Diagram)
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+
+interface AggregateRoot
+interface Repository
+
+class GenerateMonthlyReportUI {
+    - controller : GenerateMonthlyReportController
+    + doShow() : boolean
+    + headline() : String
+}
+
+class GenerateMonthlyReportController {
+    - authz : AuthorizationService
+    - monthlyReportService : MonthlyReportService
+    + GenerateMonthlyReportController(flightPlanRepository : FlightPlanRepository)
+    + generateMonthlyReport(year : int, month : int) : MonthlyReportDTO
+}
+
+class MonthlyReportService {
+    - flightPlanRepository : FlightPlanRepository
+    + generateMonthlyReport(year : int, month : int) : MonthlyReportDTO
+    ~ filterByMonth(plans : Iterable<FlightPlan>, year : int, month : int) : List<FlightPlan>
+    ~ countByStatus(plans : List<FlightPlan>) : Map<String, Integer>
+    ~

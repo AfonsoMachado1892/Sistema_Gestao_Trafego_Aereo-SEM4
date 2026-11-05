@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence">
+
+  <persistence-unit name="aisafe">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+    <!-- Framework -->
+    <class>eapli.framework.infrastructure.authz.domain.model.SystemUser</class>
+    <class>eapli.framework.infrastructure.authz.domain.model.Role</class>
+    <class>eapli.framework.infrastructure.authz.domain.model.RoleSet</class>
+    <class>eapli.framework.infrastructure.authz.domain.model.RoleAssignment</class>
+
+    <!-- AiSafe domain -->
+    <class>aisafe.airport.domain.Airport</class>
+    <class>aisafe.aircontrolarea.domain.AirControlArea</class>
+    <class>aisafe.airtransportcompany.domain.AirTransportCompany</class>
+    <class>aisafe.aircraftmodel.domain.AircraftModel</class>
+    <class>aisafe.enginemodel.domain.EngineModel</class>
+    <class>aisafe.maker.domain.Maker</class>
+    <class>aisafe.aircraft.domain.Aircraft</class>
+    <class>aisafe.costumerCollaborator.domain.CustomerCollaborator</class>
+    <class>aisafe.usermanagement.domain.AiSafeUser</class>
+    <class>aisafe.weather.domain.WeatherData</class>
+    <class>aisafe.flight.domain.Flight</class>
+    <class>aisafe.flightroute.domain.FlightRoute</class>
+    <class>aisafe.pilot.domain.Pilot</class>
+    <class>aisafe.flightplan.domain.FlightPlan</class>
+
+    <properties>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:~/aisafe"/>
+      <property name="jakarta.persistence.jdbc.user" value="sa"/>
+      <property name="jakarta.persistence.jdbc.password" value=""/>
+      <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
+      <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+      <!-- <property name="hibernate.show_sql" value="true"/> -->
+    </properties>
+  </persistence-unit>
+
+  <!--
+    NFR08: remote RDBMS persistence unit, used by the team to validate
+    the system against a shared PostgreSQL instance (DEI VPN required).
+
+    Connects to vs634.dei.isep.ipp.pt:5432 (10.9.22.122) via the DEI VPN.
+    schema-generation = update, so Hibernate creates/updates the schema
+    automatically on first run.
+  -->
+  <persistence-unit name="aisafe-remote">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+    <!-- Framework -->
+    <class>eapli.framework.infrastructure.authz.domain.model.SystemUser</class>
+    <class>eapli.framework.infrastructure.authz.domain.model.Role</class>
+    <class>eapli.framework.infrastructure.authz.domain.model.RoleSet</class>
+    <class>eapli.framework.infrastructure.authz.domain.model.RoleAssignment</class>
+
+    <!-- AiSafe domain -->
+    <class>aisafe.airport.domain.Airport</class>
+    <class>aisafe.aircontrolarea.domain.AirControlArea</class>
+    <class>aisafe.airtransportcompany.domain.AirTransportCompany</class>
+    <class>aisafe.aircraftmodel.domain.AircraftModel</class>
+    <class>aisafe.enginemodel.domain.EngineModel</class>
+    <class>aisafe.maker.domain.Maker</class>
+    <class>aisafe.aircraft.domain.Aircraft</class>
+    <class>aisafe.costumerCollaborator.domain.CustomerCollaborator</class>
+    <class>aisafe.usermanagement.domain.AiSafeUser</class>
+    <class>aisafe.weather.domain.WeatherData</class>
+    <class>aisafe.flight.domain.Flight</class>
+    <class>aisafe.flightroute.domain.FlightRoute</class>
+    <class>aisafe.pilot.domain.Pilot</class>
+    <class>aisafe.flightplan.domain.FlightPlan</class>
+
+    <properties>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://10.9.22.122:5432/aisafe"/>
+      <property name="jakarta.persistence.jdbc.user" value="postgres"/>
+      <property name="jakarta.persistence.jdbc.password" value="KJDOrhkJVB5h"/>
+      <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="jakarta.persistence.schema-generation.database.action" value="update"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+      <!-- <property name="hibernate.show_sql" value="true"/> -->
+    </properties>
+  </persistence-unit>
+
+</persistence>

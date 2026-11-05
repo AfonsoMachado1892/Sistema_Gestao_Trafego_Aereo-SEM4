@@ -1,0 +1,19 @@
+@startuml US074_SSD
+
+title US074 - Deactivate a Flight Route (System Sequence Diagram)
+
+actor "Air Transport Company\nCollaborator" as ATCC
+participant ":System" as System
+
+activate ATCC
+activate System
+ATCC -> System : requests to deactivate a flight route
+System --> ATCC : shows list of active routes for company
+
+ATCC -> System : selects route code and deactivation date
+System --> ATCC : shows summary for confirmation
+
+ATCC -> System : confirms deactivation
+System --> ATCC : confirms route deactivated successfully
+
+@enduml

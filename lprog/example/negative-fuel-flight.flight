@@ -1,0 +1,23 @@
+flight TP123 regular {
+
+    route OPO -> LIS;
+
+    aircraft CS-TAB;
+    pilot P001;
+
+    leg {
+
+        departure OPO at 2026-06-10 10:30;
+        arrival LIS at 2026-06-10 11:20;
+
+        segment {
+            (41.242, -8.678) -> (38.774, -9.134)
+            altitude 10000 m;
+            width 500 m;
+            wind 90 deg 12 m/s;
+        }
+
+        fuel -500 kg;
+
+    }
+}

@@ -1,0 +1,56 @@
+@startuml US011_AirControlArea_SD
+title AirControlArea Aggregate – Invariant: An AirControlArea can only be registered if its code is unique and its geographic boundary is valid
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "Backoffice Operator" as BO
+participant ":RegisterAirControlAreaController" as CTRL
+participant ":AirControlAreaRepository" as REPO
+participant "airControlArea\n:AirControlArea" as ACA
+participant "geographicBoundary\n:GeographicBoundary" as GB
+
+activate BO
+BO -> CTRL : registerAirControlArea(code, coordinates)
+activate CTRL
+CTRL -> REPO : existsByCode(code)
+activate REPO
+REPO --> CTRL : exists
+deactivate REPO
+
+alt exists == true
+    CTRL --> BO : Error – "An Air Control Area with that code already exists"
+else exists == false
+
+    CTRL -> GB ** : create(coordinates)
+    GB -> GB : validate()\n(≥ 3 distinct Coordinates,\nclosed polygon,\nnon-self-intersecting)
+
+    alt boundary is invalid
+        GB --> CTRL : throws InvalidGeographicBoundaryException
+        CTRL --> BO : Error – "Geographic boundary is not valid"
+    else boundary is valid
+        GB --> CTRL : geographicBoundary
+        CTRL -> ACA ** : create(code, geographicBoundary)
+        note over ACA
+          **Invariant enforced:**
+          An AirControlArea can only be created
+          with a unique AirControlAreaCode and
+          a valid GeographicBoundary (≥ 3 distinct
+          coordinates forming a closed polygon).
+        end note
+        ACA --> CTRL : airControlArea
+        CTRL -> REPO : save(airControlArea)
+                activate REPO
+
+        REPO --> CTRL : saved
+                deactivate REPO
+        CTRL --> BO : Air Control Area registered successfully
+    end
+
+end
+
+@enduml

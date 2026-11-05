@@ -1,0 +1,123 @@
+@startuml US057_SD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Backoffice Operator" as BO
+participant ":AddEngineModelToAircraftModelUI" as UI
+participant ":AddEngineModelToAircraftModelController" as CTRL
+participant ":AircraftModelService" as SERVICE
+participant "persistenceContext\n:PersistenceContext" as PC
+participant "aircraftModelRepository\n:AircraftModelRepository" as AM_REPO
+participant "engineModelRepository\n:EngineModelRepository" as EM_REPO
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "aircraftModel\n:AircraftModel" as AIRCRAFT_MODEL
+
+activate BO
+
+    BO -> UI : asks to add an engine model to an aircraft model
+    activate UI
+        UI --> CTRL** : create(aircraftModelRepository, engineModelRepository)
+        note right of CTRL
+            AircraftModelService is created
+            inside the controller constructor
+        end note
+
+        UI -> CTRL : getAircraftModels()
+        activate CTRL
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> PC : repositories().aircraftModels()
+            activate PC
+                PC --> CTRL : aircraftModelRepository
+            deactivate PC
+
+            CTRL -> AM_REPO : findAll()
+            activate AM_REPO
+                AM_REPO --> CTRL : aircraftModelList
+            deactivate AM_REPO
+
+            CTRL --> UI : aircraftModelList
+        deactivate CTRL
+
+        UI -> CTRL : getEngineModels()
+        activate CTRL
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> PC : repositories().engineModels()
+            activate PC
+                PC --> CTRL : engineModelRepository
+            deactivate PC
+
+            CTRL -> EM_REPO : findAll()
+            activate EM_REPO
+                EM_REPO --> CTRL : engineModelList
+            deactivate EM_REPO
+
+            CTRL --> UI : engineModelList
+        deactivate CTRL
+
+        UI --> BO : presents list of aircraft models and engine models
+    deactivate UI
+
+    BO -> UI : selects aircraft model and engine model
+    activate UI
+        UI --> BO : shows data and requests confirmation
+    deactivate UI
+
+    BO -> UI : confirms operation
+    activate UI
+
+        UI -> CTRL : addEngineModel(aircraftModelID, engineModelID)
+        activate CTRL
+
+            CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(BACKOFFICE_OPERATOR, ADMIN)
+            activate AUTH
+                AUTH --> CTRL
+            deactivate AUTH
+
+            CTRL -> SERVICE : addEngineModel(aircraftModelID, engineModelID)
+            activate SERVICE
+
+                SERVICE -> AM_REPO : findById(aircraftModelID)
+                activate AM_REPO
+                    AM_REPO --> SERVICE : aircraftModel
+                deactivate AM_REPO
+
+                SERVICE -> EM_REPO : findById(engineModelID)
+                activate EM_REPO
+                    EM_REPO --> SERVICE : engineModel
+                deactivate EM_REPO
+
+                SERVICE -> SERVICE : validate engineModel not already certified
+                SERVICE -> SERVICE : validate engineType compatible with existing certified engines
+
+                SERVICE -> AIRCRAFT_MODEL : addCertifiedEngine(engineModelID)
+                activate AIRCRAFT_MODEL
+                    AIRCRAFT_MODEL --> SERVICE : ok
+                deactivate AIRCRAFT_MODEL
+
+                SERVICE -> AM_REPO : save(aircraftModel)
+                activate AM_REPO
+                    AM_REPO --> SERVICE : aircraftModel
+                deactivate AM_REPO
+
+                SERVICE --> CTRL : aircraftModel
+            deactivate SERVICE
+
+            CTRL --> UI : aircraftModel
+        deactivate CTRL
+
+        UI --> BO : displays operation success
+    deactivate UI
+
+deactivate BO
+@enduml

@@ -1,0 +1,79 @@
+@startuml CD_US063
+
+title US063 - Edit Customer's Collaborator (Class Diagram)
+
+interface AggregateRoot
+
+class Collaborator <<Aggregate Root>> {
+    - id : CollaboratorId
+    - user : SystemUser
+    - position : CollaboratorPosition
+    - company : Customer
+    - active : boolean
+    + updateContactInfo(email : EmailAddress, phone : PhoneNumber) : void
+    + isActive() : boolean
+}
+
+class CollaboratorId <<Value Object>> {
+    - value : UUID
+}
+
+class CollaboratorPosition <<Value Object>> {
+    - value : String
+}
+
+class EmailAddress <<Value Object>> {
+    - address : String
+}
+
+class PhoneNumber <<Value Object>> {
+    - value : String
+}
+
+interface CollaboratorRepository {
+    + findById(id : CollaboratorId) : Optional<Collaborator>
+    + findActiveByCustomer(customer : Customer) : List<Collaborator>
+    + save(collaborator : Collaborator) : Collaborator
+}
+
+interface UserRepository {
+    + findByEmail(email : EmailAddress) : Optional<SystemUser>
+}
+
+class JpaCollaboratorRepository
+class InMemoryCollaboratorRepository
+
+class EditCollaboratorController {
+    - authz : AuthorizationService
+    - collaboratorRepository : CollaboratorRepository
+    - userRepository : UserRepository
+    + getCollaborator(id : CollaboratorId) : CollaboratorDTO
+    + editCollaborator(id : CollaboratorId, newEmail : String, newPhone : String) : CollaboratorDTO
+}
+
+class EditCollaboratorUI {
+    - controller : EditCollaboratorController
+    + doShow() : boolean
+    + headline() : String
+}
+
+class EditCollaboratorAction {
+    + execute() : boolean
+}
+
+Collaborator ..|> AggregateRoot
+Collaborator --> CollaboratorId
+Collaborator --> CollaboratorPosition
+Collaborator --> EmailAddress
+Collaborator --> PhoneNumber
+
+JpaCollaboratorRepository ..|> CollaboratorRepository
+InMemoryCollaboratorRepository ..|> CollaboratorRepository
+
+EditCollaboratorController --> CollaboratorRepository
+EditCollaboratorController --> UserRepository
+EditCollaboratorController --> AuthorizationService
+EditCollaboratorUI --> EditCollaboratorController
+EditCollaboratorAction --> EditCollaboratorUI
+
+@enduml

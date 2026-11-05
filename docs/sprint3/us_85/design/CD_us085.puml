@@ -1,0 +1,235 @@
+@startuml CD_us085
+
+title US085 - Test / Validate Flight Plan (Class Diagram)
+
+skinparam classAttributeIconSize 0
+
+interface AggregateRoot
+interface Repository
+
+class TestFlightPlanUI {
+    - controller : TestFlightPlanController
+    + doShow() : boolean
+}
+
+class TestFlightPlanController {
+    - authz : AuthorizationService
+    - pilotRepository : PilotRepository
+    - service : TestFlightPlanService
+    + listDraftFlightPlans() : Iterable<FlightPlan>
+    + testAndValidate(flightPlanIDValue : String) : FlightPlanTestBoard
+    - currentPilot() : Pilot
+}
+
+class TestFlightPlanService {
+    - flightPlanRepository : FlightPlanRepository
+    - flightRouteRepository : FlightRouteRepository
+    - aircraftRepository : AircraftRepository
+    - airportRepository : AirportRepository
+    - simulatedFlightPlanFactory : SimulatedFlightPlanFactory
+    - tester : FlightPlanTester
+    + listDraftFlightPlansFor(pilot : Pilot) : Iterable<FlightPlan>
+    + testAndValidate(pilot : Pilot, flightPlanID : FlightPlanID) : FlightPlanTestBoard
+    - validateOwnership(flightPlan : FlightPlan, pilot : Pilot)
+    - validateDraftStatus(flightPlan : FlightPlan)
+    - validateDomainRules(...)
+    - rejectWithResult(flightPlan : FlightPlan, result : FlightPlanTestResult) : FlightPlanTestBoard
+    - validateWithResult(flightPlan : FlightPlan, result : FlightPlanTestResult) : FlightPlanTestBoard
+}
+
+class FlightPlanTestBoard {
+    - flightPlanID : FlightPlanID
+    - routeCode : RouteCode
+    - aircraftRegistration : AircraftRegistration
+    - finalStatus : FlightPlanStatus
+    - passed : boolean
+    - summary : String
+    - messages : List<String>
+    - totalDistanceKm : double
+    - loadedFuel : double
+    - estimatedFuelRequired : double
+    - estimatedFuelRemaining : double
+    + from(flightPlan : FlightPlan, result : FlightPlanTestResult) : FlightPlanTestBoard
+}
+
+class SimulatedFlightPlanFactory {
+    + build(flightPlan : FlightPlan, route : FlightRoute, departureAirport : Airport, arrivalAirport : Airport, aircraftModel : AircraftModel) : SimulatedFlightPlan
+}
+
+class SimulatedFlightPlan {
+    - flightPlanID : FlightPlanID
+    - routeCode : RouteCode
+    - departureDateTime : LocalDateTime
+    - arrivalDateTime : LocalDateTime
+    - loadedFuel : FuelQuantity
+    - cruiseAltitudeMeters : double
+    - segments : List<SimulatedFlightSegment>
+    + totalDistanceKm() : double
+    + segments() : List<SimulatedFlightSegment>
+}
+
+class SimulatedFlightSegment {
+    - start : Coordinates
+    - end : Coordinates
+    - altitudeMeters : double
+    + distanceKm() : double
+}
+
+class FlightPlanTester {
+    + test(simulatedFlightPlan : SimulatedFlightPlan, aircraftModel : AircraftModel) : FlightPlanTestResult
+    - validateMaximumRange(...)
+    - validateFuelCapacity(...)
+    - validateEstimatedFuel(...)
+    - validateServiceCeiling(...)
+}
+
+class FlightPlanTestResult <<ValueObject>> {
+    - passed : boolean
+    - testedAt : LocalDateTime
+    - summary : String
+    - messages : List<String>
+    - totalDistanceKm : double
+    - loadedFuel : double
+    - estimatedFuelRequired : double
+    - estimatedFuelRemaining : double
+    + passed(...) : FlightPlanTestResult
+    + failed(...) : FlightPlanTestResult
+    + passed() : boolean
+}
+
+class FlightPlan <<AggregateRoot>> {
+    - flightPlanID : FlightPlanID
+    - routeCode : RouteCode
+    - aircraftRegistration : AircraftRegistration
+    - pilotID : PilotID
+    - plannedDepartureDateTime : LocalDateTime
+    - plannedArrivalDateTime : LocalDateTime
+    - fuelQuantity : FuelQuantity
+    - description : FlightPlanDescription
+    - status : FlightPlanStatus
+    - weatherDataID : WeatherDataID
+    - lastTestResult : FlightPlanTestResult
+    + isDraft() : boolean
+    + markTested()
+    + markValidated()
+    + reject()
+    + recordTestResult(result : FlightPlanTestResult)
+}
+
+class FlightRoute <<AggregateRoot>> {
+    - routeCode : RouteCode
+    - departureAirportIataCode : AirportIataCode
+    - arrivalAirportIataCode : AirportIataCode
+    - airTransportCompanyIataCode : AirTransportCompanyCode
+    + isActiveOn(date : LocalDate) : boolean
+    + allowsDepartureAt(dateTime : LocalDateTime) : boolean
+}
+
+class Aircraft <<AggregateRoot>> {
+    - aircraftCode : AircraftRegistration
+    - aircraftModel : AircraftModel
+    + isOperational() : boolean
+    + belongsTo(companyCode : AirTransportCompanyCode) : boolean
+    + aircraftModel() : AircraftModel
+}
+
+class AircraftModel <<AggregateRoot>> {
+    - maxFuelCapacity : double
+    - serviceCeiling : double
+    - cruiseSpeed : double
+    - maximumRange : double
+    + maxFuelCapacity() : double
+    + serviceCeiling() : double
+    + cruiseSpeed() : double
+    + maximumRange() : double
+}
+
+class Pilot <<AggregateRoot>> {
+    - pilotID : PilotID
+    - currentCompanyIataCode : AirTransportCompanyCode
+    + isActive() : boolean
+    + belongsTo(companyCode : AirTransportCompanyCode) : boolean
+    + isCertifiedFor(aircraftModel : AircraftModel, onDate : LocalDate) : boolean
+}
+
+class Airport <<AggregateRoot>> {
+    - iataCode : AirportIataCode
+    - coordinates : Coordinates
+    + coordinates() : Coordinates
+}
+
+class Coordinates <<ValueObject>> {
+    - latitude : double
+    - longitude : double
+    + latitude() : double
+    + longitude() : double
+}
+
+interface FlightPlanRepository {
+    + findById(id : FlightPlanID) : Optional<FlightPlan>
+    + findByPilotID(pilotID : PilotID) : Iterable<FlightPlan>
+    + save(flightPlan : FlightPlan) : FlightPlan
+}
+
+interface FlightRouteRepository {
+    + findByRouteCode(routeCode : RouteCode) : Optional<FlightRoute>
+}
+
+interface AircraftRepository {
+    + findByRegistration(registration : AircraftRegistration) : Optional<Aircraft>
+}
+
+interface AirportRepository {
+    + findByIataCode(iataCode : AirportIataCode) : Optional<Airport>
+}
+
+interface PilotRepository {
+    + findBySystemUser(systemUser : SystemUser) : Optional<Pilot>
+}
+
+TestFlightPlanUI --> TestFlightPlanController
+TestFlightPlanController --> TestFlightPlanService
+TestFlightPlanController --> PilotRepository
+
+TestFlightPlanService --> FlightPlanRepository
+TestFlightPlanService --> FlightRouteRepository
+TestFlightPlanService --> AircraftRepository
+TestFlightPlanService --> AirportRepository
+TestFlightPlanService --> SimulatedFlightPlanFactory
+TestFlightPlanService --> FlightPlanTester
+TestFlightPlanService --> FlightPlanTestBoard
+
+SimulatedFlightPlanFactory --> SimulatedFlightPlan
+SimulatedFlightPlanFactory --> SimulatedFlightSegment
+SimulatedFlightPlan *-- "1..*" SimulatedFlightSegment
+SimulatedFlightSegment --> Coordinates
+
+FlightPlanTester --> SimulatedFlightPlan
+FlightPlanTester --> AircraftModel
+FlightPlanTester --> FlightPlanTestResult
+
+FlightPlan --> FlightPlanTestResult
+FlightPlan --> FlightRoute : routeCode
+FlightPlan --> Aircraft : aircraftRegistration
+FlightPlan --> Pilot : pilotID
+
+FlightRoute --> Airport : departureAirportIataCode
+FlightRoute --> Airport : arrivalAirportIataCode
+
+Aircraft --> AircraftModel
+Airport --> Coordinates
+
+FlightPlan ..|> AggregateRoot
+FlightRoute ..|> AggregateRoot
+Aircraft ..|> AggregateRoot
+AircraftModel ..|> AggregateRoot
+Pilot ..|> AggregateRoot
+Airport ..|> AggregateRoot
+
+FlightPlanRepository ..|> Repository
+FlightRouteRepository ..|> Repository
+AircraftRepository ..|> Repository
+AirportRepository ..|> Repository
+PilotRepository ..|> Repository
+
+@enduml

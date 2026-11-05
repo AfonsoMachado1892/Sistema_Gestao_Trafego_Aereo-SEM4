@@ -1,0 +1,67 @@
+@startuml CD_US033
+
+title US033 - List Backoffice Users (Class Diagram)
+
+interface AggregateRoot
+
+class SystemUser <<Aggregate Root>> {
+    - username : Username
+    - password : Password
+    - firstName : Name
+    - lastName : Name
+    - email : EmailAddress
+    - roles : Set<Role>
+    - active : boolean
+}
+
+class Username <<Value Object>> {
+    - value : String
+}
+
+class EmailAddress <<Value Object>> {
+    - address : String
+}
+
+class Role <<Value Object>> {
+    - value : String
+}
+
+interface UserRepository {
+    + save(user : SystemUser)
+    + findAll() : Iterable<SystemUser>
+    + findByUsername(username : Username) : Optional<SystemUser>
+}
+
+class JpaUserRepository
+class InMemoryUserRepository
+
+class ListBackofficeUsersController {
+    - authz : AuthorizationService
+    - userRepository : UserRepository
+    + allUsers() : Iterable<SystemUser>
+}
+
+class ListBackofficeUsersUI {
+    - controller : ListBackofficeUsersController
+    + doShow() : boolean
+    + headline() : String
+}
+
+class ListUsersAction {
+    + execute() : boolean
+}
+
+SystemUser ..|> AggregateRoot
+SystemUser --> Username
+SystemUser --> EmailAddress
+SystemUser --> Role
+
+JpaUserRepository ..|> UserRepository
+InMemoryUserRepository ..|> UserRepository
+
+ListBackofficeUsersController --> UserRepository
+ListBackofficeUsersController --> AuthorizationService
+ListBackofficeUsersUI --> ListBackofficeUsersController
+ListUsersAction --> ListBackofficeUsersUI
+
+@enduml

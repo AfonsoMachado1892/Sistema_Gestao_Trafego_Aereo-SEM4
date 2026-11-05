@@ -1,0 +1,62 @@
+@startuml US060_CD
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+class RegisterAirTransportCompanyUI {
+    - controller : RegisterAirTransportCompanyController
+    + show()
+}
+
+class RegisterAirTransportCompanyController {
+    - authz : AuthorizationService
+    - repository : AirTransportCompanyRepository
+    + registerAirTransportCompany(iataCode, icaoCode, name)
+}
+
+class AirTransportCompany {
+    - iataCode : AirTransportCompanyCode
+    - icaoCode : String
+    - name : String
+    + identity()
+    + iataCode()
+    + icaoCode()
+    + name()
+}
+
+class AirTransportCompanyCode {
+    - iataCode : String
+    + of(code)
+}
+
+interface AirTransportCompanyRepository {
+    + findByIataCode(iataCode)
+    + findByIcaoCode(icaoCode)
+    + save(airTransportCompany)
+}
+
+class InMemoryAirTransportCompanyRepository {
+    + findByIataCode(iataCode)
+    + findByIcaoCode(icaoCode)
+}
+
+class AirTransportCompanyBootstrapper {
+    - repository : AirTransportCompanyRepository
+    + execute()
+}
+
+class AuthorizationService {
+    + ensureAuthenticatedUserHasAnyOf(roles)
+}
+
+RegisterAirTransportCompanyUI .> RegisterAirTransportCompanyController
+RegisterAirTransportCompanyController .> AuthorizationService
+RegisterAirTransportCompanyController --> AirTransportCompanyRepository
+RegisterAirTransportCompanyController .> AirTransportCompany
+AirTransportCompany *-- AirTransportCompanyCode
+AirTransportCompanyRepository <|.. InMemoryAirTransportCompanyRepository
+AirTransportCompanyBootstrapper --> AirTransportCompanyRepository
+AirTransportCompanyBootstrapper .> AirTransportCompany
+
+@enduml

@@ -1,0 +1,515 @@
+<svg width="3654.2000000000003" height="430.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><line x1="768.5" y1="7.5" x2="747.0" y2="32.0" style="stroke:black; stroke-width:1px;" />
+<line x1="747.0" y1="39.5" x2="13.5" y2="64.0" style="stroke:black; stroke-width:1px;" />
+<line x1="747.0" y1="39.5" x2="56.5" y2="64.0" style="stroke:black; stroke-width:1px;" />
+<line x1="56.5" y1="71.5" x2="56.5" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="747.0" y1="39.5" x2="116.0" y2="64.0" style="stroke:black; stroke-width:1px;" />
+<line x1="116.0" y1="71.5" x2="116.0" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="747.0" y1="39.5" x2="198.25" y2="64.0" style="stroke:black; stroke-width:1px;" />
+<line x1="747.0" y1="39.5" x2="269.5" y2="64.0" style="stroke:black; stroke-width:1px;" />
+<line x1="269.5" y1="71.5" x2="156.5" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="269.5" y1="71.5" x2="212.5" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="212.5" y1="103.5" x2="212.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="269.5" y1="71.5" x2="261.0" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="269.5" y1="71.5" x2="309.5" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="309.5" y1="103.5" x2="309.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="269.5" y1="71.5" x2="382.5" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="747.0" y1="39.5" x2="511.5" y2="64.0" style="stroke:black; stroke-width:1px;" />
+<line x1="511.5" y1="71.5" x2="440.5" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="511.5" y1="71.5" x2="519.5" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="519.5" y1="103.5" x2="519.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="511.5" y1="71.5" x2="582.5" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="747.0" y1="39.5" x2="639.5" y2="64.0" style="stroke:black; stroke-width:1px;" />
+<line x1="639.5" y1="71.5" x2="604.5" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="639.5" y1="71.5" x2="643.5" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="643.5" y1="103.5" x2="643.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="639.5" y1="71.5" x2="674.5" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="747.0" y1="39.5" x2="1456.0" y2="64.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1456.0" y1="71.5" x2="741.25" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1456.0" y1="71.5" x2="761.25" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1456.0" y1="71.5" x2="802.25" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="802.25" y1="103.5" x2="690.0" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="802.25" y1="103.5" x2="757.0" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="757.0" y1="135.5" x2="757.0" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="802.25" y1="103.5" x2="805.0" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="802.25" y1="103.5" x2="835.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="835.5" y1="135.5" x2="835.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="802.25" y1="103.5" x2="888.0" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="888.0" y1="135.5" x2="888.0" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="802.25" y1="103.5" x2="914.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1456.0" y1="71.5" x2="1050.0" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1050.0" y1="103.5" x2="942.0" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1050.0" y1="103.5" x2="1000.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1000.5" y1="135.5" x2="1000.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1050.0" y1="103.5" x2="1048.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1050.0" y1="103.5" x2="1079.0" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1079.0" y1="135.5" x2="1079.0" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1050.0" y1="103.5" x2="1131.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1131.5" y1="135.5" x2="1131.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1050.0" y1="103.5" x2="1158.0" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1456.0" y1="71.5" x2="1609.625" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1609.625" y1="103.5" x2="1191.0" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1609.625" y1="103.5" x2="1224.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1609.625" y1="103.5" x2="1267.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1267.5" y1="135.5" x2="1197.0" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1267.5" y1="135.5" x2="1232.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1232.5" y1="167.5" x2="1232.5" y2="192.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1267.5" y1="135.5" x2="1267.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1267.5" y1="135.5" x2="1302.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1302.5" y1="167.5" x2="1302.5" y2="192.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1267.5" y1="135.5" x2="1338.0" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1609.625" y1="103.5" x2="1345.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1609.625" y1="103.5" x2="1423.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1423.5" y1="135.5" x2="1353.0" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1423.5" y1="135.5" x2="1388.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1388.5" y1="167.5" x2="1388.5" y2="192.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1423.5" y1="135.5" x2="1423.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1423.5" y1="135.5" x2="1458.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1458.5" y1="167.5" x2="1458.5" y2="192.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1423.5" y1="135.5" x2="1494.0" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1609.625" y1="103.5" x2="1606.75" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1606.75" y1="135.5" x2="1524.0" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1606.75" y1="135.5" x2="1574.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1574.5" y1="167.5" x2="1574.5" y2="192.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1606.75" y1="135.5" x2="1642.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1642.5" y1="167.5" x2="1642.5" y2="192.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1606.75" y1="135.5" x2="1689.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1609.625" y1="103.5" x2="1796.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1796.5" y1="135.5" x2="1715.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1796.5" y1="135.5" x2="1762.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1762.5" y1="167.5" x2="1762.5" y2="192.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1796.5" y1="135.5" x2="1830.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1830.5" y1="167.5" x2="1830.5" y2="192.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1796.5" y1="135.5" x2="1877.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1609.625" y1="103.5" x2="1998.75" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1998.75" y1="135.5" x2="1902.0" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1998.75" y1="135.5" x2="1947.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1947.5" y1="167.5" x2="1947.5" y2="192.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1998.75" y1="135.5" x2="1990.0" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1998.75" y1="135.5" x2="2032.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="2032.5" y1="167.5" x2="2032.5" y2="192.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1998.75" y1="135.5" x2="2074.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1998.75" y1="135.5" x2="2095.5" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1609.625" y1="103.5" x2="2028.25" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1456.0" y1="71.5" x2="2144.25" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="2144.25" y1="103.5" x2="2077.5" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="2144.25" y1="103.5" x2="2120.0" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="2120.0" y1="135.5" x2="2120.0" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="2144.25" y1="103.5" x2="2176.0" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="2176.0" y1="135.5" x2="2176.0" y2="160.0" style="stroke:black; stroke-width:1px;" />
+<line x1="2144.25" y1="103.5" x2="2211.0" y2="128.0" style="stroke:black; stroke-width:1px;" />
+<line x1="1456.0" y1="71.5" x2="2170.75" y2="96.0" style="stroke:black; stroke-width:1px;" />
+<line x1="747.0" y1="39.5" x2="1480.5" y2="64.0" style="stroke:black; stroke-width:1px;" />
+<line x1="768.5" y1="7.5" x2="790.0" y2="32.0" style="stroke:black; stroke-width:1px;" />
+<rect x="1604.0" y="160.0" width="77.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1606" y="169" style="font-family:sans-serif;font-size:10px;">
+measureUnit:1
+</text>
+<rect x="2166.75" y="96.0" width="8.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2168" y="105" style="font-family:sans-serif;font-size:10px;">
+}
+</text>
+<rect x="871.5" y="160.0" width="33.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="873" y="169" style="font-family:sans-serif;font-size:10px;">
+10:30
+</text>
+<rect x="1284.0" y="192.0" width="37.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1286" y="201" style="font-family:sans-serif;font-size:10px;">
+-8.678
+</text>
+<rect x="1874.0" y="160.0" width="7.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1876" y="169" style="font-family:sans-serif;font-size:10px;">
+;
+</text>
+<rect x="96.0" y="96.0" width="40.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="98" y="105" style="font-family:sans-serif;font-size:10px;">
+regular
+</text>
+<rect x="757.25" y="96.0" width="8.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="759" y="105" style="font-family:sans-serif;font-size:10px;">
+{
+</text>
+<rect x="2063.5" y="160.0" width="22.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2065" y="169" style="font-family:sans-serif;font-size:10px;">
+m/s
+</text>
+<rect x="1700.5" y="160.0" width="30.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1702" y="169" style="font-family:sans-serif;font-size:10px;">
+width
+</text>
+<rect x="194.25" y="64.0" width="8.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="196" y="73" style="font-family:sans-serif;font-size:10px;">
+{
+</text>
+<rect x="1061.0" y="128.0" width="36.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1063" y="137" style="font-family:sans-serif;font-size:10px;">
+date:1
+</text>
+<rect x="1338.5" y="128.0" width="14.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1340" y="137" style="font-family:sans-serif;font-size:10px;">
+-&gt;
+</text>
+<rect x="663.0" y="128.0" width="54.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="665" y="137" style="font-family:sans-serif;font-size:10px;">
+departure
+</text>
+<rect x="2066.5" y="128.0" width="22.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2068" y="137" style="font-family:sans-serif;font-size:10px;">
+fuel
+</text>
+<rect x="1889.0" y="160.0" width="26.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1891" y="169" style="font-family:sans-serif;font-size:10px;">
+wind
+</text>
+<rect x="421.0" y="96.0" width="39.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="423" y="105" style="font-family:sans-serif;font-size:10px;">
+aircraft
+</text>
+<rect x="2105.0" y="160.0" width="30.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2107" y="169" style="font-family:sans-serif;font-size:10px;">
+5000
+</text>
+<rect x="592.0" y="96.0" width="25.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="594" y="105" style="font-family:sans-serif;font-size:10px;">
+pilot
+</text>
+<rect x="1978.5" y="160.0" width="23.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1980" y="169" style="font-family:sans-serif;font-size:10px;">
+deg
+</text>
+<rect x="990.5" y="160.0" width="20.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="992" y="169" style="font-family:sans-serif;font-size:10px;">
+LIS
+</text>
+<rect x="1154.5" y="128.0" width="7.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1156" y="137" style="font-family:sans-serif;font-size:10px;">
+;
+</text>
+<rect x="622.5" y="64.0" width="34.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="624" y="73" style="font-family:sans-serif;font-size:10px;">
+pilot:1
+</text>
+<rect x="621.0" y="96.0" width="45.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="623" y="105" style="font-family:sans-serif;font-size:10px;">
+pilotID:1
+</text>
+<rect x="1027.5" y="96.0" width="45.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1029" y="105" style="font-family:sans-serif;font-size:10px;">
+arrival:1
+</text>
+<rect x="1047.5" y="160.0" width="63.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1049" y="169" style="font-family:sans-serif;font-size:10px;">
+2026-06-10
+</text>
+<rect x="1432.5" y="160.0" width="52.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1434" y="169" style="font-family:sans-serif;font-size:10px;">
+number:1
+</text>
+<rect x="497.0" y="128.0" width="45.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="499" y="137" style="font-family:sans-serif;font-size:10px;">
+CS-TAB
+</text>
+<rect x="628.5" y="128.0" width="30.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="630" y="137" style="font-family:sans-serif;font-size:10px;">
+P001
+</text>
+<rect x="1114.5" y="128.0" width="34.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1116" y="137" style="font-family:sans-serif;font-size:10px;">
+time:1
+</text>
+<rect x="1792.0" y="160.0" width="77.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1794" y="169" style="font-family:sans-serif;font-size:10px;">
+measureUnit:1
+</text>
+<rect x="-0.5" y="64.0" width="28.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2" y="73" style="font-family:sans-serif;font-size:10px;">
+flight
+</text>
+<rect x="871.0" y="128.0" width="34.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="873" y="137" style="font-family:sans-serif;font-size:10px;">
+time:1
+</text>
+<rect x="1548.5" y="160.0" width="52.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1550" y="169" style="font-family:sans-serif;font-size:10px;">
+number:1
+</text>
+<rect x="1736.5" y="160.0" width="52.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1738" y="169" style="font-family:sans-serif;font-size:10px;">
+number:1
+</text>
+<rect x="254.0" y="96.0" width="14.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="256" y="105" style="font-family:sans-serif;font-size:10px;">
+-&gt;
+</text>
+<rect x="1440.0" y="192.0" width="37.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1442" y="201" style="font-family:sans-serif;font-size:10px;">
+-9.134
+</text>
+<rect x="464.5" y="96.0" width="110.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="466" y="105" style="font-family:sans-serif;font-size:10px;">
+aircraftRegistration:1
+</text>
+<rect x="1276.5" y="160.0" width="52.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1278" y="169" style="font-family:sans-serif;font-size:10px;">
+number:1
+</text>
+<rect x="32.5" y="64.0" width="48.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="34" y="73" style="font-family:sans-serif;font-size:10px;">
+flightID:1
+</text>
+<rect x="1167.5" y="128.0" width="47.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1169" y="137" style="font-family:sans-serif;font-size:10px;">
+segment
+</text>
+<rect x="1921.5" y="160.0" width="52.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1923" y="169" style="font-family:sans-serif;font-size:10px;">
+number:1
+</text>
+<rect x="1441.5" y="64.0" width="29.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1443" y="73" style="font-family:sans-serif;font-size:10px;">
+leg:1
+</text>
+<rect x="2024.25" y="128.0" width="8.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2026" y="137" style="font-family:sans-serif;font-size:10px;">
+}
+</text>
+<rect x="1220.5" y="128.0" width="8.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1222" y="137" style="font-family:sans-serif;font-size:10px;">
+{
+</text>
+<rect x="1115.0" y="160.0" width="33.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1117" y="169" style="font-family:sans-serif;font-size:10px;">
+11:20
+</text>
+<rect x="141.5" y="96.0" width="30.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="143" y="105" style="font-family:sans-serif;font-size:10px;">
+route
+</text>
+<rect x="1264.0" y="160.0" width="7.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1266" y="169" style="font-family:sans-serif;font-size:10px;">
+,
+</text>
+<rect x="911.0" y="128.0" width="7.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="913" y="137" style="font-family:sans-serif;font-size:10px;">
+;
+</text>
+<rect x="1556.5" y="192.0" width="36.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1558" y="201" style="font-family:sans-serif;font-size:10px;">
+10000
+</text>
+<rect x="798.0" y="128.0" width="14.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="800" y="137" style="font-family:sans-serif;font-size:10px;">
+at
+</text>
+<rect x="2150.5" y="128.0" width="51.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2152" y="137" style="font-family:sans-serif;font-size:10px;">
+fuelUnit:1
+</text>
+<rect x="2207.5" y="128.0" width="7.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2209" y="137" style="font-family:sans-serif;font-size:10px;">
+;
+</text>
+<rect x="1234.0" y="128.0" width="67.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1236" y="137" style="font-family:sans-serif;font-size:10px;">
+coordinate:1
+</text>
+<rect x="1476.5" y="64.0" width="8.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1478" y="73" style="font-family:sans-serif;font-size:10px;">
+}
+</text>
+<rect x="738.5" y="0.0" width="60.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="740" y="9" style="font-family:sans-serif;font-size:10px;">
+flightPlan:1
+</text>
+<rect x="2024.0" y="192.0" width="17.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2026" y="201" style="font-family:sans-serif;font-size:10px;">
+12
+</text>
+<rect x="1777.0" y="128.0" width="39.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1779" y="137" style="font-family:sans-serif;font-size:10px;">
+width:1
+</text>
+<rect x="2092.0" y="160.0" width="7.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2094" y="169" style="font-family:sans-serif;font-size:10px;">
+;
+</text>
+<rect x="770.0" y="32.0" width="40.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="772" y="41" style="font-family:sans-serif;font-size:10px;">
+&lt;EOF&gt;
+</text>
+<rect x="804.0" y="160.0" width="63.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="806" y="169" style="font-family:sans-serif;font-size:10px;">
+2026-06-10
+</text>
+<rect x="1824.0" y="192.0" width="13.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1826" y="201" style="font-family:sans-serif;font-size:10px;">
+m
+</text>
+<rect x="1939.0" y="192.0" width="17.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1941" y="201" style="font-family:sans-serif;font-size:10px;">
+90
+</text>
+<rect x="1420.0" y="160.0" width="7.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1422" y="169" style="font-family:sans-serif;font-size:10px;">
+,
+</text>
+<rect x="2128.25" y="96.0" width="32.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2130" y="105" style="font-family:sans-serif;font-size:10px;">
+fuel:1
+</text>
+<rect x="1581.75" y="128.0" width="50.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1583" y="137" style="font-family:sans-serif;font-size:10px;">
+altitude:1
+</text>
+<rect x="1369.0" y="192.0" width="39.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1371" y="201" style="font-family:sans-serif;font-size:10px;">
+38.774
+</text>
+<rect x="1334.0" y="160.0" width="8.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1336" y="169" style="font-family:sans-serif;font-size:10px;">
+)
+</text>
+<rect x="1193.0" y="160.0" width="8.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1195" y="169" style="font-family:sans-serif;font-size:10px;">
+(
+</text>
+<rect x="272.5" y="96.0" width="74.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="274" y="105" style="font-family:sans-serif;font-size:10px;">
+airportCode:1
+</text>
+<rect x="175.5" y="96.0" width="74.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="177" y="105" style="font-family:sans-serif;font-size:10px;">
+airportCode:1
+</text>
+<rect x="924.5" y="128.0" width="35.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="926" y="137" style="font-family:sans-serif;font-size:10px;">
+arrival
+</text>
+<rect x="742.5" y="160.0" width="29.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="744" y="169" style="font-family:sans-serif;font-size:10px;">
+OPO
+</text>
+<rect x="728.0" y="32.0" width="38.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="730" y="41" style="font-family:sans-serif;font-size:10px;">
+flight:1
+</text>
+<rect x="1751.0" y="192.0" width="23.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1753" y="201" style="font-family:sans-serif;font-size:10px;">
+500
+</text>
+<rect x="731.75" y="96.0" width="19.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="733" y="105" style="font-family:sans-serif;font-size:10px;">
+leg
+</text>
+<rect x="299.5" y="128.0" width="20.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="301" y="137" style="font-family:sans-serif;font-size:10px;">
+LIS
+</text>
+<rect x="1686.0" y="160.0" width="7.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1688" y="169" style="font-family:sans-serif;font-size:10px;">
+;
+</text>
+<rect x="349.5" y="96.0" width="66.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="351" y="105" style="font-family:sans-serif;font-size:10px;">
+&lt;missing·';'&gt;
+</text>
+<rect x="487.0" y="64.0" width="49.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="489" y="73" style="font-family:sans-serif;font-size:10px;">
+aircraft:1
+</text>
+<rect x="817.5" y="128.0" width="36.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="819" y="137" style="font-family:sans-serif;font-size:10px;">
+date:1
+</text>
+<rect x="1503.5" y="160.0" width="41.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1505" y="169" style="font-family:sans-serif;font-size:10px;">
+altitude
+</text>
+<rect x="720.0" y="128.0" width="74.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="722" y="137" style="font-family:sans-serif;font-size:10px;">
+airportCode:1
+</text>
+<rect x="1980.75" y="128.0" width="36.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1982" y="137" style="font-family:sans-serif;font-size:10px;">
+wind:1
+</text>
+<rect x="579.0" y="96.0" width="7.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="581" y="105" style="font-family:sans-serif;font-size:10px;">
+;
+</text>
+<rect x="1213.0" y="192.0" width="39.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1215" y="201" style="font-family:sans-serif;font-size:10px;">
+41.242
+</text>
+<rect x="198.0" y="128.0" width="29.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="200" y="137" style="font-family:sans-serif;font-size:10px;">
+OPO
+</text>
+<rect x="770.75" y="96.0" width="63.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="772" y="105" style="font-family:sans-serif;font-size:10px;">
+departure:1
+</text>
+<rect x="84.5" y="64.0" width="63.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="86" y="73" style="font-family:sans-serif;font-size:10px;">
+flightType:1
+</text>
+<rect x="671.0" y="96.0" width="7.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="673" y="105" style="font-family:sans-serif;font-size:10px;">
+;
+</text>
+<rect x="1349.0" y="160.0" width="8.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1351" y="169" style="font-family:sans-serif;font-size:10px;">
+(
+</text>
+<rect x="963.5" y="128.0" width="74.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="965" y="137" style="font-family:sans-serif;font-size:10px;">
+airportCode:1
+</text>
+<rect x="1581.125" y="96.0" width="57.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1583" y="105" style="font-family:sans-serif;font-size:10px;">
+segment:1
+</text>
+<rect x="1636.0" y="192.0" width="13.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1638" y="201" style="font-family:sans-serif;font-size:10px;">
+m
+</text>
+<rect x="37.5" y="96.0" width="38.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="39" y="105" style="font-family:sans-serif;font-size:10px;">
+TP123
+</text>
+<rect x="1206.5" y="160.0" width="52.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1208" y="169" style="font-family:sans-serif;font-size:10px;">
+number:1
+</text>
+<rect x="1041.5" y="128.0" width="14.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1043" y="137" style="font-family:sans-serif;font-size:10px;">
+at
+</text>
+<rect x="2094.0" y="128.0" width="52.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2096" y="137" style="font-family:sans-serif;font-size:10px;">
+number:1
+</text>
+<rect x="2168.0" y="160.0" width="16.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2170" y="169" style="font-family:sans-serif;font-size:10px;">
+kg
+</text>
+<rect x="1490.0" y="160.0" width="8.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1492" y="169" style="font-family:sans-serif;font-size:10px;">
+)
+</text>
+<rect x="1362.5" y="160.0" width="52.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1364" y="169" style="font-family:sans-serif;font-size:10px;">
+number:1
+</text>
+<rect x="2006.5" y="160.0" width="52.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="2008" y="169" style="font-family:sans-serif;font-size:10px;">
+number:1
+</text>
+<rect x="1390.0" y="128.0" width="67.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="1392" y="137" style="font-family:sans-serif;font-size:10px;">
+coordinate:1
+</text>
+<rect x="249.5" y="64.0" width="40.0" height="15.0" style="fill:orange; stroke:rgb(0,0,0);" rx="1"/>
+<text x="251" y="73" style="font-family:sans-serif;font-size:10px;">
+route:1
+</text>
+</svg>

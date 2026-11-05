@@ -1,0 +1,32 @@
+@startuml SSD_US033
+
+title US033 - List Backoffice Users (System Sequence Diagram)
+
+actor "Administrator" as ADMIN
+participant ":System" as SYS
+
+activate ADMIN
+
+ADMIN -> SYS : starts Backoffice App
+activate SYS
+SYS --> ADMIN : requests credentials\n(username, password)
+deactivate SYS
+
+ADMIN -> SYS : provides credentials\n(username, password)
+activate SYS
+SYS --> ADMIN : displays main menu
+deactivate SYS
+
+ADMIN -> SYS : selects "User Management"
+activate SYS
+SYS --> ADMIN : displays user management menu
+deactivate SYS
+
+ADMIN -> SYS : selects "List Users"
+activate SYS
+SYS --> ADMIN : displays list of users\n(name, email, status)
+deactivate SYS
+
+deactivate ADMIN
+
+@enduml

@@ -1,0 +1,53 @@
+@startuml SD_US076_ListPilotRoster
+
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+
+actor "ATCC" as Actor
+
+participant "ListPilotRosterUI" as UI
+participant "ListPilotRosterController" as CTRL
+participant "AuthorizationService" as AUTH
+participant "CustomerCollaboratorRepository" as COLLAB_REPO
+participant "PilotService" as SVC
+participant "PilotRepository" as PILOT_REPO
+
+Actor -> UI : doShow()
+activate UI
+
+UI -> CTRL : listPilotRoster()
+activate CTRL
+
+CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(\nAIR_TRANSPORT_COMPANY_COLLABORATOR)
+activate AUTH
+AUTH --> CTRL : ok
+deactivate AUTH
+
+CTRL -> AUTH : loggedinUserWithPermissions(...)
+activate AUTH
+AUTH --> CTRL : systemUser
+deactivate AUTH
+
+CTRL -> COLLAB_REPO : findBySystemUser(systemUser)
+activate COLLAB_REPO
+COLLAB_REPO --> CTRL : CustomerCollaborator
+deactivate COLLAB_REPO
+
+CTRL -> SVC : listPilotsByCompany(companyCode)
+activate SVC
+SVC -> PILOT_REPO : findByCompany(companyCode)
+activate PILOT_REPO
+PILOT_REPO --> SVC : Iterable<Pilot>
+deactivate PILOT_REPO
+SVC -> SVC : toDTO(pilot) [for each]
+SVC --> CTRL : List<PilotDTO>
+deactivate SVC
+
+CTRL --> UI : List<PilotDTO>
+deactivate CTRL
+
+UI -> UI : print roster
+UI --> Actor : pilot roster displayed
+deactivate UI
+
+@enduml

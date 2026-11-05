@@ -1,0 +1,29 @@
+@startuml US057_SSD
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "Backoffice Operator" as BO
+participant ":System" as System
+
+activate BO
+
+    BO -> System : asks to add an engine model to an aircraft model
+    activate System
+        System --> BO : presents list of aircraft models and engine models
+    deactivate System
+
+    BO -> System : selects aircraft model and engine model to add
+    activate System
+        System --> BO : shows data and requests confirmation
+    deactivate System
+
+    BO -> System : confirms operation
+    activate System
+        System --> BO : displays operation success
+    deactivate System
+
+deactivate BO
+@enduml

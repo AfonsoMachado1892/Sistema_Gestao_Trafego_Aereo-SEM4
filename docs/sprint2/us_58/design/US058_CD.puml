@@ -1,0 +1,66 @@
+@startuml US058_CD
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+class RemoveEngineModelFromAircraftModelUI {
+    - controller : RemoveEngineModelFromAircraftModelController
+    + show()
+}
+
+class RemoveEngineModelFromAircraftModelController {
+    - authz : AuthorizationService
+    - aircraftModelService : AircraftModelService
+    - aircraftModelRepository : AircraftModelRepository
+    - engineModelRepository : EngineModelRepository
+    + getAircraftModels()
+    + getEngineModels()
+    + removeEngineModel(aircraftModelID, engineModelID)
+}
+
+class AircraftModelService {
+    - aircraftModelRepository : AircraftModelRepository
+    - aircraftRepository : AircraftRepository
+    + removeEngineModel(aircraftModelID, engineModelID)
+}
+
+class AircraftModel {
+    - certifiedEngineModelIDs : Set<EngineModelID>
+    + removeCertifiedEngine(engineModelID)
+    + hasCertifiedEngine(engineModelID)
+    + certifiedEngineModelIDs()
+}
+
+class EngineModelID {
+    + of(id)
+}
+
+interface AircraftModelRepository {
+    + findById(id)
+    + save(aircraftModel)
+}
+
+interface AircraftRepository {
+    + existsByAircraftModel(aircraftModel)
+}
+
+interface EngineModelRepository {
+    + findAll()
+}
+
+class AuthorizationService {
+    + ensureAuthenticatedUserHasAnyOf(roles)
+}
+
+RemoveEngineModelFromAircraftModelUI .> RemoveEngineModelFromAircraftModelController
+RemoveEngineModelFromAircraftModelController .> AuthorizationService
+RemoveEngineModelFromAircraftModelController .> AircraftModelService
+RemoveEngineModelFromAircraftModelController --> AircraftModelRepository
+RemoveEngineModelFromAircraftModelController --> EngineModelRepository
+AircraftModelService --> AircraftModelRepository
+AircraftModelService --> AircraftRepository
+AircraftModelService .> AircraftModel
+AircraftModel *-- EngineModelID
+
+@enduml

@@ -1,0 +1,63 @@
+@startuml US011_Aircraft_SD
+title Aircraft Aggregate – Invariant: An Aircraft cannot be decommissioned if future FlightPlans reference its registration
+
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceParticipantBackgroundColor #E3F2FD
+skinparam sequenceLifeLineBorderColor #444441
+skinparam noteBorderColor #558B2F
+skinparam noteBackgroundColor #F1F8E9
+
+actor "Air Transport Company\nCollaborator" as ATCC
+participant ":DecommissionAircraftController" as CTRL
+participant ":AircraftRepository" as REPO
+participant ":FlightPlanRepository" as FP_REPO
+participant "aircraft\n:Aircraft" as AC
+
+
+activate ATCC
+
+ATCC -> CTRL : decommissionAircraft(registration)
+
+activate CTRL
+CTRL -> REPO : findByRegistration(registration)
+activate REPO
+REPO --> CTRL : aircraft
+deactivate REPO
+
+CTRL -> FP_REPO : existsFuturePlannedFlightsFor(registration)
+activate FP_REPO
+FP_REPO --> CTRL : hasFuturePlans
+deactivate FP_REPO
+
+alt hasFuturePlans == true
+    CTRL --> ATCC : Error – "Cannot decommission aircraft:\nfuture flight plans exist for this registration"
+else hasFuturePlans == false
+
+    CTRL -> AC : decommission()
+    activate AC
+    AC -> AC : operationalStatus == ACTIVE?
+
+    alt operationalStatus == DECOMMISSIONED
+        AC --> CTRL : throws InvalidOperationException\n("Aircraft is already decommissioned")
+        CTRL --> ATCC : Error – "Aircraft is already decommissioned"
+    else operationalStatus == ACTIVE
+        AC -> AC : operationalStatus = DECOMMISSIONED
+        note over AC
+          **Invariant enforced:**
+          An Aircraft can only transition to
+          DECOMMISSIONED if its current status
+          is ACTIVE and no FlightPlan references
+          its AircraftRegistration after the
+          current date.
+        end note
+        AC --> CTRL : ok
+        deactivate AC
+        CTRL -> REPO : save(aircraft)
+        REPO --> CTRL : saved
+        CTRL --> ATCC : Aircraft successfully decommissioned
+    end
+
+end
+
+@enduml

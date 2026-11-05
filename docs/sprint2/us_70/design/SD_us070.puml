@@ -1,0 +1,105 @@
+@startuml SD_US070
+title US070 - Add Aircraft to Air Transport Company
+
+actor "Air Transport Company Collaborator" as ACTOR
+participant ":AddAircraftUI" as UI
+participant ":AddAircraftController" as CTRL
+participant "authorizationService\n:AuthorizationService" as AUTH
+participant "customerCollaboratorRepository\n:CustomerCollaboratorRepository" as COLLREPO
+participant "airTransportCompanyRepository\n:AirTransportCompanyRepository" as ATCREPO
+participant "aircraftModelRepository\n:AircraftModelRepository" as MODELREPO
+participant ":AircraftService" as SVC
+participant "aircraftRepository\n:AircraftRepository" as REPO
+participant ":AircraftFactory" as FACTORY
+participant "aircraft:Aircraft" as AIRCRAFT
+
+activate ACTOR
+
+ACTOR -> UI : selects "Add Aircraft"
+activate UI
+
+UI -> CTRL : listAircraftModels()
+activate CTRL
+    CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(AIR_TRANSPORT_COMPANY_COLLABORATOR, ADMIN)
+    activate AUTH
+        AUTH --> CTRL
+    deactivate AUTH
+
+    CTRL -> MODELREPO : findAll()
+    activate MODELREPO
+        MODELREPO --> CTRL : models
+    deactivate MODELREPO
+
+    CTRL --> UI : models
+deactivate CTRL
+
+UI --> ACTOR : displays available aircraft models
+
+ACTOR -> UI : provides registration, model,\ncabinConfiguration, country, numCrewElements
+
+UI -> CTRL : addAircraft(registration, model,\ncabinConfiguration, country, numCrewElements)
+activate CTRL
+
+    CTRL -> AUTH : ensureAuthenticatedUserHasAnyOf(AIR_TRANSPORT_COMPANY_COLLABORATOR, ADMIN)
+    activate AUTH
+        AUTH --> CTRL
+    deactivate AUTH
+
+    CTRL -> AUTH : loggedinUserWithPermissions(AIR_TRANSPORT_COMPANY_COLLABORATOR, ADMIN)
+    activate AUTH
+        AUTH --> CTRL : systemUser
+    deactivate AUTH
+
+    CTRL -> COLLREPO : findBySystemUser(systemUser)
+    activate COLLREPO
+        COLLREPO --> CTRL : collaborator
+    deactivate COLLREPO
+
+    CTRL -> ATCREPO : findByIataCode(collaborator.customerCode())
+    activate ATCREPO
+        ATCREPO --> CTRL : airTransportCompany
+    deactivate ATCREPO
+
+    CTRL -> SVC : addAircraft(registration, model,\nairTransportCompany, cabinConfiguration,\ncountry, numCrewElements)
+    activate SVC
+
+        SVC -> REPO : findByRegistration(AircraftRegistration.of(registration))
+        activate REPO
+            REPO --> SVC : Optional.empty()
+        deactivate REPO
+
+        SVC -> SVC : exceedsCapacity(aircraftModel.maxPassengerCapacity())
+
+        SVC -> FACTORY ** : create()
+        activate FACTORY
+            FACTORY -> FACTORY : withRegistration(registration)
+            FACTORY -> FACTORY : withAircraftModel(model)
+            FACTORY -> FACTORY : withAirTransportCompany(airTransportCompany)
+            FACTORY -> FACTORY : withCabinConfiguration(cabinConfiguration)
+            FACTORY -> FACTORY : withCountry(country)
+            FACTORY -> FACTORY : withNumCrewElements(numCrewElements)
+            FACTORY -> FACTORY : build()
+            FACTORY -> AIRCRAFT ** : new Aircraft(aircraftCode, cabinConfiguration,\nairTransportCompany, aircraftModel,\ncountry, numCrewElements)
+            activate AIRCRAFT
+                AIRCRAFT -> AIRCRAFT : validate mandatory data
+            deactivate AIRCRAFT
+            FACTORY --> SVC : aircraft
+        deactivate FACTORY
+
+        SVC -> REPO : save(aircraft)
+        activate REPO
+            REPO --> SVC : aircraft
+        deactivate REPO
+
+        SVC --> CTRL : aircraft
+    deactivate SVC
+
+    CTRL --> UI : aircraft
+deactivate CTRL
+
+UI --> ACTOR : displays success message
+deactivate UI
+
+deactivate ACTOR
+
+@enduml

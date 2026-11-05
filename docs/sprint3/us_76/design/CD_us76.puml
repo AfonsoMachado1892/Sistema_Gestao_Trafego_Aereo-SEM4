@@ -1,0 +1,84 @@
+@startuml CD_us076
+
+title US076 - List Pilot Roster (Class Diagram)
+
+skinparam classAttributeIconSize 0
+
+interface AggregateRoot
+interface Repository
+
+class ListPilotRosterUI {
+    - controller : ListPilotRosterController
+    + doShow() : boolean
+}
+
+class ListPilotRosterController {
+    - authz : AuthorizationService
+    - pilotService : PilotService
+    - customerCollaboratorRepository : CustomerCollaboratorRepository
+    + listPilotRoster() : List<PilotDTO>
+    - resolveCompanyCode(systemUser : SystemUser) : AirTransportCompanyCode
+}
+
+class PilotService {
+    - pilotRepository : PilotRepository
+    - aircraftModelRepository : AircraftModelRepository
+    + listPilotsByCompany(companyCode : AirTransportCompanyCode) : List<PilotDTO>
+    - toDTOs(pilots : Iterable<Pilot>) : List<PilotDTO>
+    - toDTO(pilot : Pilot) : PilotDTO
+}
+
+class PilotDTO <<DTO>> {
+    - pilotID : String
+    - name : String
+    - companyIata : String
+    - status : String
+    - certificationCount : int
+}
+
+class Pilot <<AggregateRoot>> {
+    - pilotID : PilotID
+    - systemUser : SystemUser
+    - currentCompanyIataCode : AirTransportCompanyCode
+    - certifications : Set<Certification>
+    - status : PilotStatus
+    + isActive() : boolean
+}
+
+class CustomerCollaborator <<AggregateRoot>> {
+    + customerCode() : String
+}
+
+interface PilotRepository {
+    + findByCompany(companyCode : AirTransportCompanyCode) : Iterable<Pilot>
+}
+
+interface CustomerCollaboratorRepository {
+    + findBySystemUser(systemUser : SystemUser) : Optional<CustomerCollaborator>
+}
+
+ListPilotRosterUI --> ListPilotRosterController
+ListPilotRosterController --> PilotService
+ListPilotRosterController --> CustomerCollaboratorRepository
+ListPilotRosterController ..> PilotDTO
+
+PilotService --> PilotRepository
+PilotService ..> PilotDTO
+PilotService ..> Pilot
+
+PilotRepository --> Pilot : pilots
+CustomerCollaboratorRepository --> CustomerCollaborator : collaborators
+
+Pilot ..|> AggregateRoot
+CustomerCollaborator ..|> AggregateRoot
+
+PilotRepository ..|> Repository
+CustomerCollaboratorRepository ..|> Repository
+
+note bottom of ListPilotRosterController
+  The roster lists ALL pilots (active and inactive)
+  of the collaborator's own company.
+  Access restricted to the ATCC role.
+end note
+
+@enduml
